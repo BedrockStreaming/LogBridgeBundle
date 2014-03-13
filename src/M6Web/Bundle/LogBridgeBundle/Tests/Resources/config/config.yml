@@ -1,0 +1,44 @@
+environments:
+    test: all
+    dev:
+        - get_clip_all_status
+        - all_clip_500
+    prod:
+        - put_clip_form_all_status
+        - post_clip_form_all_status
+
+filters:
+    get_clip_all_status:
+        route: get_clip
+        method: ['GET', 'POST']
+        status: all
+
+    post_clip_form_all_status:
+        route: post_clips_form
+        method: ['POST']
+        status: all
+
+    put_clip_form_all_status:
+        route: put_clips_form
+        method: ['PUT']
+        status: all
+
+    get_clip_500:
+        route: get_clip
+        method: ['GET']
+        status: [500]
+
+    all_clip_500:
+        route: get_clip
+        method: all
+        status: [500]
+
+    get_clip_404:
+        route: get_clip
+        method: ['GET']
+        status: [404]
+
+    test_get_program:
+        route: get_program
+        method: ['GET']
+        status: [200]
