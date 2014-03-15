@@ -36,17 +36,17 @@ Symfony Bundle from log Request/Response with Monolog.
 
 ```
     #app/config.yml
-    m6_web_log_bridge:
+    m6web_log_bridge:
         logger: monolog.service_name
         resources:
-            - %kernel.root_dir%/config/m6_web_log_bridge.yml
+            - %kernel.root_dir%/config/m6web_log_bridge.yml
 ```
 
 
 **Define your filters** :
 
 ```
-    #app/config/m6_web_log_bridge.yml
+    #app/config/m6web_log_bridge.yml
     environments:
         preprod:
             - get_article_error
