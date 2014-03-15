@@ -1,31 +1,31 @@
 parameters:
-    m6_web_log_bridge.log_request_listener.name: "m6_web_log_bridge.log_request_listener"
-    m6_web_log_bridge.matcher.name: "m6_web_log_bridge.matcher"
-    m6_web_log_bridge.matcher_class.name: "LogBridgeMatcher"
-    m6_web_log_bridge.config_parser.class: M6Web\Bundle\LogBridgeBundle\Config\Parser
-    m6_web_log_bridge.builder.class: M6Web\Bundle\LogBridgeBundle\Matcher\Builder
-    m6_web_log_bridge.matcher_proxy.class: M6Web\Bundle\LogBridgeBundle\Matcher\MatcherProxy
-    m6_web_log_bridge.log_request_listener.class: M6Web\Bundle\LogBridgeBundle\EventDispatcher\LogRequestListener
+    m6web_log_bridge.log_request_listener.name: "m6web_log_bridge.log_request_listener"
+    m6web_log_bridge.matcher.name: "m6web_log_bridge.matcher"
+    m6web_log_bridge.matcher_class.name: "LogBridgeMatcher"
+    m6web_log_bridge.config_parser.class: M6Web\Bundle\LogBridgeBundle\Config\Parser
+    m6web_log_bridge.builder.class: M6Web\Bundle\LogBridgeBundle\Matcher\Builder
+    m6web_log_bridge.matcher_proxy.class: M6Web\Bundle\LogBridgeBundle\Matcher\MatcherProxy
+    m6web_log_bridge.log_request_listener.class: M6Web\Bundle\LogBridgeBundle\EventDispatcher\LogRequestListener
 
 
 services:
-    m6_web_log_bridge.config_parser:
-        class: %m6_web_log_bridge.config_parser.class%
+    m6web_log_bridge.config_parser:
+        class: %m6web_log_bridge.config_parser.class%
         arguments:
             - @router
 
-    m6_web_log_bridge.builder:
-        class: %m6_web_log_bridge.builder.class%
+    m6web_log_bridge.builder:
+        class: %m6web_log_bridge.builder.class%
         arguments:
-            - %m6_web_log_bridge.resources%
+            - %m6web_log_bridge.resources%
         calls:
             - [ setDispatcher, [ @event_dispatcher ] ]
-            - [ setConfigParser, [ @m6_web_log_bridge.config_parser ] ]
+            - [ setConfigParser, [ @m6web_log_bridge.config_parser ] ]
             - [ setCacheDir, [ %kernel.cache_dir% ] ]
             - [ isDebug, [ %kernel.debug% ] ]
-            - [ setMatcherClassName, [ %m6_web_log_bridge.matcher_class.name% ] ]
+            - [ setMatcherClassName, [ %m6web_log_bridge.matcher_class.name% ] ]
 
-    m6_web_log_bridge.matcher:
-        class: %m6_web_log_bridge.matcher_proxy.class%
+    m6web_log_bridge.matcher:
+        class: %m6web_log_bridge.matcher_proxy.class%
         arguments:
-            - @m6_web_log_bridge.builder
+            - @m6web_log_bridge.builder
