@@ -27,9 +27,9 @@ class M6WebLogBridgeExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $container->setParameter('m6_web_log_bridge.logger_service', $config['logger']);
-        $container->setParameter('m6_web_log_bridge.resources', $config['resources']);
-        $container->setParameter('m6_web_log_bridge.prefix_key', $config['prefix_key']);
+        $container->setParameter('m6web_log_bridge.logger_service', $config['logger']);
+        $container->setParameter('m6web_log_bridge.resources', $config['resources']);
+        $container->setParameter('m6web_log_bridge.prefix_key', $config['prefix_key']);
 
         $this->loadListener($container);
     }
@@ -42,10 +42,10 @@ class M6WebLogBridgeExtension extends Extension
      */
     protected function loadListener(ContainerBuilder $container)
     {
-        $className          = $container->getParameter('m6_web_log_bridge.log_request_listener.class');
-        $serviceName        = $container->getParameter('m6_web_log_bridge.log_request_listener.name');
-        $matcherServiceName = $container->getParameter('m6_web_log_bridge.matcher.name');
-        $loggerName         = $container->getParameter('m6_web_log_bridge.logger_service');
+        $className          = $container->getParameter('m6web_log_bridge.log_request_listener.class');
+        $serviceName        = $container->getParameter('m6web_log_bridge.log_request_listener.name');
+        $matcherServiceName = $container->getParameter('m6web_log_bridge.matcher.name');
+        $loggerName         = $container->getParameter('m6web_log_bridge.logger_service');
         $definition         = new Definition($className);
 
         $definition
