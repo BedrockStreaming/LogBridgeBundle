@@ -8,6 +8,16 @@ use M6Web\Bundle\LogBridgeBundle\Tests\MockRouter;
 
 class BaseMatcher extends atoum
 {
+    protected function cacheClear()
+    {
+        $files = glob($this->getCacheDir() .'/*');
+
+        if ($files) {
+            foreach ($files as $file) {
+                unlink($file);
+            }
+        }
+    }
 
     protected function getResource()
     {

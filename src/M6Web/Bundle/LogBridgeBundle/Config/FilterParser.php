@@ -90,16 +90,30 @@ class FilterParser
             throw new ParseException(sprintf('Undefined "route", "method" or "status" parameter from filter "%s"', $name));
         }
 
-        if (!$this->isRoute($config['route'])) {
-            throw new ParseException(sprintf('Undefined route "%s" from router service', $config['route']));
-        }
-
-        $filter->setRoute($config['route']);
-
+        $this->parseRoute($filter, $config['route']);
         $this->parseMethod($filter, $config['method']);
         $this->parseStatus($filter, $config['status']);
 
         return $filter;
+    }
+
+    /**
+     * parseRoute
+     *
+     * @param Filter $filter Filter
+     * @param mixed  $route  Route parameter value
+     */
+    protected function parseRoute(Filter $filter, $route)
+    {
+        if ($this->isAll($route)) {
+            $filter->setRoute('all');
+        } else {
+            if (!$this->isRoute($route)) {
+                throw new ParseException(sprintf('Undefined route "%s" from router service', $route));
+            }
+
+            $filter->setRoute($route);
+        }
     }
 
     /**

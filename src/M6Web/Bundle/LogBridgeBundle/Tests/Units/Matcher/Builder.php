@@ -15,7 +15,7 @@ class Builder extends BaseMatcher
         $matcherClass = $this->getMatcherClassName();
 
         $this
-            ->if($builder = new Matcher\Builder([]))
+            ->if($builder = new Matcher\Builder([], 'test'))
             ->then
                 ->object($builder->setCacheDir($cacheDir))
                     ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Matcher\Builder')

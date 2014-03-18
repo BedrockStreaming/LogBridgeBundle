@@ -14,6 +14,21 @@ use M6Web\Bundle\LogBridgeBundle\Config\Filter;
 class PhpMatcherDumper
 {
     /**
+     * @var string
+     */
+    private $environment;
+
+    /**
+     * __construct
+     *
+     * @param string $environment Environment
+     */
+    public function __construct($environment)
+    {
+        $this->environment = $environment;
+    }
+
+    /**
      * dump
      *
      * @param Configuration $configuration
@@ -43,29 +58,46 @@ class {$options['class']} implements {$options['interface']}
     /**
      * match
      *
-     * @param string  \$environment Environment name
      * @param string  \$route       Route name
      * @param string  \$method      Method name
      * @param integer \$status      Http code status
      *
      * @return boolean
      */   
-    public static function match(\$environment, \$route, \$method, \$status)
+    public static function match(\$route, \$method, \$status)
     {
-        if (in_array(self::generateKey(\$environment, \$route, \$method, \$status), self::\$filters)) {
-            return true;
-        }
+        if (!empty(self::\$filters)) {
+            if (in_array(self::generateKey(\$route, \$method, \$status), self::\$filters)) {
+                return true;
+            }
 
-        if (in_array(self::generateKey(\$environment, \$route, 'all', \$status), self::\$filters)) {
-            return true;
-        }
+            if (in_array(self::generateKey('all', 'all', 'all'), self::\$filters)) {
+                return true;
+            }
 
-        if (in_array(self::generateKey(\$environment, \$route, \$method, 'all'), self::\$filters)) {
-            return true;
-        }
+            if (in_array(self::generateKey(\$route, 'all', 'all'), self::\$filters)) {
+                return true;
+            }
 
-        if (in_array(self::generateKey(\$environment, \$route, 'all', 'all'), self::\$filters)) {
-            return true;
+            if (in_array(self::generateKey(\$route, \$method, 'all'), self::\$filters)) {
+                return true;
+            }
+
+            if (in_array(self::generateKey(\$route, 'all', \$status), self::\$filters)) {
+                return true;
+            }
+
+            if (in_array(self::generateKey('all', \$method, \$status), self::\$filters)) {
+                return true;
+            }
+
+            if (in_array(self::generateKey('all', 'all', \$status), self::\$filters)) {
+                return true;
+            }
+
+            if (in_array(self::generateKey('all', \$method, 'all'), self::\$filters)) {
+                return true;
+            }
         }
 
         return false;
@@ -74,16 +106,15 @@ class {$options['class']} implements {$options['interface']}
     /**
      * generateKey
      *
-     * @param string  \$environment Environment name
      * @param string  \$route       Route name
      * @param string  \$method      Method name
      * @param integer \$status      Http code status
      *
      * @return string
      */
-    public static function generateKey(\$environment, \$route, \$method, \$status)
+    public static function generateKey(\$route, \$method, \$status)
     {
-        return sprintf('%s.%s.%s.%s', \$environment, \$route, \$method, \$status);
+        return sprintf('%s.%s.%s', \$route, \$method, \$status);
     }
 
 }
@@ -121,38 +152,48 @@ EOF;
 
     }
 
+    /**
+     * compile
+     *
+     * @param Configuration $configuration Config
+     *
+     * @return array
+     */
     private function compile(Configuration $configuration)
     {
         $environments    = $configuration->getEnvironments();
         $compiledFilters = [];
 
-        foreach ($environments as $name => $aliasList) {
-            $compiledFilters = array_merge(
-                $compiledFilters,
-                $this->compileEnvironment(
-                    $name,
-                    $aliasList,
-                    $configuration->getFilters()
-                )
+        if (isset($environments[$this->environment])) {
+            $compiledFilters = $this->compileEnvironment(
+                $environments[$this->environment],
+                $configuration->getFilters()
             );
         }
 
         return array_unique($compiledFilters, SORT_STRING);
     }
 
-
-    private function compileEnvironment($name, $aliasList, FilterCollection $filters)
+    /**
+     * compileEnvironment
+     *
+     * @param array            $aliasList List of alias filter
+     * @param FilterCollection $filters   Filters
+     *
+     * @return array
+     */
+    private function compileEnvironment($aliasList, FilterCollection $filters)
     {
         $compiled = [];
 
         if ($aliasList == 'all') {
             foreach ($filters as $filter) {
-                $compiled = $this->compileFilter($name, $filter);
+                $compiled = $this->compileFilter($filter);
             }
         } else {
             foreach ($aliasList as $alias) {
                 if ($filter = $filters->getByName($alias)) {
-                    $compiled = array_merge($compiled, $this->compileFilter($name, $filter));
+                    $compiled = array_merge($compiled, $this->compileFilter($filter));
                 }
             }
         }
@@ -168,20 +209,18 @@ EOF;
      *
      * @return array
      */
-    private function compileFilter($prefix, Filter $filter)
+    private function compileFilter(Filter $filter)
     {
-        $prefix   = sprintf('%s.%s', $prefix, $filter->getRoute());
         $compiled = [];
+        $prefix   = ($filter->getRoute() == 'all') ? 'all': $filter->getRoute();
 
         if ($filter->getMethod() == 'all') {
-            $prefix = sprintf('%s.all', $prefix, $filter->getMethod());
-
+            $prefix   = sprintf('%s.all', $prefix, $filter->getMethod());
             $compiled = $this->compileFilterStatus($prefix, $filter);
         } else {
             foreach ($filter->getMethod() as $method) {
                 $methodPrefix = sprintf('%s.%s', $prefix, $method);
-
-                $compiled = array_merge($compiled, $this->compileFilterStatus($methodPrefix, $filter));
+                $compiled     = array_merge($compiled, $this->compileFilterStatus($methodPrefix, $filter));
             }
         }
 

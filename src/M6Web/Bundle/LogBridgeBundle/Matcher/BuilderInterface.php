@@ -12,7 +12,7 @@ interface BuilderInterface
      *
      * @param array $resources Resources
      */
-    public function __construct(array $resources);
+    public function __construct(array $resources, $environment);
 
     /**
      * getMatcher

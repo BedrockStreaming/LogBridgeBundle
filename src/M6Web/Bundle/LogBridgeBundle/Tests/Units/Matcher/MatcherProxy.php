@@ -14,7 +14,7 @@ class MatcherProxy extends BaseMatcher
 
     private function getBuilder()
     {
-        $builder = new Matcher\Builder([$this->getResource()]);
+        $builder = new Matcher\Builder([$this->getResource()], 'test');
 
         $builder
                 ->setMatcherClassName($this->getMatcherClassName())
@@ -33,11 +33,11 @@ class MatcherProxy extends BaseMatcher
                     ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Matcher\Builder')
                 ->object($proxy->getMatcher())
                     ->isInstanceOf($this->getMatcherClassName())
-                ->boolean($proxy->match('test', 'get_program', 'GET', 200))
+                ->boolean($proxy->match('get_program', 'GET', 200))
                     ->isTrue()
-                ->boolean($proxy->match('test', 'get_program', 'POST', 200))
+                ->boolean($proxy->match('get_program', 'POST', 200))
                     ->isFalse()
-                ->boolean($proxy->match('test', 'invalid_route', 'GET', 200))
+                ->boolean($proxy->match('invalid_route', 'GET', 200))
                     ->isFalse()
         ;
     }

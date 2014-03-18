@@ -31,16 +31,15 @@ class MatcherProxy implements MatcherInterface
     /**
      * match
      *
-     * @param string  $environment Environment name
      * @param string  $route       Route name
      * @param string  $method      Method name
      * @param integer $status      Http code status
      *
      * @return boolean
      */   
-    static public function match($environment, $route, $method, $status)
+    static public function match($route, $method, $status)
     {
-        return self::$matcher->match($environment, $route, $method, $status);
+        return self::$matcher->match($route, $method, $status);
     }
 
     /**
