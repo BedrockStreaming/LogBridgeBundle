@@ -18,6 +18,7 @@ services:
         class: %m6web_log_bridge.builder.class%
         arguments:
             - %m6web_log_bridge.resources%
+            - %kernel.environment%
         calls:
             - [ setDispatcher, [ @event_dispatcher ] ]
             - [ setConfigParser, [ @m6web_log_bridge.config_parser ] ]

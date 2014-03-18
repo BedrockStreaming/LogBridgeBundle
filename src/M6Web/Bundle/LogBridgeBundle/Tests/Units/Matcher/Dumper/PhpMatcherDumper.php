@@ -14,7 +14,7 @@ class PhpMatcherDumper extends BaseMatcher
 
     private function getBuilder()
     {
-        $builder = new Matcher\Builder([$this->getResource()]);
+        $builder = new Matcher\Builder([$this->getResource()], 'test');
 
         $builder
                 ->setMatcherClassName($this->getMatcherClassName())
@@ -31,14 +31,14 @@ class PhpMatcherDumper extends BaseMatcher
             ->then
                 ->object($dumper = $builder->getMatcher())
                     ->isInstanceOf($this->getMatcherClassName())
-                ->boolean($dumper::match('test', 'get_program', 'GET', 200))
+                ->boolean($dumper::match('get_program', 'GET', 200))
                     ->isTrue()
-                ->boolean($dumper::match('test', 'get_program', 'POST', 200))
+                ->boolean($dumper::match('get_program', 'POST', 200))
                     ->isFalse()
-                ->boolean($dumper::match('test', 'invalid_route', 'GET', 200))
+                ->boolean($dumper::match('invalid_route', 'GET', 200))
                     ->isFalse()
-                ->string($dumper::generateKey('test', 'get_program', 'GET', 200))
-                    ->isEqualTo('test.get_program.GET.200')
+                ->string($dumper::generateKey('get_program', 'GET', 200))
+                    ->isEqualTo('get_program.GET.200')
         ;
     }
 

@@ -32,6 +32,11 @@ class Builder implements BuilderInterface
     private $resources;
 
     /**
+     * @var string
+     */
+    private $environment;
+
+    /**
      * @var array
      */
     private $cacheResources;
@@ -69,11 +74,13 @@ class Builder implements BuilderInterface
     /**
      * __construct
      *
-     * @param array $resources Resources
+     * @param array  $resources   Resources
+     * @param string $environment Environment name
      */
-    public function __construct(array $resources)
+    public function __construct(array $resources, $environment)
     {
-        $this->resources = $resources;
+        $this->resources        = $resources;
+        $this->environment      = $environment;
         $this->cacheResources   = [];
         $this->dispatcher       = null;
         $this->configParser     = null;
@@ -150,7 +157,7 @@ class Builder implements BuilderInterface
     {
         $configs       = $this->loadConfigResources();
         $configuration = $this->configParser->parse($configs);
-        $dumper        = new Dumper\PhpMatcherDumper();
+        $dumper        = new Dumper\PhpMatcherDumper($this->environment);
         $options       = array();
 
         if ($this->matcherClassName) {

@@ -66,7 +66,7 @@ class LogRequestListener
         $method      = $request->getMethod();
         $statusCode  = $response->getStatusCode();
 
-        if ($this->matcher->match($this->environment, $route, $method, $statusCode)) {
+        if ($this->matcher->match($route, $method, $statusCode)) {
             $this->logger->info(
                 $this->createContent($request, $response),
                 $this->createContext($route, $method, $statusCode)
