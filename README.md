@@ -52,6 +52,8 @@ Symfony Bundle from log Request/Response with Monolog.
             - get_article_error
             - post_article_all
         prod: all #form all filter associated
+        recette:
+            - all_error
 
     filters:
         get_article_error:
@@ -68,8 +70,12 @@ Symfony Bundle from log Request/Response with Monolog.
             status: [404]
         edit_category:
             route: get_category
-            methd: ['POST', 'PUT']
+            method: ['POST', 'PUT']
             status: [400, 422, 500]
+        all_error: # All route, all method in error
+            route: all
+            method: all
+            status: [400, 404, 422, 500]
 
 ```
 
