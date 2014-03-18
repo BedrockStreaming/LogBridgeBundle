@@ -14,5 +14,10 @@
     },
     "require-dev": {
         "atoum/atoum-bundle": "~1.0"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
     }
 }
