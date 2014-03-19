@@ -64,38 +64,38 @@ class {$options['class']} implements {$options['interface']}
      *
      * @return boolean
      */   
-    public static function match(\$route, \$method, \$status)
+    public function match(\$route, \$method, \$status)
     {
-        if (!empty(self::\$filters)) {
-            if (in_array(self::generateKey(\$route, \$method, \$status), self::\$filters)) {
+        if (!empty(\$this->filters)) {
+            if (in_array(\$this->generateKey(\$route, \$method, \$status), \$this->filters)) {
                 return true;
             }
 
-            if (in_array(self::generateKey('all', 'all', 'all'), self::\$filters)) {
+            if (in_array(\$this->generateKey('all', 'all', 'all'), \$this->filters)) {
                 return true;
             }
 
-            if (in_array(self::generateKey(\$route, 'all', 'all'), self::\$filters)) {
+            if (in_array(\$this->generateKey(\$route, 'all', 'all'), \$this->filters)) {
                 return true;
             }
 
-            if (in_array(self::generateKey(\$route, \$method, 'all'), self::\$filters)) {
+            if (in_array(\$this->generateKey(\$route, \$method, 'all'), \$this->filters)) {
                 return true;
             }
 
-            if (in_array(self::generateKey(\$route, 'all', \$status), self::\$filters)) {
+            if (in_array(\$this->generateKey(\$route, 'all', \$status), \$this->filters)) {
                 return true;
             }
 
-            if (in_array(self::generateKey('all', \$method, \$status), self::\$filters)) {
+            if (in_array(\$this->generateKey('all', \$method, \$status), \$this->filters)) {
                 return true;
             }
 
-            if (in_array(self::generateKey('all', 'all', \$status), self::\$filters)) {
+            if (in_array(\$this->generateKey('all', 'all', \$status), \$this->filters)) {
                 return true;
             }
 
-            if (in_array(self::generateKey('all', \$method, 'all'), self::\$filters)) {
+            if (in_array(\$this->generateKey('all', \$method, 'all'), \$this->filters)) {
                 return true;
             }
         }
@@ -106,15 +106,74 @@ class {$options['class']} implements {$options['interface']}
     /**
      * generateKey
      *
-     * @param string  \$route       Route name
-     * @param string  \$method      Method name
-     * @param integer \$status      Http code status
+     * @param string  \$route  Route name
+     * @param string  \$method Method name
+     * @param integer \$status Http code status
      *
      * @return string
      */
-    public static function generateKey(\$route, \$method, \$status)
+    public function generateKey(\$route, \$method, \$status)
     {
         return sprintf('%s.%s.%s', \$route, \$method, \$status);
+    }
+
+    /**
+     * addFilter
+     *
+     * @param string \$filter Filter
+     *
+     * @return MatcherInterface
+     */
+    public function addFilter(\$filter)
+    {
+        if (!\$this->hasFilter(\$filter)) {
+            \$this->filters[] = \$filter;
+        }
+
+        return \$this;
+    }
+
+    /**
+     * setFilters
+     *
+     * @param array   \$filters   Filter list
+     * @param boolean \$overwrite Overwrite current filter
+     *
+     * @return MatcherInterface
+     */
+    public function setFilters(array \$filters, \$overwrite = false)
+    {
+        if (\$overwrite) {
+            \$this->filters = \$filters;
+        } else {
+            foreach (\$filters as \$filter) {
+                \$this->addFilter(\$filter);
+            }
+        }
+
+        return \$this;
+    }
+
+    /**
+     * getFilters
+     *
+     * @return array
+     */
+    public function getFilters()
+    {
+        return \$this->filters;
+    }
+
+    /**
+     * hasFilter
+     *
+     * @param string \$filter Filter
+     *
+     * @return boolean
+     */
+    public function hasFilter(\$filter)
+    {
+        return in_array(\$filter, \$this->filters);
     }
 
 }
@@ -146,7 +205,7 @@ EOF;
      * @var array
      * List of compiled filters
      */
-    private static \$filters = [
+    private \$filters = [
 {$code}    ];
 EOF;
 
