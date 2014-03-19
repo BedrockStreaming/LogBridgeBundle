@@ -15,7 +15,7 @@ class MatcherProxy implements MatcherInterface
     /**
      * @var MatcherInterface
      */
-    private static $matcher;
+    private $matcher;
 
     /**
      * __construct
@@ -25,21 +25,71 @@ class MatcherProxy implements MatcherInterface
     public function __construct(BuilderInterface $builder)
     {
         $this->builder = $builder;
-        self::$matcher = $builder->getMatcher();
+        $this->matcher = $builder->getMatcher();
     }
 
     /**
      * match
      *
-     * @param string  $route       Route name
-     * @param string  $method      Method name
-     * @param integer $status      Http code status
+     * @param string  $route  Route name
+     * @param string  $method Method name
+     * @param integer $status Http code status
      *
      * @return boolean
      */   
-    static public function match($route, $method, $status)
+    public function match($route, $method, $status)
     {
-        return self::$matcher->match($route, $method, $status);
+        return $this->matcher->match($route, $method, $status);
+    }
+
+    /**
+     * addFilter
+     *
+     * @param string $filter Filter
+     *
+     * @return MatcherProxy
+     */
+    public function addFilter($filter)
+    {
+        $this->matcher->addFilter($filter);
+
+        return $this;
+    }
+
+    /**
+     * setFilters
+     *
+     * @param array $filters Filter list
+     *
+     * @return MatcherProxy
+     */
+    public function setFilters(array $filters, $overwrite = false)
+    {
+        $this->matcher->setFilters($filters, $overwrite);
+
+        return $this;
+    }
+
+    /**
+     * getFilters
+     *
+     * @return array
+     */
+    public function getFilters()
+    {
+        return $this->matcher->getFilters();
+    }
+
+    /**
+     * hasFilter
+     *
+     * @param string $filter Filter
+     *
+     * @return boolean
+     */
+    public function hasFilter($filter)
+    {
+        return $this->matcher->hasFilter($filter);
     }
 
     /**
@@ -49,7 +99,7 @@ class MatcherProxy implements MatcherInterface
      */
     public function getMatcher()
     {
-        return self::$matcher;
+        return $this->matcher;
     }
 
     /**

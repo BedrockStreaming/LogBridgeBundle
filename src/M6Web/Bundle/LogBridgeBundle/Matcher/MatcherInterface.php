@@ -16,6 +16,41 @@ interface MatcherInterface
      *
      * @return boolean
      */   
-    static public function match($route, $method, $status);
+    public function match($route, $method, $status);
+
+    /**
+     * addFilter
+     *
+     * @param string $filter Filter
+     *
+     * @return MatcherInterface
+     */
+    public function addFilter($filter);
+
+    /**
+     * setFilters
+     *
+     * @param array $filters Filter list
+     * @param boolean $overwrite Overwrite current filter
+     *
+     * @return MatcherInterface
+     */
+    public function setFilters(array $filters, $overwrite = false);
+
+    /**
+     * getFilters
+     *
+     * @return array
+     */
+    public function getFilters();
+
+    /**
+     * hasFilter
+     *
+     * @param string $filter Filter
+     *
+     * @return boolean
+     */
+    public function hasFilter($filter);
 
 }

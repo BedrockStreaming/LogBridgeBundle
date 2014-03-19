@@ -31,13 +31,13 @@ class PhpMatcherDumper extends BaseMatcher
             ->then
                 ->object($dumper = $builder->getMatcher())
                     ->isInstanceOf($this->getMatcherClassName())
-                ->boolean($dumper::match('get_program', 'GET', 200))
+                ->boolean($dumper->match('get_program', 'GET', 200))
                     ->isTrue()
-                ->boolean($dumper::match('get_program', 'POST', 200))
+                ->boolean($dumper->match('get_program', 'POST', 200))
                     ->isFalse()
-                ->boolean($dumper::match('invalid_route', 'GET', 200))
+                ->boolean($dumper->match('invalid_route', 'GET', 200))
                     ->isFalse()
-                ->string($dumper::generateKey('get_program', 'GET', 200))
+                ->string($dumper->generateKey('get_program', 'GET', 200))
                     ->isEqualTo('get_program.GET.200')
         ;
     }
