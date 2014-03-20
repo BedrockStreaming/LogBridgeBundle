@@ -40,6 +40,10 @@ Symfony Bundle from log Request/Response with Monolog.
         logger: monolog.service_name
         resources:
             - %kernel.root_dir%/config/m6web_log_bridge.yml
+        content_provider: m6web_log_bridge.log_content_provider # Provider service name
+        ignore_headers: # key list from mask/ignore header info
+            - php-auth-pw
+        prefix_key: ~ # define prefix key on log context
 ```
 
 
@@ -77,6 +81,34 @@ Symfony Bundle from log Request/Response with Monolog.
             method: all
             status: [400, 404, 422, 500]
 
+```
+
+## Define your Provider from format log content
+
+It is advisable to extend default provider M6Web\Bundle\LogBrigeBundle\Provider\LogContentProvider
+
+
+**default definition from service provider :** 
+
+```
+    services:
+        m6web_log_bridge.log_content_provider:
+            class: %m6web_log_bridge.log_content_provider.class%
+            arguments:
+                - %kernel.environment%
+                - %m6web_log_bridge.ignore_headers%
+                - %m6web_log_bridge.prefix_key%
+            calls:
+                - [ setContext, [ @security.context ] ]
+```
+
+**From override :**
+
+```
+    services:
+        acme.my_log_provider:
+            class: Acme\Bundle\MyBundle\Provider\LogContentProvider
+            parent: m6web_log_bridge.log_content_provider
 ```
 
 

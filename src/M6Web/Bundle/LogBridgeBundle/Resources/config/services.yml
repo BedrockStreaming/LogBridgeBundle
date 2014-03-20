@@ -6,6 +6,9 @@ parameters:
     m6web_log_bridge.builder.class: M6Web\Bundle\LogBridgeBundle\Matcher\Builder
     m6web_log_bridge.matcher_proxy.class: M6Web\Bundle\LogBridgeBundle\Matcher\MatcherProxy
     m6web_log_bridge.log_request_listener.class: M6Web\Bundle\LogBridgeBundle\EventDispatcher\LogRequestListener
+    m6web_log_bridge.log_content_formatter.class: M6Web\Bundle\LogBridgeBundle\Formatter\LogContentFormatter
+    m6web_log_bridge.ignore_headers:
+        - php-auth-pw
 
 
 services:
@@ -30,3 +33,12 @@ services:
         class: %m6web_log_bridge.matcher_proxy.class%
         arguments:
             - @m6web_log_bridge.builder
+
+    m6web_log_bridge.log_content_formatter:
+        class: %m6web_log_bridge.log_content_formatter.class%
+        arguments:
+            - %kernel.environment%
+            - %m6web_log_bridge.ignore_headers%
+            - %m6web_log_bridge.prefix_key%
+        calls:
+            - [ setContext, [ @security.context ] ]
