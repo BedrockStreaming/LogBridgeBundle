@@ -87,6 +87,7 @@ class LogRequestListener
     {
         $requestHeaders = array_diff_key($request->headers->all(), array_flip(array('php-auth-pw')));
         $requestContent = "Request\n------------------------\n";
+        $requestContent .= $request->getUri() ."\n\n";
 
         foreach ($requestHeaders as $name => $values) {
             $requestContent .= str_pad($name, 20, ' ', STR_PAD_RIGHT) .': '. $values[0] ."\n";
