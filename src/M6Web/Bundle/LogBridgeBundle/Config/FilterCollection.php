@@ -25,7 +25,9 @@ class FilterCollection implements \Iterator
     /**
      * __construct
      *
-     * @param array $filters Filters
+     * @param array $items
+     *
+     * @internal param array $filters Filters
      */
     public function __construct(array $items = [])
     {
@@ -41,11 +43,12 @@ class FilterCollection implements \Iterator
     /**
      * add
      *
-     * @param Filter $filter Filter
+     * @param Filter $item
      *
+     * @internal param \M6Web\Bundle\LogBridgeBundle\Config\Filter $filter Filter
      * @return FilterCollection
      */
-    public function add($item)
+    public function add(Filter $item)
     {
         if (!in_array($item->getName(), $this->keys)) {
             $this->keys[] = $item->getName();
@@ -111,6 +114,8 @@ class FilterCollection implements \Iterator
     /**
      * getName
      * Define filter name with iterator position
+     *
+     * @param string $iterator
      *
      * @return string
      */

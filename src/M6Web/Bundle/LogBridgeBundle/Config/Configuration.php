@@ -2,6 +2,11 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Config;
 
+/**
+ * Class Configuration
+ *
+ * @package M6Web\Bundle\LogBridgeBundle\Config
+ */
 class Configuration
 {
     /**

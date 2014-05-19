@@ -10,12 +10,12 @@ interface MatcherInterface
     /**
      * match
      *
-     * @param string  $route       Route name
-     * @param string  $method      Method name
-     * @param integer $status      Http code status
+     * @param string  $route  Route name
+     * @param string  $method Method name
+     * @param integer $status Http code status
      *
      * @return boolean
-     */   
+     */
     public function match($route, $method, $status);
 
     /**
@@ -30,7 +30,7 @@ interface MatcherInterface
     /**
      * setFilters
      *
-     * @param array $filters Filter list
+     * @param array   $filters   Filter list
      * @param boolean $overwrite Overwrite current filter
      *
      * @return MatcherInterface
