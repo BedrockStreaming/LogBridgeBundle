@@ -15,14 +15,14 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * LogContentFormatter
  */
-class LogContentFormatter extends atoum
+class LogDefault extends atoum
 {
     const ENVIRONMENT = 'test';
 
 
     private function createProvider($environment = self::ENVIRONMENT, array $ignores = array('php-auth-pw'), $prefix = '')
     {
-        $provider = new Formatter\LogContentFormatter($environment, $ignores, $prefix);
+        $provider = new Formatter\LogDefault($environment, $ignores, $prefix);
 
         return $provider;
     }
@@ -50,7 +50,7 @@ class LogContentFormatter extends atoum
             ->if($provider = $this->createProvider())
             ->then
             ->object($provider->setContext($context))
-                ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Formatter\LogContentFormatter')
+                ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Formatter\LogDefault')
             ->string($provider->getLogContent($request, $response))
                 ->contains('HTTP 1.0 200')
                 ->contains('Cache-Control')

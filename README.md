@@ -85,7 +85,7 @@ Symfony Bundle from log Request/Response with Monolog.
 
 ## Define your Provider from format log content
 
-It is advisable to extend default provider M6Web\Bundle\LogBrigeBundle\Provider\LogContentProvider
+It is advisable to extend default provider M6Web\Bundle\LogBridgeBundle\Formatter\Defaut
 
 
 **default definition from service provider :** 
@@ -110,6 +110,8 @@ It is advisable to extend default provider M6Web\Bundle\LogBrigeBundle\Provider\
             class: Acme\Bundle\MyBundle\Provider\LogContentProvider
             parent: m6web_log_bridge.log_content_provider
 ```
+
+or simply override this parameter : ```m6web_log_bridge.log_content_formatter.class```
 
 
 ### Log contents example

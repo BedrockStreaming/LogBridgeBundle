@@ -7,9 +7,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
- * LogContentFormatter
+ * LogDefault
  */
-class LogContentFormatter
+class LogDefault implements LogInterface
 {
     /**
      * @var string
@@ -193,7 +193,7 @@ class LogContentFormatter
      */
     public function getPrefixKey()
     {
-        return $thus->prefixKey;
+        return $this->prefixKey;
     }
 
 }
