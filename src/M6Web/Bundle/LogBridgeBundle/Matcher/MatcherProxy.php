@@ -49,9 +49,9 @@ class MatcherProxy implements MatcherInterface
      *
      * @return MatcherProxy
      */
-    public function addFilter($filter)
+    public function addFilter($filter, array $options = [])
     {
-        $this->matcher->addFilter($filter);
+        $this->matcher->addFilter($filter, $options);
 
         return $this;
     }

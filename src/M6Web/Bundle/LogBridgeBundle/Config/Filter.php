@@ -28,6 +28,11 @@ class Filter
     private $status;
 
     /**
+     * @var boolean
+     */
+    private $content;
+
+    /**
      * __construct
      *
      * @param string $name name Filter name
@@ -117,6 +122,30 @@ class Filter
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * setContent
+     *
+     * @param boolean $content
+     *
+     * @return Filter
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * getContent
+     *
+     * @return boolean
+     */
+    public function getContent()
+    {
+        return $this->content;
     }
 
 }

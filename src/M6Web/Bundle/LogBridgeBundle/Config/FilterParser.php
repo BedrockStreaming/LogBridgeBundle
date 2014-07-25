@@ -86,6 +86,8 @@ class FilterParser
     {
         $filter = $this->createFilter($name);
 
+        $filter->setContent(!empty($config['content']));
+
         if (empty($config['route']) || !isset($config['method']) || !isset($config['status'])) {
             throw new ParseException(sprintf('Undefined "route", "method" or "status" parameter from filter "%s"', $name));
         }
@@ -163,7 +165,7 @@ class FilterParser
      *
      * @return FilterParser
      */
-    public function setRoute(RouterInterface $router)
+    public function setRouter(RouterInterface $router)
     {
         $this->router = $router;
 

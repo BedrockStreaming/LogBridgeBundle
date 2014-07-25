@@ -31,7 +31,7 @@ class FilterCollection implements \Iterator
     {
         $this->iterator = 0;
         $this->keys     = array();
-        $this->values    = array();
+        $this->values   = array();
 
         foreach ($items as $item) {
             $this->add($item);

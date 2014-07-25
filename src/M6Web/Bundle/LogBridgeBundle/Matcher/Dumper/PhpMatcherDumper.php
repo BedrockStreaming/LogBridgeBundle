@@ -67,35 +67,35 @@ class {$options['class']} implements {$options['interface']}
     public function match(\$route, \$method, \$status)
     {
         if (!empty(\$this->filters)) {
-            if (in_array(\$this->generateKey(\$route, \$method, \$status), \$this->filters)) {
+            if (\$this->hasFilter(\$this->generateKey(\$route, \$method, \$status))) {
                 return true;
             }
 
-            if (in_array(\$this->generateKey('all', 'all', 'all'), \$this->filters)) {
+            if (\$this->hasFilter(\$this->generateKey('all', 'all', 'all'))) {
                 return true;
             }
 
-            if (in_array(\$this->generateKey(\$route, 'all', 'all'), \$this->filters)) {
+            if (\$this->hasFilter(\$this->generateKey(\$route, 'all', 'all'))) {
                 return true;
             }
 
-            if (in_array(\$this->generateKey(\$route, \$method, 'all'), \$this->filters)) {
+            if (\$this->hasFilter(\$this->generateKey(\$route, \$method, 'all'))) {
                 return true;
             }
 
-            if (in_array(\$this->generateKey(\$route, 'all', \$status), \$this->filters)) {
+            if (\$this->hasFilter(\$this->generateKey(\$route, 'all', \$status))) {
                 return true;
             }
 
-            if (in_array(\$this->generateKey('all', \$method, \$status), \$this->filters)) {
+            if (\$this->hasFilter(\$this->generateKey('all', \$method, \$status))) {
                 return true;
             }
 
-            if (in_array(\$this->generateKey('all', 'all', \$status), \$this->filters)) {
+            if (\$this->hasFilter(\$this->generateKey('all', 'all', \$status))) {
                 return true;
             }
 
-            if (in_array(\$this->generateKey('all', \$method, 'all'), \$this->filters)) {
+            if (\$this->hasFilter(\$this->generateKey('all', \$method, 'all'))) {
                 return true;
             }
         }
@@ -104,7 +104,7 @@ class {$options['class']} implements {$options['interface']}
     }
 
     /**
-     * generateKey
+     * generate filter key
      *
      * @param string  \$route  Route name
      * @param string  \$method Method name
@@ -118,16 +118,28 @@ class {$options['class']} implements {$options['interface']}
     }
 
     /**
+     * Get filter options
+     *
+     * @param string \$key Filter key
+     *
+     * @return mixed (null|array)
+     */
+    public function getOptions(\$key)
+    {
+        return \$this->hasFilter(\$key) ? \$this->filters[\$key] : null;
+    }
+
+    /**
      * addFilter
      *
      * @param string \$filter Filter
      *
      * @return MatcherInterface
      */
-    public function addFilter(\$filter)
+    public function addFilter(\$filter, array \$options = [])
     {
         if (!\$this->hasFilter(\$filter)) {
-            \$this->filters[] = \$filter;
+            \$this->filters[\$filter] = \$options;
         }
 
         return \$this;
@@ -146,8 +158,8 @@ class {$options['class']} implements {$options['interface']}
         if (\$overwrite) {
             \$this->filters = \$filters;
         } else {
-            foreach (\$filters as \$filter) {
-                \$this->addFilter(\$filter);
+            foreach (\$filters as \$filter => \$options) {
+                \$this->addFilter(\$filter, \$options);
             }
         }
 
@@ -173,7 +185,7 @@ class {$options['class']} implements {$options['interface']}
      */
     public function hasFilter(\$filter)
     {
-        return in_array(\$filter, \$this->filters);
+        return array_key_exists(\$filter, \$this->filters);
     }
 
 }
@@ -192,21 +204,34 @@ EOF;
     {
 
         $filters = $this->compile($configuration);
-        $code    = '';
+        $code    = "        [\n";
 
-        foreach ($filters as $filter) {
-            $code .= sprintf("        '%s',\n", $filter);
+        foreach ($filters as $key => $config) {
+            $code .= sprintf("        '%s' => [\n", $key);
+
+            foreach ($config as $name => $value) {
+                if (is_bool($value)) {
+                    $value = $value == true ? 'true' : 'false';
+                } else {
+                    $value = "'". $value ."'";
+                }
+
+                $code .= sprintf("            '%s' => %s,\n", $name, $value);
+            }
+
+            $code = trim($code, ",");
+            $code .= "        ],\n";
         }
 
         $code = trim($code, ',');
+        $code .= "]";
 
         return <<<EOF
 /**
      * @var array
      * List of compiled filters
      */
-    private \$filters = [
-{$code}    ];
+    private \$filters = {$code};
 EOF;
 
     }
@@ -230,7 +255,7 @@ EOF;
             );
         }
 
-        return array_unique($compiledFilters, SORT_STRING);
+        return $compiledFilters;
     }
 
     /**
@@ -270,17 +295,23 @@ EOF;
      */
     private function compileFilter(Filter $filter)
     {
-        $compiled = [];
-        $prefix   = ($filter->getRoute() == 'all') ? 'all': $filter->getRoute();
+        $compiledKeys = [];
+        $compiled     = [];
+        $options      = $this->compileFilterOptions($filter);
+        $prefix       = ($filter->getRoute() == 'all') ? 'all': $filter->getRoute();
 
         if ($filter->getMethod() == 'all') {
             $prefix   = sprintf('%s.all', $prefix, $filter->getMethod());
-            $compiled = $this->compileFilterStatus($prefix, $filter);
+            $compiledKeys = $this->compileFilterStatus($prefix, $filter);
         } else {
             foreach ($filter->getMethod() as $method) {
                 $methodPrefix = sprintf('%s.%s', $prefix, $method);
-                $compiled     = array_merge($compiled, $this->compileFilterStatus($methodPrefix, $filter));
+                $compiledKeys     = array_merge($compiledKeys, $this->compileFilterStatus($methodPrefix, $filter));
             }
+        }
+
+        foreach ($compiledKeys as $key) {
+            $compiled[$key] = $options;
         }
 
         return $compiled;
@@ -309,4 +340,17 @@ EOF;
         return $compiled;
     }
 
+    /**
+     * compile options from filter
+     *
+     * @param Filter $filter Filter
+     *
+     * @return array
+     */
+    private function compileFilterOptions(Filter $filter)
+    {
+        return [
+            'content' => $filter->getContent()
+        ];
+    }
 }
