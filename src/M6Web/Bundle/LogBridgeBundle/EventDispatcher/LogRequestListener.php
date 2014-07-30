@@ -31,7 +31,9 @@ class LogRequestListener
     /**
      * Construct
      *
-     * @param FormatterInterface $logger Logger
+     * @param \M6Web\Bundle\LogBridgeBundle\Formatter\FormatterInterface $contentFormatter
+     *
+     * @internal param \Psr\Log\LoggerInterface $logger Logger
      */
     public function __construct(FormatterInterface $contentFormatter)
     {

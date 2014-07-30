@@ -34,8 +34,9 @@ class DefaultFormatter implements FormatterInterface
     /**
      * __construct
      *
+     * @param string $environment   env
      * @param array  $ignoreHeaders Array list from ignore header info
-     * @param string $prefixKey Log context prefix key
+     * @param string $prefixKey     Log context prefix key
      */
     public function __construct($environment, array $ignoreHeaders = array(), $prefixKey = '')
     {
@@ -48,7 +49,7 @@ class DefaultFormatter implements FormatterInterface
     /**
      * getLogContent
      *
-     * @param Request $request Request service
+     * @param Request  $request  Request service
      * @param Response $response Response service
      *
      * @return string
@@ -83,7 +84,7 @@ class DefaultFormatter implements FormatterInterface
     /**
      * getLogContext
      *
-     * @param Request $request Request service
+     * @param Request  $request  Request service
      * @param Response $response Response service
      *
      * @return array
@@ -155,7 +156,7 @@ class DefaultFormatter implements FormatterInterface
      *
      * @param array $ignoreHeaders Array list of ignore header info
      *
-     * @param AbstractProvider
+     * @return $this
      */
     public function setIgnoreHeaders(array $ignoreHeaders)
     {
@@ -179,7 +180,7 @@ class DefaultFormatter implements FormatterInterface
      *
      * @param string $prefixKey Prefix key
      *
-     * @return LogContentProvider
+     * @return $this
      */
     public function setPrefixKey($prefixKey)
     {

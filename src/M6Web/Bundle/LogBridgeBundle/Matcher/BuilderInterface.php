@@ -10,7 +10,8 @@ interface BuilderInterface
     /**
      * __construct
      *
-     * @param array $resources Resources
+     * @param array  $resources   Resources
+     * @param string $environment env
      */
     public function __construct(array $resources, $environment);
 
