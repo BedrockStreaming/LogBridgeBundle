@@ -2,11 +2,10 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Matcher;
 
-use atoum;
+use M6Web\Bundle\LogBridgeBundle\Tests\Units\BaseTest;
 use M6Web\Bundle\LogBridgeBundle\Config\Parser;
-use M6Web\Bundle\LogBridgeBundle\Tests\MockRouter;
 
-class BaseMatcher extends atoum
+class BaseMatcher extends BaseTest
 {
     protected function cacheClear()
     {
@@ -33,7 +32,7 @@ class BaseMatcher extends atoum
 
     protected function getParser()
     {
-        return new Parser(new MockRouter());
+        return new Parser($this->getMockedRouter());
     }
 
     protected function getMatcherClassName()

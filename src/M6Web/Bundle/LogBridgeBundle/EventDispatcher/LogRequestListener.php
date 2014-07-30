@@ -6,7 +6,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use M6Web\Bundle\LogBridgeBundle\Matcher\MatcherInterface;
-use M6Web\Bundle\LogBridgeBundle\Formatter\LogInterface;
+use M6Web\Bundle\LogBridgeBundle\Formatter\FormatterInterface;
 
 /**
  * LogRequestListener
@@ -31,9 +31,9 @@ class LogRequestListener
     /**
      * Construct
      *
-     * @param LoggerInterface $logger Logger
+     * @param FormatterInterface $logger Logger
      */
-    public function __construct(LogInterface $contentFormatter)
+    public function __construct(FormatterInterface $contentFormatter)
     {
         $this->contentFormatter = $contentFormatter;
         $this->logger          = null;

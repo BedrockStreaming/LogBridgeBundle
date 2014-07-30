@@ -7,9 +7,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
- * LogDefault
+ * DefaultFormatter
  */
-class LogDefault implements LogInterface
+class DefaultFormatter implements FormatterInterface
 {
     /**
      * @var string

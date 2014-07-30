@@ -5,43 +5,59 @@ namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Formatter;
 require_once __DIR__ . '/../../../../../../../vendor/autoload.php';
 
 use atoum;
-use M6Web\Bundle\LogBridgeBundle\Tests\MockSecurityToken;
-use M6Web\Bundle\LogBridgeBundle\Tests\MockSecurityContext;
 use Symfony\Component\Security\Core\User\User;
 use M6Web\Bundle\LogBridgeBundle\Formatter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * LogContentFormatter
+ * DefaultFormatter
  */
-class LogDefault extends atoum
+class DefaultFormatter extends atoum
 {
     const ENVIRONMENT = 'test';
 
+    private function getUser()
+    {
+        return new User('test', 'password');
+    }
+
+    private function getMockedToken(User $user = null)
+    {
+        $user  = $user ?: $this->getUser();
+        $token = new \mock\Symfony\Component\Security\Core\Authentication\TokenInterface();
+
+        $token->getMockController()->getUsername    = $user->getUsername();
+        $token->getMockController()->getUser        = $user;
+        $token->getMockController()->__toString     = $user->getUsername();
+        $token->getMockController()->getCredentials = 'test';
+
+        return $token;
+    }
+
+    private function getMockedSecurityContext()
+    {
+        $token   = $this->getMockedToken();
+        $context = new \mock\Symfony\Component\Security\Core\SecurityContextInterface();
+
+        $context->getMockController()->getToken = $token;
+        $context->getMockController()->isGranted = function($attributes, $object = null) { return true; };
+
+        return $context;
+    }
 
     private function createProvider($environment = self::ENVIRONMENT, array $ignores = array('php-auth-pw'), $prefix = '')
     {
-        $provider = new Formatter\LogDefault($environment, $ignores, $prefix);
+        $provider = new Formatter\DefaultFormatter($environment, $ignores, $prefix);
 
         return $provider;
-    }
-
-    private function createContext()
-    {
-        $token = new MockSecurityToken();
-        $token->setUser(new User('test', 'password'));
-        $context = new MockSecurityContext();
-        $context->setToken($token);
-
-        return $context;
     }
 
     public function testProvider()
     {
         $request  = new Request();
         $response = new Response();
-        $context  = $this->createContext();
+        $context  = $this->getMockedSecurityContext();
         $route    = $request->get('_route');
         $method   = $request->getMethod();
         $status   = $response->getStatusCode();
@@ -50,7 +66,7 @@ class LogDefault extends atoum
             ->if($provider = $this->createProvider())
             ->then
             ->object($provider->setContext($context))
-                ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Formatter\LogDefault')
+                ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Formatter\DefaultFormatter')
             ->string($provider->getLogContent($request, $response))
                 ->contains('HTTP 1.0 200')
                 ->contains('Cache-Control')
