@@ -36,7 +36,7 @@ class MatcherProxy implements MatcherInterface
      * @param integer $status Http code status
      *
      * @return boolean
-     */   
+     */
     public function match($route, $method, $status)
     {
         return $this->matcher->match($route, $method, $status);
@@ -59,7 +59,8 @@ class MatcherProxy implements MatcherInterface
     /**
      * setFilters
      *
-     * @param array $filters Filter list
+     * @param array $filters   Filter list
+     * @param bool  $overwrite need overwrite filter
      *
      * @return MatcherProxy
      */

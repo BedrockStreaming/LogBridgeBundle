@@ -30,7 +30,16 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->arrayNode('resources')
                         ->prototype('scalar')
-                        ->isRequired()
+                            ->isRequired()
+                        ->end()
+                    ->end()
+                    ->scalarNode('content_formatter')
+                        ->defaultValue('m6web_log_bridge.log_content_formatter')
+                    ->end()
+                    ->arrayNode('ignore_headers')
+                        ->prototype('scalar')
+                            ->defaultValue(array())
+                        ->end()
                     ->end()
                 ->end();
 

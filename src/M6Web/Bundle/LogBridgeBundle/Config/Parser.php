@@ -51,8 +51,10 @@ class Parser
     /**
      * createEnvironmentCollection
      *
-     * @param array $environments Environments Map
+     * @param array            $environments Environments Map
+     * @param FilterCollection $filters      Filters
      *
+     * @throws ParseException
      * @return array
      */
     protected function createEnvironmentCollection(array $environments, FilterCollection $filters)
@@ -78,8 +80,9 @@ class Parser
      * parse
      * Load Log Request filter configuration
      *
-     * @param array $config Config
+     * @param array $params
      *
+     * @internal param array $config Config
      * @return Config
      */
     public function parse(array $params)
