@@ -43,6 +43,20 @@ class MatcherProxy implements MatcherInterface
     }
 
     /**
+     * get options
+     *
+     * @param string  $route  Route name
+     * @param string  $method Method name
+     * @param integer $status Http code status
+     *
+     * @return array
+     */
+    public function getOptions($route, $method, $status)
+    {
+        return $this->matcher->getOptions($this->matcher->generateKey($route, $method, $status));
+    }
+
+    /**
      * addFilter
      *
      * @param string $filter Filter

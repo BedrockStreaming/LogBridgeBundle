@@ -38,6 +38,7 @@ class PhpMatcherDumper
      */
     public function dump(Configuration $configuration, array $options = array())
     {
+
         $options = array_replace(array(
             'class'     => 'LogBridgeMatcher',
             'interface' => 'M6Web\\Bundle\\LogBridgeBundle\\Matcher\\MatcherInterface'
@@ -125,7 +126,7 @@ class {$options['class']} implements {$options['interface']}
      *
      * @return mixed (null|array)
      */
-    public function getOptions(\$key)
+    public function getOptions(\$roue, \$method, \$status)
     {
         return \$this->hasFilter(\$key) ? \$this->filters[\$key] : null;
     }
@@ -249,7 +250,7 @@ EOF;
         $environments    = $configuration->getEnvironments();
         $compiledFilters = [];
 
-        if (isset($environments[$this->environment])) {
+        if (array_key_exists($this->environment, $environments)) {
             $compiledFilters = $this->compileEnvironment(
                 $environments[$this->environment],
                 $configuration->getFilters()
@@ -271,9 +272,9 @@ EOF;
     {
         $compiled = [];
 
-        if ($aliasList == 'all') {
+        if (is_null($aliasList)) {
             foreach ($filters as $filter) {
-                $compiled = $this->compileFilter($filter);
+                $compiled = array_merge($compiled, $this->compileFilter($filter));
             }
         } else {
             foreach ($aliasList as $alias) {
@@ -298,10 +299,10 @@ EOF;
     {
         $compiledKeys = [];
         $compiled     = [];
-        $options      = $this->compileFilterOptions($filter);
-        $prefix       = ($filter->getRoute() == 'all') ? 'all': $filter->getRoute();
+        $options      = $filter->getOptions();
+        $prefix       = is_null($filter->getRoute()) ? 'all': $filter->getRoute();
 
-        if ($filter->getMethod() == 'all') {
+        if (is_null($filter->getMethod())) {
             $prefix   = sprintf('%s.all', $prefix, $filter->getMethod());
             $compiledKeys = $this->compileFilterStatus($prefix, $filter);
         } else {
@@ -312,7 +313,7 @@ EOF;
         }
 
         foreach ($compiledKeys as $key) {
-            $compiled[$key] = $options;
+            $compiled[$key] = $filter->getOptions();
         }
 
         return $compiled;
@@ -330,7 +331,7 @@ EOF;
     {
         $compiled = [];
 
-        if ($filter->getStatus() == 'all') {
+        if (is_null($filter->getStatus())) {
             $compiled[] = sprintf('%s.all', $prefix);
         } else {
             foreach ($filter->getStatus() as $status) {
@@ -341,17 +342,4 @@ EOF;
         return $compiled;
     }
 
-    /**
-     * compile options from filter
-     *
-     * @param Filter $filter Filter
-     *
-     * @return array
-     */
-    private function compileFilterOptions(Filter $filter)
-    {
-        return [
-            'content' => $filter->getContent()
-        ];
-    }
 }

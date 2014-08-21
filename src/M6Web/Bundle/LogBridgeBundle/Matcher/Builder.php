@@ -9,6 +9,7 @@ use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use M6Web\Bundle\LogBridgeBundle\Config\Parser as ConfigParser;
 use M6Web\Bundle\LogBridgeBundle\Config\Configuration;
+use M6Web\Bundle\LogBridgeBundle\Config\Definition\FilterConfiguration;
 use M6Web\Bundle\LogBridgeBundle\EventDispatcher\BuilderEvent;
 
 /**
@@ -179,8 +180,7 @@ class Builder implements BuilderInterface
     public function getMatcher()
     {
         if (!$this->matcher) {
-            $cacheCode = $this->buildMatcherCache();
-
+            $cacheCode    = $this->buildMatcherCache();
             $matcherCache = new ConfigCache($this->getAbsoluteCachePath(), $this->isDebug());
 
             if (!$matcherCache->isFresh()) {
