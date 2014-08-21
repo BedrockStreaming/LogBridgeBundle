@@ -94,8 +94,10 @@ class Builder implements BuilderInterface
      * dispatch
      * Dispatch event if EventDispatcher service exists
      *
-     * @param string $name  Event name
-     * @param Event  $event Event class
+     * @param string $eventName Event name
+     * @param Event  $event     Event class
+     *
+     * @internal param string $name Event name
      */
     protected function dispatch($eventName, $event)
     {
@@ -106,6 +108,8 @@ class Builder implements BuilderInterface
 
     /**
      * loadConfigResources
+     *
+     * @return array
      */
     protected function loadConfigResources()
     {
@@ -275,7 +279,9 @@ class Builder implements BuilderInterface
     /**
      * addResource
      *
-     * @param string $resource Resource
+     * @param array $cacheResource
+     *
+     * @internal param string $resource Resource
      *
      * @return Builder
      */

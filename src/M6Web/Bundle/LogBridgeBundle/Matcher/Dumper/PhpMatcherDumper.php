@@ -32,6 +32,7 @@ class PhpMatcherDumper
      * dump
      *
      * @param Configuration $configuration
+     * @param array         $options
      *
      * @return string
      */
@@ -288,9 +289,9 @@ EOF;
     /**
      * compileFilter
      *
-     * @param string $prefix Prefix key
      * @param Filter $filter Filter
      *
+     * @internal param string $prefix Prefix key
      * @return array
      */
     private function compileFilter(Filter $filter)

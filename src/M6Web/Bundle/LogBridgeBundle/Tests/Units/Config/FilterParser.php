@@ -4,24 +4,17 @@ namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Config;
 
 require_once __DIR__ . '/../../../../../../../vendor/autoload.php';
 
-use atoum;  
+use M6Web\Bundle\LogBridgeBundle\Tests\Units\BaseTest;  
 use M6Web\Bundle\LogBridgeBundle\Config;
-use M6Web\Bundle\LogBridgeBundle\Tests\MockRouter;
 
 /**
  * FilterParser
  */
-class FilterParser extends atoum
+class FilterParser extends BaseTest
 {
-
-    private function getRouter()
-    {
-        return new MockRouter();
-    }
-
     private function getParser()
     {
-        return new Config\FilterParser($this->getRouter());
+        return new Config\FilterParser($this->getMockedRouter());
     }
 
     private function getConfig()

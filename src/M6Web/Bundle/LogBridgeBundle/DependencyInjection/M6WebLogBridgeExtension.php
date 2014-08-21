@@ -30,6 +30,18 @@ class M6WebLogBridgeExtension extends Extension
         $container->setParameter('m6web_log_bridge.logger_service', $config['logger']);
         $container->setParameter('m6web_log_bridge.resources', $config['resources']);
         $container->setParameter('m6web_log_bridge.prefix_key', $config['prefix_key']);
+        $container->setParameter('m6web_log_bridge.content_formatter', $config['content_formatter']);
+
+        if (!empty($config['ignore_headers'])) {
+            $container
+                    ->setParameter(
+                        'm6web_log_bridge.ignore_headers',
+                        array_merge(
+                            $container->getParameter('m6web_log_bridge.ignore_headers'),
+                            $config['ignore_headers']
+                        )
+                    );
+        }
 
         $this->loadListener($container);
     }
@@ -38,21 +50,20 @@ class M6WebLogBridgeExtension extends Extension
      * loadListener
      *
      * @param ContainerBuilder $container Container
-     * @param array            $config    Config
      */
     protected function loadListener(ContainerBuilder $container)
     {
         $className          = $container->getParameter('m6web_log_bridge.log_request_listener.class');
         $serviceName        = $container->getParameter('m6web_log_bridge.log_request_listener.name');
         $matcherServiceName = $container->getParameter('m6web_log_bridge.matcher.name');
+        $contentFormatter   = $container->getParameter('m6web_log_bridge.content_formatter');
         $loggerName         = $container->getParameter('m6web_log_bridge.logger_service');
         $definition         = new Definition($className);
 
         $definition
-                    ->addArgument('%kernel.environment%')
+                    ->addArgument(new Reference($contentFormatter))
                     ->addMethodCall('setLogger', [new Reference($loggerName)])
                     ->addMethodCall('setMatcher', [new Reference($matcherServiceName)])
-                    ->addMethodCall('setContext', [new Reference('security.context')])
                     ->addTag('kernel.event_listener', [
                         'event'  => 'kernel.response',
                         'method' => 'onKernelTerminate'

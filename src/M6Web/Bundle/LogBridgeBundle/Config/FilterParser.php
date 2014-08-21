@@ -40,7 +40,7 @@ class FilterParser
     protected function createFilter($name)
     {
         if ($this->filterClass) {
-            return (new \ReflectionClass($this->filterClass))->newInstanceArgs(['name' => $name]); 
+            return (new \ReflectionClass($this->filterClass))->newInstanceArgs(['name' => $name]);
         }
 
         return new Filter($name);
@@ -78,7 +78,11 @@ class FilterParser
     /**
      * parse
      *
-     * @param array $filterConfig
+     * @param string $name   name
+     * @param array  $config configuration
+     *
+     * @throws ParseException
+     * @internal param array $filterConfig
      *
      * @return Filter
      */
