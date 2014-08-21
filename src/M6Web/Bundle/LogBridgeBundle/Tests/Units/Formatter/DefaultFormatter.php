@@ -56,7 +56,7 @@ class DefaultFormatter extends atoum
     public function testProvider()
     {
         $request  = new Request();
-        $response = new Response();
+        $response = new Response('Body content response');
         $context  = $this->getMockedSecurityContext();
         $route    = $request->get('_route');
         $method   = $request->getMethod();
@@ -73,6 +73,9 @@ class DefaultFormatter extends atoum
                 ->contains('Etag')
                 ->contains("Request\n")
                 ->contains("Response\n")
+            ->string($provider->getLogContent($request, $response, ['response_body' => true]))
+                ->contains("Response body\n")
+                ->contains($response->getContent())
             ->array($logContext = $provider->getLogContext($request, $response, []))
                 ->hasSize(6)
                 ->hasKeys(['environment', 'route', 'method', 'status', 'user', 'key'])

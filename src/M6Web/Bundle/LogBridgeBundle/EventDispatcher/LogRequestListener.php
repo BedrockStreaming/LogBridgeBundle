@@ -54,11 +54,12 @@ class LogRequestListener
         $route    = $request->get('_route');
         $method   = $request->getMethod();
         $status   = $response->getStatusCode();
+        $options  = $this->matcher->getOptions($route, $method, $status);
 
         if ($this->matcher->match($route, $method, $status)) {
             $this->logger->info(
-                $this->contentFormatter->getLogContent($request, $response),
-                $this->contentFormatter->getLogContext($request, $response)
+                $this->contentFormatter->getLogContent($request, $response, $options),
+                $this->contentFormatter->getLogContext($request, $response, $options)
             );
         }
     }
