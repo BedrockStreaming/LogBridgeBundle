@@ -63,7 +63,7 @@ class Parser
 
         foreach ($environments as $name => $filterList) {
             if (!is_array($filterList)) {
-                if ($filterList != '*' && $filterList != 'all') {
+                if (!is_null($filterList)) {
                     throw new ParseException(sprintf('Invalid parameter value "route" : "%s"', $filterList));
                 }
 

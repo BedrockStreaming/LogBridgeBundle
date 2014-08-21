@@ -31,23 +31,23 @@ class Parser extends BaseTest
                     'filter_un',
                     'filter_trois'
                 ],
-                'prod' => 'all'
+                'prod' => null
             ],
             'filters' => [
                 'filter_un' => [
                     'route' =>  'route_name',
-                    'method' => 'all',
-                    'status' => 'all'
+                    'method' => null,
+                    'status' => null
                 ],
                 'filter_deux' => [
                     'route' =>  'route_name',
-                    'method' => 'all',
+                    'method' => null,
                     'status' => [404, 422, 500]
                 ],
                 'filter_trois' => [
                     'route' =>  'route_name',
                     'method' => ['PUT', 'POST'],
-                    'status' => 'all'
+                    'status' => null
                 ],
                 'filter_quatre' => [
                     'route' =>  'route_name',

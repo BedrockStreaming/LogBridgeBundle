@@ -1,5 +1,5 @@
 environments:
-    test: all
+    test: ~
     dev:
         - get_clip_all_status
         - all_clip_500
@@ -11,17 +11,19 @@ filters:
     get_clip_all_status:
         route: get_clip
         method: ['GET', 'POST']
-        status: all
+        status: ~
+        options:
+            response_body: true
 
     post_clip_form_all_status:
         route: post_clips_form
         method: ['POST']
-        status: all
+        status: ~
 
     put_clip_form_all_status:
         route: put_clips_form
         method: ['PUT']
-        status: all
+        status: ~
 
     get_clip_500:
         route: get_clip
@@ -30,7 +32,7 @@ filters:
 
     all_clip_500:
         route: get_clip
-        method: all
+        method: ~
         status: [500]
 
     get_clip_404:
