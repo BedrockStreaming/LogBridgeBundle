@@ -28,6 +28,7 @@ class FilterParser
     {
         $this->router      = $router;
         $this->filterClass = '';
+
     }
 
     /**
@@ -44,23 +45,6 @@ class FilterParser
         }
 
         return new Filter($name);
-    }
-
-    /**
-     * isAll
-     * Test parameter value is "All"
-     *
-     * @param mixed $parameterValue Value
-     *
-     * @return boolean
-     */
-    protected function isAll($parameterValue)
-    {
-        if (is_string($parameterValue) && ($parameterValue == 'all' || $parameterValue == '*')) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -90,15 +74,15 @@ class FilterParser
     {
         $filter = $this->createFilter($name);
 
-        $filter->setContent(!empty($config['content']));
-
-        if (empty($config['route']) || !isset($config['method']) || !isset($config['status'])) {
+        if (!array_key_exists('route', $config) || !array_key_exists('method', $config) || !array_key_exists('status', $config)) {
             throw new ParseException(sprintf('Undefined "route", "method" or "status" parameter from filter "%s"', $name));
         }
 
         $this->parseRoute($filter, $config['route']);
         $this->parseMethod($filter, $config['method']);
         $this->parseStatus($filter, $config['status']);
+
+        $filter->setOptions(isset($config['options']) ? $config['options'] : []);
 
         return $filter;
     }
@@ -111,15 +95,11 @@ class FilterParser
      */
     protected function parseRoute(Filter $filter, $route)
     {
-        if ($this->isAll($route)) {
-            $filter->setRoute('all');
-        } else {
-            if (!$this->isRoute($route)) {
-                throw new ParseException(sprintf('Undefined route "%s" from router service', $route));
-            }
-
-            $filter->setRoute($route);
+        if (!is_null($route) && !$this->isRoute($route)) {
+            throw new ParseException(sprintf('Undefined route "%s" from router service', $route));
         }
+
+        $filter->setRoute($route);
     }
 
     /**
@@ -130,16 +110,11 @@ class FilterParser
      */
     protected function parseMethod(Filter $filter, $method)
     {
-        // OPTIONS GET POST PUT DELETE HEAD PATCH TRACE CONNECT
-        if ($this->isAll($method)) {
-            $filter->setMethod('all');
-        } else {
-            if (!is_array($method)) {
-                throw new ParseException(sprintf('Unreconized value "%s" from method parameter', $method));
-            }
-
-            $filter->setMethod($method);
+        if (!is_array($method) && !is_null($method)) {
+            throw new ParseException(sprintf('Unreconized value "%s" from method parameter', $method));
         }
+
+        $filter->setMethod($method);
     }
 
     /**
@@ -150,16 +125,11 @@ class FilterParser
      */
     protected function parseStatus(Filter $filter, $status)
     {
-        // OPTIONS GET POST PUT DELETE HEAD PATCH TRACE CONNECT
-        if ($this->isAll($status)) {
-            $filter->setStatus('all');
-        } else {
-            if (!is_array($status)) {
-                throw new ParseException(sprintf('Unreconized value "%s" from status parameter', $status));
-            }
-
-            $filter->setStatus($status);
+        if (!is_array($status) && !is_null($status)) {
+            throw new ParseException(sprintf('Unreconized value "%s" from status parameter', $status));
         }
+
+        $filter->setStatus($status);
     }
 
     /**

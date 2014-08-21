@@ -28,9 +28,9 @@ class Filter
     private $status;
 
     /**
-     * @var boolean
+     * @var array
      */
-    private $content;
+    private $options;
 
     /**
      * __construct
@@ -39,7 +39,11 @@ class Filter
      */
     public function __construct($name)
     {
-        $this->name = $name;
+        $this->name    = $name;
+        $this->route   = null;
+        $this->method  = null;
+        $this->status  = null;
+        $this->options = [];
     }
 
     /**
@@ -125,27 +129,27 @@ class Filter
     }
 
     /**
-     * setContent
+     * set filter options
      *
-     * @param boolean $content
+     * @param array $options
      *
      * @return Filter
      */
-    public function setContent($content)
+    public function setOptions(array $options)
     {
-        $this->content = $content;
+        $this->options = $options;
 
         return $this;
     }
 
     /**
-     * getContent
+     * get filter options
      *
-     * @return boolean
+     * @return array
      */
-    public function getContent()
+    public function getOptions()
     {
-        return $this->content;
+        return $this->options;
     }
 
 }
