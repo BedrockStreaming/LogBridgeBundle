@@ -29,8 +29,8 @@ class MatcherProxy extends BaseMatcher
         $key422 = $matcher->generateKey('dynamically_deux', 'PUT', 422);
 
         return [
-            $key500 => ['content' => true],
-            $key422 => ['content' => false ]
+            $key500 => ['response_body' => true],
+            $key422 => ['response_body' => false ]
         ];
     }
 
