@@ -16,7 +16,7 @@ Symfony Bundle from log Request/Response with Monolog.
 **With composer**
 ```
     "require": {
-        "m6web/log-bridge-bundle": "~1.0"
+        "m6web/log-bridge-bundle": "~2.0"
     }
 ```
 
@@ -127,8 +127,8 @@ or simply override this parameter : ```m6web_log_bridge.log_content_formatter.cl
     content-type        : 
     content-length      : 
     host                : domain.tld
-    x-real-ip           : 2a01:a580:2:2003:c8c9:13f5:7984:47bd
-    x-forwarded-for     : 2a01:a580:2:2003:c8c9:13f5:7984:47bd
+    x-real-ip           : *********
+    x-forwarded-for     : *********
     x-forwarded-proto   : http
     x-forwarded-port    : 80
     remote-user         : u_glinel
