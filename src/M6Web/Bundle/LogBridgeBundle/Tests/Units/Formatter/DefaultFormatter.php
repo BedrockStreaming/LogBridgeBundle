@@ -56,7 +56,7 @@ class DefaultFormatter extends atoum
     public function testProvider()
     {
         $request  = new Request();
-        $response = new Response();
+        $response = new Response('Body content response');
         $context  = $this->getMockedSecurityContext();
         $route    = $request->get('_route');
         $method   = $request->getMethod();
@@ -67,13 +67,16 @@ class DefaultFormatter extends atoum
             ->then
             ->object($provider->setContext($context))
                 ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Formatter\DefaultFormatter')
-            ->string($provider->getLogContent($request, $response))
+            ->string($provider->getLogContent($request, $response, []))
                 ->contains('HTTP 1.0 200')
                 ->contains('Cache-Control')
                 ->contains('Etag')
                 ->contains("Request\n")
                 ->contains("Response\n")
-            ->array($logContext = $provider->getLogContext($request, $response))
+            ->string($provider->getLogContent($request, $response, ['response_body' => true]))
+                ->contains("Response body\n")
+                ->contains($response->getContent())
+            ->array($logContext = $provider->getLogContext($request, $response, []))
                 ->hasSize(6)
                 ->hasKeys(['environment', 'route', 'method', 'status', 'user', 'key'])
             ->string($logContext['environment'])

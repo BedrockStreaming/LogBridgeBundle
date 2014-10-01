@@ -28,13 +28,22 @@ class Filter
     private $status;
 
     /**
+     * @var array
+     */
+    private $options;
+
+    /**
      * __construct
      *
      * @param string $name name Filter name
      */
     public function __construct($name)
     {
-        $this->name = $name;
+        $this->name    = $name;
+        $this->route   = null;
+        $this->method  = null;
+        $this->status  = null;
+        $this->options = [];
     }
 
     /**
@@ -117,6 +126,30 @@ class Filter
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * set filter options
+     *
+     * @param array $options
+     *
+     * @return Filter
+     */
+    public function setOptions(array $options)
+    {
+        $this->options = $options;
+
+        return $this;
+    }
+
+    /**
+     * get filter options
+     *
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
     }
 
 }

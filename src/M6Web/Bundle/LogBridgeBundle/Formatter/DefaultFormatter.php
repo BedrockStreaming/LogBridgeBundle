@@ -54,7 +54,7 @@ class DefaultFormatter implements FormatterInterface
      *
      * @return string
      */
-    public function getLogContent(Request $request, Response $response)
+    public function getLogContent(Request $request, Response $response, array $options)
     {
         $requestHeaders = $this->getFilteredHeaders($request);
         $requestContent = "Request\n------------------------\n";
@@ -74,6 +74,11 @@ class DefaultFormatter implements FormatterInterface
         $responseContent .= sprintf("%s%s\n", str_pad('Vary:', 15), implode(', ', $response->getVary()));
         $responseContent .= $response->headers->__toString();
 
+        if (isset($options['response_body'])) {
+            $responseContent .= "Response body\n------------------------\n";
+            $responseContent .= $response->getContent() ."\n";
+        }
+
         return sprintf(
             "%s------------------------\n%s",
             $requestContent,
@@ -89,7 +94,7 @@ class DefaultFormatter implements FormatterInterface
      *
      * @return array
      */
-    public function getLogContext(Request $request, Response $response)
+    public function getLogContext(Request $request, Response $response, array $options)
     {
         $route   = $request->get('_route');
         $method  = $request->getMethod();

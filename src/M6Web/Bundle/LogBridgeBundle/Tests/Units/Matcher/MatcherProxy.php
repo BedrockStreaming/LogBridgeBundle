@@ -25,9 +25,12 @@ class MatcherProxy extends BaseMatcher
 
     private function createFilters($matcher)
     {
+        $key500 = $matcher->generateKey('dynamically_un', 'POST', 500);
+        $key422 = $matcher->generateKey('dynamically_deux', 'PUT', 422);
+
         return [
-            $matcher->generateKey('dynamically_un', 'POST', 500),
-            $matcher->generateKey('dynamically_deux', 'PUT', 422)
+            $key500 => ['response_body' => true],
+            $key422 => ['response_body' => false ]
         ];
     }
 
@@ -75,9 +78,9 @@ class MatcherProxy extends BaseMatcher
                 ->boolean($proxy->hasFilter($matcher->generateKey('get_program_dynamically', 'GET', 500)))
                     ->isFalse()
                 ->array($matcher->getFilters())
-                    ->contains($matcher->generateKey('get_program', 'GET', 200))
-                    ->contains($matcher->generateKey('get_program_dynamically', 'GET', 200))
-                    ->contains($matcher->generateKey('dynamically_un', 'POST', 500))
+                    ->hasKey($matcher->generateKey('get_program', 'GET', 200))
+                    ->hasKey($matcher->generateKey('get_program_dynamically', 'GET', 200))
+                    ->hasKey($matcher->generateKey('dynamically_un', 'POST', 500))
         ;
     }
 

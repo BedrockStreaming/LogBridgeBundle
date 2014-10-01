@@ -21,11 +21,12 @@ interface MatcherInterface
     /**
      * addFilter
      *
-     * @param string $filter Filter
+     * @param string $filter  Filter name
+     * @param array  $options Filter options
      *
      * @return MatcherInterface
      */
-    public function addFilter($filter);
+    public function addFilter($filter, array $options = []);
 
     /**
      * setFilters

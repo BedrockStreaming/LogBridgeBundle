@@ -16,7 +16,7 @@ Symfony Bundle from log Request/Response with Monolog.
 **With composer**
 ```
     "require": {
-        "m6web/log-bridge-bundle": "~1.0"
+        "m6web/log-bridge-bundle": "~2.0"
     }
 ```
 
@@ -55,7 +55,7 @@ Symfony Bundle from log Request/Response with Monolog.
         preprod:
             - get_article_error
             - post_article_all
-        prod: all #form all filter associated
+        prod: ~ #form all filter associated
         recette:
             - all_error
 
@@ -64,10 +64,12 @@ Symfony Bundle from log Request/Response with Monolog.
             route: get_article
             method: ['GET']
             status: [422, 500]
+            options:
+                response_body: true # from add Response body content (with DefaultFormatter)
         post_article_all:
             route: post_article
-            method: all
-            status: all
+            method: ~ # from all methods
+            status: ~ # from all status
         get_article_not_found:
             route: get_article
             method: ['GET']
@@ -77,15 +79,19 @@ Symfony Bundle from log Request/Response with Monolog.
             method: ['POST', 'PUT']
             status: [400, 422, 500]
         all_error: # All route, all method in error
-            route: all
-            method: all
+            route: ~
+            method: ~
             status: [400, 404, 422, 500]
 
 ```
 
+*You can declare all the options you want. 
+By default, only "response_body" is supported by the DefaultFormatter*
+
+
 ## Define your Provider from format log content
 
-It is advisable to extend default provider M6Web\Bundle\LogBridgeBundle\Formatter\Defaut
+It is advisable to extend default provider M6Web\Bundle\LogBridgeBundle\Formatter\DefaultFormatter
 
 
 **default definition from service provider :** 
@@ -121,8 +127,8 @@ or simply override this parameter : ```m6web_log_bridge.log_content_formatter.cl
     content-type        : 
     content-length      : 
     host                : domain.tld
-    x-real-ip           : 2a01:a580:2:2003:c8c9:13f5:7984:47bd
-    x-forwarded-for     : 2a01:a580:2:2003:c8c9:13f5:7984:47bd
+    x-real-ip           : *********
+    x-forwarded-for     : *********
     x-forwarded-proto   : http
     x-forwarded-port    : 80
     remote-user         : u_glinel
@@ -146,6 +152,11 @@ or simply override this parameter : ```m6web_log_bridge.log_content_formatter.cl
     Cache-Control: no-cache
     Content-Type:  application/json
     Date:          dd mm yyyy hh:ii:ss GMT
+    ------------------------
+    Response body
+    ------------------------
+    Here response content
+
 
 
 ## Tests

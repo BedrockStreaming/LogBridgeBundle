@@ -18,7 +18,7 @@ interface FormatterInterface
      *
      * @return string
      */
-    public function getLogContent(Request $request, Response $response);
+    public function getLogContent(Request $request, Response $response, array $options);
 
     /**
      * @param Request  $request  Request service
@@ -26,6 +26,6 @@ interface FormatterInterface
      *
      * @return string
      */
-    public function getLogContext(Request $request, Response $response);
+    public function getLogContext(Request $request, Response $response, array $options);
 
 }
