@@ -47,6 +47,30 @@ class DefaultFormatter implements FormatterInterface
     }
 
     /**
+     * convert and format array to string
+     *
+     * @param array   $parameters
+     * @param string  $content
+     * @param integer $level
+     *
+     * @return string
+     */
+    protected function arrayToString(array $parameters, $level = 0, $content = '')
+    {
+        $prefix = str_pad('', $level * 2, '--', STR_PAD_RIGHT);
+
+        foreach ($parameters as $name => $value) {
+            if (is_array($value)) {
+                $content .= sprintf("%s [%s]\n%s", $prefix, $name, $this->arrayToString($value, $level + 1));
+            } else {
+                $content .= sprintf("%s %s : %s\n", $prefix, $name, $value);
+            }
+        }
+
+        return $content;
+    }
+
+    /**
      * getLogContent
      *
      * @param Request  $request  Request service
@@ -74,6 +98,13 @@ class DefaultFormatter implements FormatterInterface
         $responseContent .= sprintf("%s%s\n", str_pad('Vary:', 15), implode(', ', $response->getVary()));
         $responseContent .= $response->headers->__toString();
 
+        // Render post parameters
+        if (isset($options['post_parameters']) && in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'])) {
+            $responseContent .= "Post parameters\n";
+            $responseContent .= $this->arrayToString($request->request->all());
+        }
+
+        // Render response body content
         if (isset($options['response_body'])) {
             $responseContent .= "Response body\n------------------------\n";
             $responseContent .= $response->getContent() ."\n";
