@@ -126,7 +126,7 @@ class {$options['class']} implements {$options['interface']}
      *
      * @return mixed (null|array)
      */
-    public function getOptions(\$roue, \$method, \$status)
+    public function getOptions(\$key)
     {
         return \$this->hasFilter(\$key) ? \$this->filters[\$key] : null;
     }
@@ -206,7 +206,7 @@ EOF;
     {
 
         $filters = $this->compile($configuration);
-        $code    = "        [\n";
+        $code    = "[\n";
 
         foreach ($filters as $key => $config) {
             $code .= sprintf("        '%s' => [\n", $key);
@@ -225,8 +225,8 @@ EOF;
             $code .= "        ],\n";
         }
 
-        $code = trim($code, ',');
-        $code .= "]";
+        $code = trim($code, ",\n");
+        $code .= "\n    ]";
 
         return <<<EOF
 /**
