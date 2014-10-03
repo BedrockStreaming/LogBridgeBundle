@@ -46,6 +46,30 @@ class DefaultFormatter implements FormatterInterface
         $this->context       = null;
     }
 
+	/**
+	 * Format parameters as tree
+	 *
+	 * @param array $parameters
+	 *
+	 * @return string
+	 */
+	protected function formatParameters(array $parameters)
+	{
+		$tree = new \RecursiveTreeIterator(new \RecursiveArrayIterator($parameters));
+		$tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_LEFT, ' ');
+		$tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_MID_HAS_NEXT, '│ ');
+		$tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_END_HAS_NEXT, '├ ');
+		$tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_END_LAST, '└ ');
+
+		$content = '';
+
+		foreach ($tree as $key => $value) {
+			$content .= $tree->getPrefix() . $key . ' : ' . $tree->getEntry()."\n";
+		}
+
+		return $content;
+	}
+
     /**
      * getLogContent
      *
@@ -74,6 +98,16 @@ class DefaultFormatter implements FormatterInterface
         $responseContent .= sprintf("%s%s\n", str_pad('Vary:', 15), implode(', ', $response->getVary()));
         $responseContent .= $response->headers->__toString();
 
+        // Render post parameters
+        if (array_key_exists('post_parameters', $options)
+            && $options['post_parameters'] == true
+            && in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']))
+        {
+            $responseContent .= "Post parameters\n";
+            $responseContent .= $this->formatParameters($request->request->all());
+        }
+
+        // Render response body content
         if (isset($options['response_body'])) {
             $responseContent .= "Response body\n------------------------\n";
             $responseContent .= $response->getContent() ."\n";

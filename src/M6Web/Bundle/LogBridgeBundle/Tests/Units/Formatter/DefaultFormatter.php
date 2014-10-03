@@ -95,4 +95,44 @@ class DefaultFormatter extends atoum
 
     }
 
+    public function testPostProvider()
+    {
+        $post = [
+            'postVar1' => 'value un',
+            'postVar2' => 'value 2',
+            'programs' => [
+                'id'    => 42,
+                'title' => 'Non mais Allo quoi'
+            ]
+        ];
+
+
+        $request = new \mock\Symfony\Component\HttpFoundation\Request([], $post);
+        $request->getMockController()->getMethod = 'POST';
+
+        $response = new Response('Body content response');
+        $context  = $this->getMockedSecurityContext();
+        $route    = $request->get('_route');
+        $method   = $request->getMethod();
+        $status   = $response->getStatusCode();
+
+        $this
+            ->if($provider = $this->createProvider())
+            ->then
+            ->object($provider->setContext($context))
+                ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Formatter\DefaultFormatter')
+            ->string($provider->getLogContent($request, $response, ['post_parameters' => true]))
+                ->contains('HTTP 1.0 200')
+                ->contains('Cache-Control')
+                ->contains('Etag')
+                ->contains("Request\n")
+                ->contains("Response\n")
+                ->contains('Post parameters')
+                ->contains('Post parameters')
+                ->contains('postVar2 : value 2')
+                ->contains('└ title : Non mais Allo quoi')
+        ;
+    }
+
+
 }
