@@ -130,7 +130,7 @@ class DefaultFormatter extends atoum
                 ->contains('Post parameters')
                 ->contains('Post parameters')
                 ->contains('postVar2 : value 2')
-                ->contains('-- title : Non mais Allo quoi')
+                ->contains('└ title : Non mais Allo quoi')
         ;
     }
 

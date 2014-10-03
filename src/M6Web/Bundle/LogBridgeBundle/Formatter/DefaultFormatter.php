@@ -46,29 +46,29 @@ class DefaultFormatter implements FormatterInterface
         $this->context       = null;
     }
 
-    /**
-     * convert and format array to string
-     *
-     * @param array   $parameters
-     * @param string  $content
-     * @param integer $level
-     *
-     * @return string
-     */
-    protected function arrayToString(array $parameters, $level = 0, $content = '')
-    {
-        $prefix = str_pad('', $level * 2, '--', STR_PAD_RIGHT);
+	/**
+	 * Format parameters as tree
+	 *
+	 * @param array $parameters
+	 *
+	 * @return string
+	 */
+	protected function formatParameters(array $parameters)
+	{
+		$tree = new \RecursiveTreeIterator(new \RecursiveArrayIterator($parameters));
+		$tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_LEFT, ' ');
+		$tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_MID_HAS_NEXT, '│ ');
+		$tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_END_HAS_NEXT, '├ ');
+		$tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_END_LAST, '└ ');
 
-        foreach ($parameters as $name => $value) {
-            if (is_array($value)) {
-                $content .= sprintf("%s [%s]\n%s", $prefix, $name, $this->arrayToString($value, $level + 1));
-            } else {
-                $content .= sprintf("%s %s : %s\n", $prefix, $name, $value);
-            }
-        }
+		$content = '';
 
-        return $content;
-    }
+		foreach ($tree as $key => $value) {
+			$content .= $tree->getPrefix() . $key . ' : ' . $tree->getEntry()."\n";
+		}
+
+		return $content;
+	}
 
     /**
      * getLogContent
@@ -104,7 +104,7 @@ class DefaultFormatter implements FormatterInterface
             && in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']))
         {
             $responseContent .= "Post parameters\n";
-            $responseContent .= $this->arrayToString($request->request->all());
+            $responseContent .= $this->formatParameters($request->request->all());
         }
 
         // Render response body content
