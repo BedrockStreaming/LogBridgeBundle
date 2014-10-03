@@ -99,7 +99,10 @@ class DefaultFormatter implements FormatterInterface
         $responseContent .= $response->headers->__toString();
 
         // Render post parameters
-        if (isset($options['post_parameters']) && in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'])) {
+        if (array_key_exists('post_parameters', $options)
+            && $options['post_parameters'] == true
+            && in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']))
+        {
             $responseContent .= "Post parameters\n";
             $responseContent .= $this->arrayToString($request->request->all());
         }
