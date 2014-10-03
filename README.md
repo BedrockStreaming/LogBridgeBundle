@@ -16,7 +16,7 @@ Symfony Bundle from log Request/Response with Monolog.
 **With composer**
 ```
     "require": {
-        "m6web/log-bridge-bundle": "~2.0"
+        "m6web/log-bridge-bundle": "~2.1"
     }
 ```
 
@@ -78,6 +78,8 @@ Symfony Bundle from log Request/Response with Monolog.
             route: get_category
             method: ['POST', 'PUT']
             status: [400, 422, 500]
+            options:
+                post_parameters: true # From add post parameters in response content (with DefaultFormatter)
         all_error: # All route, all method in error
             route: ~
             method: ~
@@ -85,8 +87,8 @@ Symfony Bundle from log Request/Response with Monolog.
 
 ```
 
-*You can declare all the options you want. 
-By default, only "response_body" is supported by the DefaultFormatter*
+You can declare all the options you want. 
+By default, only `response_body` and `post_parameters` is supported by the DefaultFormatter
 
 
 ## Define your Provider from format log content
