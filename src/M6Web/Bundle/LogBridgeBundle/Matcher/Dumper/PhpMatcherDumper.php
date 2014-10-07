@@ -122,12 +122,16 @@ class {$options['class']} implements {$options['interface']}
     /**
      * Get filter options
      *
-     * @param string \$key Filter key
+     * @param string  \$route  Route name
+     * @param string  \$method Method name
+     * @param integer \$status Http code status
      *
-     * @return mixed (null|array)
+     * @return array
      */
-    public function getOptions(\$key)
+    public function getOptions(\$route, \$method, \$status)
     {
+        \$key = \$this->generateKey(\$route, \$method, \$status);
+
         return \$this->hasFilter(\$key) ? \$this->filters[\$key] : null;
     }
 

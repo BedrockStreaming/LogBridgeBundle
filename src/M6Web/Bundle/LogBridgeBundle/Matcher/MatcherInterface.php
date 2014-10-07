@@ -54,4 +54,15 @@ interface MatcherInterface
      */
     public function hasFilter($filter);
 
+    /**
+     * get options
+     *
+     * @param string  $route  Route name
+     * @param string  $method Method name
+     * @param integer $status Http code status
+     *
+     * @return array
+     */
+    public function getOptions($route, $method, $status);
+
 }
