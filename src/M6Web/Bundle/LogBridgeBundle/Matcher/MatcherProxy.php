@@ -53,7 +53,7 @@ class MatcherProxy implements MatcherInterface
      */
     public function getOptions($route, $method, $status)
     {
-        return $this->matcher->getOptions($this->matcher->generateKey($route, $method, $status));
+        return $this->matcher->getOptions($route, $method, $status);
     }
 
     /**
