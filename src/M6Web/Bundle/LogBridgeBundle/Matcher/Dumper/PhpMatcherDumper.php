@@ -132,7 +132,7 @@ class {$options['class']} implements {$options['interface']}
     {
         \$key = \$this->generateKey(\$route, \$method, \$status);
 
-        return \$this->hasFilter(\$key) ? \$this->filters[\$key] : null;
+        return \$this->hasFilter(\$key) ? \$this->filters[\$key] : [];
     }
 
     /**
