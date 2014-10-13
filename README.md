@@ -1,6 +1,6 @@
 # LogBridgeBundle
 
-Symfony Bundle from log Request/Response with Monolog.
+Symfony Bundle to log Request/Response with Monolog.
 
 
 ## Features
