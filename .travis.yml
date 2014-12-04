@@ -11,4 +11,4 @@ before_script:
 
 script:
   - vendor/bin/atoum
-  - vendir/bin/coke
+  - vendor/bin/coke
