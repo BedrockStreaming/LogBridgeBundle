@@ -2,9 +2,6 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Matcher;
 
-require_once __DIR__ . '/../../../../../../../vendor/autoload.php';
-
-use atoum;
 use M6Web\Bundle\LogBridgeBundle\Matcher;
 
 

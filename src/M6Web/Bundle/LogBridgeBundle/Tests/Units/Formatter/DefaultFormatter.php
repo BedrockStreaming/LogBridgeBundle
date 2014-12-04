@@ -2,8 +2,6 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Formatter;
 
-require_once __DIR__ . '/../../../../../../../vendor/autoload.php';
-
 use atoum;
 use Symfony\Component\Security\Core\User\User;
 use M6Web\Bundle\LogBridgeBundle\Formatter;

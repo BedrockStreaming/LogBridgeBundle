@@ -2,8 +2,6 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Config;
 
-require_once __DIR__ . '/../../../../../../../vendor/autoload.php';
-
 use atoum;
 use M6Web\Bundle\LogBridgeBundle\Config;
 
