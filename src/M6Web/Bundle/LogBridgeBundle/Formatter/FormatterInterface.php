@@ -15,6 +15,7 @@ interface FormatterInterface
     /**
      * @param Request  $request  Request service
      * @param Response $response Response service
+     * @param array    $options  Request options
      *
      * @return string
      */
@@ -23,6 +24,7 @@ interface FormatterInterface
     /**
      * @param Request  $request  Request service
      * @param Response $response Response service
+     * @param array    $options  Request options
      *
      * @return string
      */

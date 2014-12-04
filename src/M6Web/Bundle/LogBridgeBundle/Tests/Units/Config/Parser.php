@@ -2,8 +2,6 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Config;
 
-require_once __DIR__ . '/../../../../../../../vendor/autoload.php';
-
 use M6Web\Bundle\LogBridgeBundle\Tests\Units\BaseTest;  
 use M6Web\Bundle\LogBridgeBundle\Config;
 
@@ -12,7 +10,6 @@ use M6Web\Bundle\LogBridgeBundle\Config;
  */
 class Parser extends BaseTest
 {
-
     private function getRouter()
     {
         return new MockRouter();
@@ -130,6 +127,4 @@ class Parser extends BaseTest
         ;
 
     }
-
-
 }

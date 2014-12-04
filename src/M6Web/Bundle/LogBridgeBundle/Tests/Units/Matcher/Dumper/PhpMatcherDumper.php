@@ -2,16 +2,12 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Matcher\Dumper;
 
-require_once __DIR__ . '/../../../../../../../../vendor/autoload.php';
-
 use atoum;
 use M6Web\Bundle\LogBridgeBundle\Matcher;
 use M6Web\Bundle\LogBridgeBundle\Tests\Units\Matcher\BaseMatcher;
 
-
 class PhpMatcherDumper extends BaseMatcher
 {
-
     private function getBuilder()
     {
         $builder = new Matcher\Builder([$this->getResource()], 'test');
@@ -41,5 +37,4 @@ class PhpMatcherDumper extends BaseMatcher
                     ->isEqualTo('get_program.GET.200')
         ;
     }
-
 }

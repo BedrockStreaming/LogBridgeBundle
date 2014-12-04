@@ -1,4 +1,4 @@
-# LogBridgeBundle
+# LogBridgeBundle [![Build Status](https://travis-ci.org/M6Web/LogBridgeBundle.svg?branch=master)](https://travis-ci.org/M6Web/LogBridgeBundle)
 
 Symfony Bundle to log Request/Response with Monolog.
 

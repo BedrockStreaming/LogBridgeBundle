@@ -37,5 +37,4 @@ class BaseTest extends atoum
 
         return $router;
     }
-
 }

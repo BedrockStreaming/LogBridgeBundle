@@ -10,10 +10,13 @@
     "require": {
         "php": ">=5.4",
         "symfony/yaml": "~2.3",
-        "symfony/routing": "~2.3"
+        "symfony/routing": "~2.3",
+        "symfony/expression-language": "~2.3"
     },
     "require-dev": {
-        "atoum/atoum-bundle": "~1.0"
+        "atoum/atoum-bundle": "~1.0",
+        "m6web/symfony2-coding-standard": "~1.2",
+        "m6web/coke": "~1.2"
     },
     "extra": {
         "branch-alias": {

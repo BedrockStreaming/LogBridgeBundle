@@ -2,15 +2,11 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Config;
 
-require_once __DIR__ . '/../../../../../../../vendor/autoload.php';
-
 use atoum;
 use M6Web\Bundle\LogBridgeBundle\Config;
 
-
 class Filter extends atoum
 {
-
     public function testFilter()
     {
         $this
@@ -32,5 +28,4 @@ class Filter extends atoum
                     ->isIdenticalTo([200, 301])
         ;
     }
-
 }

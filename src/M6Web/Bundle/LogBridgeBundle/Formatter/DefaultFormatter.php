@@ -46,35 +46,36 @@ class DefaultFormatter implements FormatterInterface
         $this->context       = null;
     }
 
-	/**
-	 * Format parameters as tree
-	 *
-	 * @param array $parameters
-	 *
-	 * @return string
-	 */
-	protected function formatParameters(array $parameters)
-	{
-		$tree = new \RecursiveTreeIterator(new \RecursiveArrayIterator($parameters));
-		$tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_LEFT, ' ');
-		$tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_MID_HAS_NEXT, '│ ');
-		$tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_END_HAS_NEXT, '├ ');
-		$tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_END_LAST, '└ ');
+    /**
+     * Format parameters as tree
+     *
+     * @param array $parameters
+     *
+     * @return string
+     */
+    protected function formatParameters(array $parameters)
+    {
+        $tree = new \RecursiveTreeIterator(new \RecursiveArrayIterator($parameters));
+        $tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_LEFT, ' ');
+        $tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_MID_HAS_NEXT, '│ ');
+        $tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_END_HAS_NEXT, '├ ');
+        $tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_END_LAST, '└ ');
 
-		$content = '';
+        $content = '';
 
-		foreach ($tree as $key => $value) {
-			$content .= $tree->getPrefix() . $key . ' : ' . $tree->getEntry()."\n";
-		}
+        foreach ($tree as $key => $value) {
+            $content .= $tree->getPrefix() . $key . ' : ' . $tree->getEntry()."\n";
+        }
 
-		return $content;
-	}
+        return $content;
+    }
 
     /**
      * getLogContent
      *
      * @param Request  $request  Request service
      * @param Response $response Response service
+     * @param array    $options  Request options
      *
      * @return string
      */
@@ -101,8 +102,7 @@ class DefaultFormatter implements FormatterInterface
         // Render post parameters
         if (array_key_exists('post_parameters', $options)
             && $options['post_parameters'] == true
-            && in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']))
-        {
+            && in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'])) {
             $responseContent .= "Post parameters\n";
             $responseContent .= $this->formatParameters($request->request->all());
         }
@@ -125,6 +125,7 @@ class DefaultFormatter implements FormatterInterface
      *
      * @param Request  $request  Request service
      * @param Response $response Response service
+     * @param array    $options  Request options
      *
      * @return array
      */
