@@ -5,7 +5,6 @@ namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Config;
 use atoum;  
 use M6Web\Bundle\LogBridgeBundle\Config;
 
-
 class Configuration extends atoum
 {
     private function getEnvironment()
@@ -78,5 +77,4 @@ class Configuration extends atoum
                 ->object($collection = $configuration->getFilters())
                     ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\FilterCollection');
     }
-
 }

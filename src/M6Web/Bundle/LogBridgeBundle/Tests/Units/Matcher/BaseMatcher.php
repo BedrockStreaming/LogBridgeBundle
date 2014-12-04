@@ -39,6 +39,4 @@ class BaseMatcher extends BaseTest
     {
         return 'TestLogMatcher';
     }
-
-
 }

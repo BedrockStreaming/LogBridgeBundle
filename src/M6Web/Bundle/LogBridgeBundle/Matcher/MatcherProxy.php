@@ -59,7 +59,8 @@ class MatcherProxy implements MatcherInterface
     /**
      * addFilter
      *
-     * @param string $filter Filter
+     * @param string $filter  Filter
+     * @param array  $options Options
      *
      * @return MatcherProxy
      */

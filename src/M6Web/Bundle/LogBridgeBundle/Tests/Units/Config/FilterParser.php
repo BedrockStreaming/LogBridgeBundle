@@ -157,5 +157,4 @@ class FilterParser extends BaseTest
                     ->contains('Unreconized value')
         ;
     }
-
 }

@@ -5,7 +5,6 @@ namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Config;
 use atoum;  
 use M6Web\Bundle\LogBridgeBundle\Config;
 
-
 class FilterCollection extends atoum
 {
     private function createFilter($name, $route, $method, $status)
@@ -51,5 +50,4 @@ class FilterCollection extends atoum
                     ->isEqualTo($filterQuatre->getName())
         ;
     }
-
 }

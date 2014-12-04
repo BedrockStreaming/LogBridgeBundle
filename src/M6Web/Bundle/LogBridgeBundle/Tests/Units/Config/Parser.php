@@ -10,7 +10,6 @@ use M6Web\Bundle\LogBridgeBundle\Config;
  */
 class Parser extends BaseTest
 {
-
     private function getRouter()
     {
         return new MockRouter();
@@ -128,6 +127,4 @@ class Parser extends BaseTest
         ;
 
     }
-
-
 }

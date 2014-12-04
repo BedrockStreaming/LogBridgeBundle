@@ -4,10 +4,8 @@ namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Matcher;
 
 use M6Web\Bundle\LogBridgeBundle\Matcher;
 
-
 class MatcherProxy extends BaseMatcher
 {
-
     private function getBuilder()
     {
         $builder = new Matcher\Builder([$this->getResource()], 'test');
@@ -80,5 +78,4 @@ class MatcherProxy extends BaseMatcher
                     ->hasKey($matcher->generateKey('dynamically_un', 'POST', 500))
         ;
     }
-
 }

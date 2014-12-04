@@ -51,7 +51,5 @@ class Builder extends BaseMatcher
                 ->array($builder->getCacheResources())
                     ->hasSize(2)
         ;
-
     }
-
 }

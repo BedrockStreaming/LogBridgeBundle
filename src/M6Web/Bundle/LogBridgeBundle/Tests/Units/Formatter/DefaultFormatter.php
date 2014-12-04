@@ -131,6 +131,4 @@ class DefaultFormatter extends atoum
                 ->contains('└ title : Non mais Allo quoi')
         ;
     }
-
-
 }
