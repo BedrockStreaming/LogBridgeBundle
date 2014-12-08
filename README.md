@@ -116,7 +116,7 @@ It is advisable to extend default provider M6Web\Bundle\LogBridgeBundle\Formatte
     services:
         acme.my_log_provider:
             class: Acme\Bundle\MyBundle\Provider\LogContentProvider
-            parent: m6web_log_bridge.log_content_provider
+            parent: m6web_log_bridge.log_content_formatter
 ```
 
 or simply override this parameter : ```m6web_log_bridge.log_content_formatter.class```
