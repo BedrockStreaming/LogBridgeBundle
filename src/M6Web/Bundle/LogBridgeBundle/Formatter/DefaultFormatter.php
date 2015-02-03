@@ -141,7 +141,8 @@ class DefaultFormatter implements FormatterInterface
             'method'      => $method,
             'status'      => $status,
             'user'        => $this->getUsername(),
-            'key'         => sprintf('%s.%s.%s.%s', $this->environment, $route, $method, $status)
+            'key'         => sprintf('%s.%s.%s.%s', $this->environment, $route, $method, $status),
+            'uri'         => $request->getUri()
         );
 
         if ($this->prefixKey) {
