@@ -58,6 +58,29 @@ class {$options['class']} implements {$options['interface']}
     {$this->generateMatchList($configuration)}
 
     /**
+     * getPositiveMatcher
+     *
+     * @param string  \$route       Route name
+     * @param string  \$method      Method name
+     * @param integer \$status      Http code status
+     *
+     * @return array
+     */
+    private function getPositiveMatcher(\$route, \$method, \$status)
+    {
+        return [
+            [\$route, \$method, \$status],
+            ['all', 'all', 'all'],
+            [\$route, 'all', 'all'],
+            [\$route, \$method, 'all'],
+            [\$route, 'all', \$status],
+            ['all', \$method, \$status],
+            ['all', 'all', \$status],
+            ['all', \$method, 'all']
+        ];
+    }
+
+    /**
      * match
      *
      * @param string  \$route       Route name
@@ -69,35 +92,8 @@ class {$options['class']} implements {$options['interface']}
     public function match(\$route, \$method, \$status)
     {
         if (!empty(\$this->filters)) {
-            if (\$this->hasFilter(\$this->generateKey(\$route, \$method, \$status))) {
-                return true;
-            }
-
-            if (\$this->hasFilter(\$this->generateKey('all', 'all', 'all'))) {
-                return true;
-            }
-
-            if (\$this->hasFilter(\$this->generateKey(\$route, 'all', 'all'))) {
-                return true;
-            }
-
-            if (\$this->hasFilter(\$this->generateKey(\$route, \$method, 'all'))) {
-                return true;
-            }
-
-            if (\$this->hasFilter(\$this->generateKey(\$route, 'all', \$status))) {
-                return true;
-            }
-
-            if (\$this->hasFilter(\$this->generateKey('all', \$method, \$status))) {
-                return true;
-            }
-
-            if (\$this->hasFilter(\$this->generateKey('all', 'all', \$status))) {
-                return true;
-            }
-
-            if (\$this->hasFilter(\$this->generateKey('all', \$method, 'all'))) {
+            foreach (\$this->getPositiveMatcher(\$route, \$method, \$status) as \$rms)
+            if (\$this->hasFilter(\$this->generateKey(\$rms[0], \$rms[1], \$rms[2]))) {
                 return true;
             }
         }
