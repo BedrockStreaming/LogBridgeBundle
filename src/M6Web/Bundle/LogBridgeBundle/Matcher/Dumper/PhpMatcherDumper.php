@@ -70,13 +70,13 @@ class {$options['class']} implements {$options['interface']}
     {
         return [
             [\$route, \$method, \$status],
-            ['all', 'all', 'all'],
-            [\$route, 'all', 'all'],
             [\$route, \$method, 'all'],
             [\$route, 'all', \$status],
             ['all', \$method, \$status],
+            [\$route, 'all', 'all'],
             ['all', 'all', \$status],
-            ['all', \$method, 'all']
+            ['all', \$method, 'all'],
+            ['all', 'all', 'all']
         ];
     }
 
@@ -129,7 +129,8 @@ class {$options['class']} implements {$options['interface']}
     {
         if (!empty(\$this->filters)) {
             foreach (\$this->getPositiveMatcher(\$route, \$method, \$status) as \$rms) {
-                if (\$this->hasFilter(\$this->generateKey(\$rms[0], \$rms[1], \$rms[2]))) {
+                \$key = \$this->generateKey(\$rms[0], \$rms[1], \$rms[2]);
+                if (\$this->hasFilter(\$key)) {
                     return \$this->filters[\$key];
                 }
             }
