@@ -92,9 +92,10 @@ class {$options['class']} implements {$options['interface']}
     public function match(\$route, \$method, \$status)
     {
         if (!empty(\$this->filters)) {
-            foreach (\$this->getPositiveMatcher(\$route, \$method, \$status) as \$rms)
-            if (\$this->hasFilter(\$this->generateKey(\$rms[0], \$rms[1], \$rms[2]))) {
-                return true;
+            foreach (\$this->getPositiveMatcher(\$route, \$method, \$status) as \$rms) {
+                if (\$this->hasFilter(\$this->generateKey(\$rms[0], \$rms[1], \$rms[2]))) {
+                    return true;
+                }
             }
         }
 
@@ -126,9 +127,15 @@ class {$options['class']} implements {$options['interface']}
      */
     public function getOptions(\$route, \$method, \$status)
     {
-        \$key = \$this->generateKey(\$route, \$method, \$status);
+        if (!empty(\$this->filters)) {
+            foreach (\$this->getPositiveMatcher(\$route, \$method, \$status) as \$rms) {
+                if (\$this->hasFilter(\$this->generateKey(\$rms[0], \$rms[1], \$rms[2]))) {
+                    return \$this->filters[\$key];
+                }
+            }
+        }
 
-        return \$this->hasFilter(\$key) ? \$this->filters[\$key] : [];
+        return [];
     }
 
     /**
