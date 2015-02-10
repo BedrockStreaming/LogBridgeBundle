@@ -8,6 +8,11 @@ namespace M6Web\Bundle\LogBridgeBundle\Logger;
 
 use Psr\Log\LoggerInterface;
 
+/**
+ * Class Logger
+ *
+ * @package M6Web\Bundle\LogBridgeBundle\Logger
+ */
 class Logger implements LoggerInterface
 {
     protected $logger;
