@@ -46,6 +46,17 @@ Symfony Bundle to log Request/Response with Monolog.
         prefix_key: ~ # define prefix key on log context
 ```
 
+You can use the Logger provided by the bundle
+
+```
+services:
+    m6video.gelflogger:
+    class: M6Web\Bundle\LogBridgeBundle\Logger\logger
+        arguments: ["@logger"]
+        tags:
+            - { name: monolog.logger, channel: log_bridge }
+```
+
 
 **Define your filters** :
 
