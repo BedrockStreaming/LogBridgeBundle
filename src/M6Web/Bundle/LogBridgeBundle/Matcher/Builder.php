@@ -147,7 +147,7 @@ class Builder implements BuilderInterface
     protected function parse($path)
     {
         if (!is_file($path) || !$content = file_get_contents($path)) {
-            throw new Exception(sprintf('failed to open stream: No such file or is not readable "%s"', $path));
+            throw new \Exception(sprintf('failed to open stream: No such file or is not readable "%s"', $path));
         }
 
         return Yaml::parse($content, true);
