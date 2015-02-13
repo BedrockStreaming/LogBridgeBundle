@@ -52,4 +52,16 @@ class Builder extends BaseMatcher
                     ->hasSize(2)
         ;
     }
+
+    public function testGetMatcherBadConfiguration()
+    {
+        $this
+            ->if($builder = new Matcher\Builder(['invalidFilename.yml'], 'test'))
+            ->then
+                ->exception(function() use ($builder) {
+                    $builder->getMatcher();
+                })
+                    ->hasMessage('failed to open stream: No such file or is not readable "invalidFilename.yml"')
+        ;
+    }
 }
