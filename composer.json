@@ -9,9 +9,9 @@
     "prefer-stable": true,
     "require": {
         "php": ">=5.4",
-        "symfony/yaml": "~2.3",
-        "symfony/routing": "~2.3",
-        "symfony/expression-language": "~2.3"
+        "symfony/yaml": "~2.7",
+        "symfony/routing": "~2.7",
+        "symfony/expression-language": "~2.7"
     },
     "require-dev": {
         "atoum/atoum-bundle": "~1.0",
