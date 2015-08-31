@@ -33,13 +33,12 @@ class DefaultFormatter extends atoum
         return $token;
     }
 
-    private function getMockedSecurityContext()
+    private function getMockedTokenStorage()
     {
         $token   = $this->getMockedToken();
-        $context = new \mock\Symfony\Component\Security\Core\SecurityContextInterface();
+        $context = new \mock\Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
         $context->getMockController()->getToken = $token;
-        $context->getMockController()->isGranted = function($attributes, $object = null) { return true; };
 
         return $context;
     }
@@ -53,17 +52,17 @@ class DefaultFormatter extends atoum
 
     public function testProvider()
     {
-        $request  = new Request();
-        $response = new Response('Body content response');
-        $context  = $this->getMockedSecurityContext();
-        $route    = $request->get('_route');
-        $method   = $request->getMethod();
-        $status   = $response->getStatusCode();
+        $request       = new Request();
+        $response      = new Response('Body content response');
+        $tokenstorage  = $this->getMockedTokenStorage();
+        $route         = $request->get('_route');
+        $method        = $request->getMethod();
+        $status        = $response->getStatusCode();
 
         $this
             ->if($provider = $this->createProvider())
             ->then
-            ->object($provider->setContext($context))
+            ->object($provider->setTokenStorage($tokenstorage))
                 ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Formatter\DefaultFormatter')
             ->string($provider->getLogContent($request, $response, []))
                 ->contains('HTTP 1.0 200')
@@ -86,7 +85,7 @@ class DefaultFormatter extends atoum
             ->integer($logContext['status'])
                 ->isEqualTo($status)
             ->string($logContext['user'])
-                ->isEqualTo($context->getToken()->getUsername())
+                ->isEqualTo($tokenstorage->getToken()->getUsername())
             ->string($logContext['key'])
                 ->isEqualTo(sprintf('%s.%s.%s.%s', self::ENVIRONMENT, $route, $method, $status))
         ;
@@ -108,16 +107,16 @@ class DefaultFormatter extends atoum
         $request = new \mock\Symfony\Component\HttpFoundation\Request([], $post);
         $request->getMockController()->getMethod = 'POST';
 
-        $response = new Response('Body content response');
-        $context  = $this->getMockedSecurityContext();
-        $route    = $request->get('_route');
-        $method   = $request->getMethod();
-        $status   = $response->getStatusCode();
+        $response      = new Response('Body content response');
+        $tokenstorage  = $this->getMockedTokenStorage();
+        $route         = $request->get('_route');
+        $method        = $request->getMethod();
+        $status        = $response->getStatusCode();
 
         $this
             ->if($provider = $this->createProvider())
             ->then
-            ->object($provider->setContext($context))
+            ->object($provider->setTokenStorage($tokenstorage))
                 ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Formatter\DefaultFormatter')
             ->string($provider->getLogContent($request, $response, ['post_parameters' => true]))
                 ->contains('HTTP 1.0 200')

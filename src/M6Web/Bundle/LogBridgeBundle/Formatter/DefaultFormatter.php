@@ -4,7 +4,7 @@ namespace M6Web\Bundle\LogBridgeBundle\Formatter;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 /**
  * DefaultFormatter
@@ -27,9 +27,9 @@ class DefaultFormatter implements FormatterInterface
     protected $prefixKey;
 
     /**
-     * @var SecurityContextInterface
+     * @var TokenStorage
      */
-    protected $context;
+    protected $tokenStorage;
 
     /**
      * __construct
@@ -43,7 +43,7 @@ class DefaultFormatter implements FormatterInterface
         $this->environment   = $environment;
         $this->ignoreHeaders = $ignoreHeaders;
         $this->prefixKey     = $prefixKey;
-        $this->context       = null;
+        $this->tokenStorage  = null;
     }
 
     /**
@@ -159,8 +159,8 @@ class DefaultFormatter implements FormatterInterface
      */
     protected function getUsername()
     {
-        if ($this->context && $this->context->getToken()) {
-            return $this->context->getToken()->getUsername();
+        if ($this->tokenStorage && $this->tokenStorage->getToken()) {
+            return $this->tokenStorage->getToken()->getUsername();
         }
 
         return '';
@@ -181,13 +181,13 @@ class DefaultFormatter implements FormatterInterface
     /**
      * setContext
      *
-     * @param SecurityContextInterface $context User security context
+     * @param TokenStorage $tokenStorage User security token storage
      *
      * @return LogRequestListener
      */
-    public function setContext(SecurityContextInterface $context)
+    public function setTokenStorage(TokenStorage $tokenStorage)
     {
-        $this->context = $context;
+        $this->tokenStorage = $tokenStorage;
 
         return $this;
     }
