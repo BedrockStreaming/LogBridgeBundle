@@ -1,6 +1,8 @@
 # LogBridgeBundle [![Build Status](https://travis-ci.org/M6Web/LogBridgeBundle.svg?branch=master)](https://travis-ci.org/M6Web/LogBridgeBundle)
 
-Symfony Bundle to log Request/Response with Monolog.
+Symfony Bundle to log Request/Response with Monolog. 
+
+**NOTE:** Require `Symfony >= 2.6` since version 3.0. For previsous version of symfony use the `~2.2` release.
 
 
 ## Features
@@ -16,7 +18,7 @@ Symfony Bundle to log Request/Response with Monolog.
 **With composer**
 ```
     "require": {
-        "m6web/log-bridge-bundle": "~2.1"
+        "m6web/log-bridge-bundle": "~3.0"
     }
 ```
 
