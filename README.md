@@ -38,11 +38,11 @@ Symfony Bundle to log Request/Response with Monolog.
 
 ```
     #app/config.yml
-    m6web_log_bridge:
+    m6_web_log_bridge:
         logger: monolog.service_name
         resources:
             - %kernel.root_dir%/config/m6web_log_bridge.yml
-        content_provider: m6web_log_bridge.log_content_provider # Provider service name
+        content_formatter: m6web_log_bridge.log_content_provider # Provider service name
         ignore_headers: # key list from mask/ignore header info
             - php-auth-pw
         prefix_key: ~ # define prefix key on log context
