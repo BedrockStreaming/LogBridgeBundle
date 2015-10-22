@@ -179,5 +179,5 @@ or simply override this parameter : ```m6web_log_bridge.log_content_formatter.cl
 You can run the unit tests with the following command:
 
 ```
-    php vendor/bin/atoum -d src/M6Web/Bundle/LogBridgeBundle/Tests/Units
+    php bin/atoum -d src/M6Web/Bundle/LogBridgeBundle/Tests/Units
 ```

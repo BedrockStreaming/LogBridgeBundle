@@ -11,5 +11,5 @@ before_script:
   - php composer.phar install --dev
 
 script:
-  - vendor/bin/atoum
-  - vendor/bin/coke
+  - bin/atoum
+  - bin/coke
