@@ -41,4 +41,4 @@ services:
             - %m6web_log_bridge.ignore_headers%
             - %m6web_log_bridge.prefix_key%
         calls:
-            - [ setTokenStorage, [ @security.token_storage ] ]
+            - [ setTokenStorage, [ !@security.token_storage ] ]
