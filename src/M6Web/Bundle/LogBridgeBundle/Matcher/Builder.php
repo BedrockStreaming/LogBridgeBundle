@@ -142,6 +142,8 @@ class Builder implements BuilderInterface
      *
      * @param string $path File path
      *
+     * @throws \Exception
+     *
      * @return array
      */
     protected function parse($path)
@@ -163,7 +165,7 @@ class Builder implements BuilderInterface
         $configs       = $this->loadConfigResources();
         $configuration = $this->configParser->parse($configs);
         $dumper        = new Dumper\PhpMatcherDumper($this->environment);
-        $options       = array();
+        $options       = [];
 
         if ($this->matcherClassName) {
             $options['class'] = $this->getMatcherClassName();

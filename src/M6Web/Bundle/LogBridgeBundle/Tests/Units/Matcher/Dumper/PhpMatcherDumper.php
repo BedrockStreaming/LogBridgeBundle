@@ -33,7 +33,7 @@ class PhpMatcherDumper extends BaseMatcher
                     ->isFalse()
                 ->boolean($dumper->match('invalid_route', 'GET', 200))
                     ->isFalse()
-                ->string($dumper->generateKey('get_program', 'GET', 200))
+                ->string($dumper->generateFilterKey('get_program', 'GET', 200))
                     ->isEqualTo('get_program.GET.200')
         ;
     }

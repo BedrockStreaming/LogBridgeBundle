@@ -71,5 +71,4 @@ class M6WebLogBridgeExtension extends Extension
 
         $container->setDefinition($serviceName, $definition);
     }
-
 }

@@ -28,6 +28,11 @@ class Filter
     private $status;
 
     /**
+     * @var mixed
+     */
+    private $level;
+
+    /**
      * @var array
      */
     private $options;
@@ -43,6 +48,7 @@ class Filter
         $this->route   = null;
         $this->method  = null;
         $this->status  = null;
+        $this->level  = null;
         $this->options = [];
     }
 
@@ -126,6 +132,30 @@ class Filter
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * setLevel
+     *
+     * @param mixed $level Log level
+     *
+     * @return Filter
+     */
+    public function setLevel($level)
+    {
+        $this->level = $level;
+
+        return $this;
+    }
+
+    /**
+     * getLevel
+     *
+     * @return mixed
+     */
+    public function getLevel()
+    {
+        return $this->level;
     }
 
     /**

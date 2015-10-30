@@ -1,7 +1,7 @@
 parameters:
-    m6web_log_bridge.log_request_listener.name: "m6web_log_bridge.log_request_listener"
-    m6web_log_bridge.matcher.name: "m6web_log_bridge.matcher"
-    m6web_log_bridge.matcher_class.name: "LogBridgeMatcher"
+    m6web_log_bridge.log_request_listener.name: m6web_log_bridge.log_request_listener
+    m6web_log_bridge.matcher.name: m6web_log_bridge.matcher
+    m6web_log_bridge.matcher_class.name: LogBridgeMatcher
     m6web_log_bridge.config_parser.class: M6Web\Bundle\LogBridgeBundle\Config\Parser
     m6web_log_bridge.builder.class: M6Web\Bundle\LogBridgeBundle\Matcher\Builder
     m6web_log_bridge.matcher_proxy.class: M6Web\Bundle\LogBridgeBundle\Matcher\MatcherProxy

@@ -22,11 +22,12 @@ interface MatcherInterface
      * addFilter
      *
      * @param string $filter  Filter name
+     * @param string $level   Filter log level
      * @param array  $options Filter options
      *
      * @return MatcherInterface
      */
-    public function addFilter($filter, array $options = []);
+    public function addFilter($filter, $level = 'info', array $options = []);
 
     /**
      * setFilters
@@ -55,6 +56,17 @@ interface MatcherInterface
     public function hasFilter($filter);
 
     /**
+     * Get filter level log
+     *
+     * @param string  $route  Route name
+     * @param string  $method Method name
+     * @param integer $status Http code status
+     *
+     * @return string
+     */
+    public function getLevel($route, $method, $status);
+
+    /**
      * get options
      *
      * @param string  $route  Route name
@@ -64,5 +76,16 @@ interface MatcherInterface
      * @return array
      */
     public function getOptions($route, $method, $status);
+
+    /**
+     * get an filter key matched with arguments
+     *
+     * @param string  $route  Route name
+     * @param string  $method Method name
+     * @param integer $status Http code status
+     *
+     * @return bool|string
+     */
+    public function getMatchFilterKey($route, $method, $status);
 
 }

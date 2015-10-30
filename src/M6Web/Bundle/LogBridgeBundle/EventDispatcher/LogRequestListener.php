@@ -3,8 +3,6 @@
 namespace M6Web\Bundle\LogBridgeBundle\EventDispatcher;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use M6Web\Bundle\LogBridgeBundle\Matcher\MatcherInterface;
 use M6Web\Bundle\LogBridgeBundle\Formatter\FormatterInterface;
 
@@ -14,7 +12,7 @@ use M6Web\Bundle\LogBridgeBundle\Formatter\FormatterInterface;
 class LogRequestListener
 {
     /**
-     * LoggerInterface
+     * @var LoggerInterface
      */
     protected $logger;
 
@@ -31,15 +29,15 @@ class LogRequestListener
     /**
      * Construct
      *
-     * @param \M6Web\Bundle\LogBridgeBundle\Formatter\FormatterInterface $contentFormatter
+     * @param FormatterInterface $contentFormatter
      *
      * @internal param \Psr\Log\LoggerInterface $logger Logger
      */
     public function __construct(FormatterInterface $contentFormatter)
     {
         $this->contentFormatter = $contentFormatter;
-        $this->logger          = null;
-        $this->matcher         = null;
+        $this->logger           = null;
+        $this->matcher          = null;
     }
 
     /**
@@ -54,10 +52,11 @@ class LogRequestListener
         $route    = $request->get('_route');
         $method   = $request->getMethod();
         $status   = $response->getStatusCode();
+        $level    = $this->matcher->getLevel($route, $method, $status);
         $options  = $this->matcher->getOptions($route, $method, $status);
 
         if ($this->matcher->match($route, $method, $status)) {
-            $this->logger->info(
+            $this->logger->$level(
                 $this->contentFormatter->getLogContent($request, $response, $options),
                 $this->contentFormatter->getLogContext($request, $response, $options)
             );
@@ -91,5 +90,4 @@ class LogRequestListener
 
         return $this;
     }
-
 }
