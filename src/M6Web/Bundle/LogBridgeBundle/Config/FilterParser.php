@@ -2,6 +2,7 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Config;
 
+use Psr\Log\LogLevel;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -9,12 +10,21 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class FilterParser
 {
-    const DEFAULT_LEVEL = 'info';
+    const DEFAULT_LEVEL = LogLevel::INFO;
 
     /**
      * @var array
      */
-    protected $allowedLevels = ['emergency', 'info', 'notice', 'warning', 'debug', 'error', 'critical', 'alert'];
+    protected $allowedLevels = [
+        LogLevel::EMERGENCY,
+        LogLevel::ALERT,
+        LogLevel::CRITICAL,
+        LogLevel::ERROR,
+        LogLevel::WARNING,
+        LogLevel::NOTICE,
+        LogLevel::INFO,
+        LogLevel::DEBUG,
+    ];
 
     /**
      * @var RouterInterface

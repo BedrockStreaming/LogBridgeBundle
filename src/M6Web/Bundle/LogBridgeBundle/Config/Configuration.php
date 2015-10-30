@@ -20,7 +20,7 @@ class Configuration
     private $filters;
 
     /**
-     * __construct
+     * Constructor
      */
     public function __construct()
     {

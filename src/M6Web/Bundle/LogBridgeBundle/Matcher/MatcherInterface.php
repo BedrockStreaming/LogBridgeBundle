@@ -2,6 +2,8 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Matcher;
 
+use Psr\Log\LogLevel;
+
 /**
  * MatcherInterface
  */
@@ -27,7 +29,7 @@ interface MatcherInterface
      *
      * @return MatcherInterface
      */
-    public function addFilter($filter, $level = 'info', array $options = []);
+    public function addFilter($filter, $level = LogLevel::INFO, array $options = []);
 
     /**
      * setFilters

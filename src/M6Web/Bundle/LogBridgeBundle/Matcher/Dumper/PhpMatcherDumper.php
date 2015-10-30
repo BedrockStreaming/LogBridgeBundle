@@ -2,6 +2,7 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Matcher\Dumper;
 
+use Psr\Log\LogLevel;
 use M6Web\Bundle\LogBridgeBundle\Config\Configuration;
 use M6Web\Bundle\LogBridgeBundle\Config\FilterCollection;
 use M6Web\Bundle\LogBridgeBundle\Config\Filter;
@@ -40,8 +41,9 @@ class PhpMatcherDumper
     {
 
         $options = array_replace([
-            'class'     => 'LogBridgeMatcher',
-            'interface' => 'M6Web\\Bundle\\LogBridgeBundle\\Matcher\\MatcherInterface'
+            'class'         => 'LogBridgeMatcher',
+            'interface'     => 'M6Web\\Bundle\\LogBridgeBundle\\Matcher\\MatcherInterface',
+            'default_level' => LogLevel::INFO
         ], $options);
 
         return <<<EOF
@@ -145,7 +147,7 @@ class {$options['class']} implements {$options['interface']}
             return \$this->filters[\$filterKey]['level'];
         }
 
-        return 'info';
+        return '{$options['default_level']}';
     }
 
     /**
@@ -157,7 +159,7 @@ class {$options['class']} implements {$options['interface']}
      *
      * @return MatcherInterface
      */
-    public function addFilter(\$filterKey, \$level = 'info', array \$options = [])
+    public function addFilter(\$filterKey, \$level = '{$options['default_level']}', array \$options = [])
     {
         if (!\$this->hasFilter(\$filterKey)) {
             \$this->filters[\$filterKey]            = [];
@@ -184,7 +186,7 @@ class {$options['class']} implements {$options['interface']}
             foreach (\$filters as \$filterKey => \$filter) {
 
                 if (!isset(\$filter['level'])) {
-                    \$filter['level'] = 'info';
+                    \$filter['level'] = '{$options['default_level']}';
                 }
 
                 if (!isset(\$filter['options'])) {
@@ -266,7 +268,7 @@ EOF;
 
             foreach ($filter as $key => $config) {
 
-                if (is_array($config)){
+                if (is_array($config)) {
 
                     $code .= sprintf("            '%s' => [", $key);
 

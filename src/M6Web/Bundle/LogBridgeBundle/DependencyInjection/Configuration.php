@@ -21,27 +21,31 @@ class Configuration implements ConfigurationInterface
         $rootNode    = $treeBuilder->root('m6web_log_bridge');
 
         $rootNode
-                ->children()
-                    ->scalarNode('prefix_key')
-                        ->defaultValue('')
+            ->children()
+                ->scalarNode('prefix_key')
+                    ->defaultValue('')
+                ->end()
+                ->arrayNode('logger')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('service')->defaultValue('m6web_log_bridge.logger')->end()
+                        ->scalarNode('channel')->defaultValue('log_bridge')->end()
                     ->end()
-                    ->scalarNode('logger')
+                ->end()
+                ->arrayNode('resources')
+                    ->prototype('scalar')
                         ->isRequired()
                     ->end()
-                    ->arrayNode('resources')
-                        ->prototype('scalar')
-                            ->isRequired()
-                        ->end()
+                ->end()
+                ->scalarNode('content_formatter')
+                    ->defaultValue('m6web_log_bridge.log_content_formatter')
+                ->end()
+                ->arrayNode('ignore_headers')
+                    ->prototype('scalar')
+                        ->defaultValue(array())
                     ->end()
-                    ->scalarNode('content_formatter')
-                        ->defaultValue('m6web_log_bridge.log_content_formatter')
-                    ->end()
-                    ->arrayNode('ignore_headers')
-                        ->prototype('scalar')
-                            ->defaultValue(array())
-                        ->end()
-                    ->end()
-                ->end();
+                ->end()
+            ->end();
 
         return $treeBuilder;
     }

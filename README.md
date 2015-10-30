@@ -34,31 +34,40 @@ Symfony Bundle to log Request/Response with Monolog.
 
 ## Usage
 
-**```config.yml```** :
+```yaml
+# app/config.yml
 
-```
-    #app/config.yml
-    m6_web_log_bridge:
-        logger: monolog.service_name
-        resources:
-            - %kernel.root_dir%/config/m6web_log_bridge.yml
-        content_formatter: m6web_log_bridge.log_content_provider # Provider service name
-        ignore_headers: # key list from mask/ignore header info
-            - php-auth-pw
-        prefix_key: ~ # define prefix key on log context
+m6_web_log_bridge:
+    resources:
+        - %kernel.root_dir%/config/m6web_log_bridge.yml
+    content_formatter: m6web_log_bridge.log_content_provider # Provider service name
+    ignore_headers: # key list from mask/ignore header info
+        - php-auth-pw
+    prefix_key: ~ # define prefix key on log context
+    logger: 
+        channel: my_channel_to_log # monolog channel, optional, default 'log_bridge'
 ```
 
-You can use the Logger provided by the bundle
+By default, this bundle use a builtin logger with monolog support `m6web_log_bridge.logger`
+You can override this configuration by writing your own logger who must implements `Psr\Log\LoggerInterface` : 
 
+```yaml
+# app/config.yml
+
+m6_web_log_bridge:
+    logger: 
+        service: acme.logger
 ```
+
+```yaml
 services:
-    m6video.gelflogger:
-    class: M6Web\Bundle\LogBridgeBundle\Logger\logger
+    acme.logger:
+        class: Acme\DemoBundle\Logger\logger
         arguments: ["@logger"]
         tags:
             - { name: monolog.logger, channel: log_bridge }
 ```
-
+*`Acme\DemoBundle\Logger\logger` must be implement `Psr\Log\LoggerInterface`*
 
 **Define your filters** :
 
@@ -77,6 +86,7 @@ services:
             route: get_article
             method: ['GET']
             status: [422, 500]
+            level: 'error'
             options:
                 response_body: true # from add Response body content (with DefaultFormatter)
         post_article_all:
@@ -87,18 +97,22 @@ services:
             route: get_article
             method: ['GET']
             status: [404]
+            level: 'warning'
         edit_category:
             route: get_category
             method: ['POST', 'PUT']
             status: [400, 422, 500]
+            level: 'error'
             options:
                 post_parameters: true # From add post parameters in response content (with DefaultFormatter)
         all_error: # All route, all method in error
             route: ~
             method: ~
             status: [400, 404, 422, 500]
+            level: 'critical'
 
 ```
+*By default, `level` is `info`*
 
 You can declare all the options you want. 
 By default, only `response_body` and `post_parameters` is supported by the DefaultFormatter
