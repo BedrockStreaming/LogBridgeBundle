@@ -2,6 +2,7 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Matcher\Dumper;
 
+use Psr\Log\LogLevel;
 use M6Web\Bundle\LogBridgeBundle\Config\Configuration;
 use M6Web\Bundle\LogBridgeBundle\Config\FilterCollection;
 use M6Web\Bundle\LogBridgeBundle\Config\Filter;
@@ -36,13 +37,14 @@ class PhpMatcherDumper
      *
      * @return string
      */
-    public function dump(Configuration $configuration, array $options = array())
+    public function dump(Configuration $configuration, array $options = [])
     {
 
-        $options = array_replace(array(
-            'class'     => 'LogBridgeMatcher',
-            'interface' => 'M6Web\\Bundle\\LogBridgeBundle\\Matcher\\MatcherInterface'
-        ), $options);
+        $options = array_replace([
+            'class'         => 'LogBridgeMatcher',
+            'interface'     => 'M6Web\\Bundle\\LogBridgeBundle\\Matcher\\MatcherInterface',
+            'default_level' => LogLevel::INFO
+        ], $options);
 
         return <<<EOF
 <?php
@@ -91,12 +93,8 @@ class {$options['class']} implements {$options['interface']}
      */   
     public function match(\$route, \$method, \$status)
     {
-        if (!empty(\$this->filters)) {
-            foreach (\$this->getPositiveMatcher(\$route, \$method, \$status) as \$rms) {
-                if (\$this->hasFilter(\$this->generateKey(\$rms[0], \$rms[1], \$rms[2]))) {
-                    return true;
-                }
-            }
+        if (\$filterKey = \$this->getMatchFilterKey(\$route, \$method, \$status)) {
+            return true;
         }
 
         return false;
@@ -111,7 +109,7 @@ class {$options['class']} implements {$options['interface']}
      *
      * @return string
      */
-    public function generateKey(\$route, \$method, \$status)
+    public function generateFilterKey(\$route, \$method, \$status)
     {
         return sprintf('%s.%s.%s', \$route, \$method, \$status);
     }
@@ -127,29 +125,46 @@ class {$options['class']} implements {$options['interface']}
      */
     public function getOptions(\$route, \$method, \$status)
     {
-        if (!empty(\$this->filters)) {
-            foreach (\$this->getPositiveMatcher(\$route, \$method, \$status) as \$rms) {
-                \$key = \$this->generateKey(\$rms[0], \$rms[1], \$rms[2]);
-                if (\$this->hasFilter(\$key)) {
-                    return \$this->filters[\$key];
-                }
-            }
+        if (\$filterKey = \$this->getMatchFilterKey(\$route, \$method, \$status)) {
+            return \$this->filters[\$filterKey]['options'];
         }
 
         return [];
     }
 
     /**
+     * Get filter level log
+     *
+     * @param string  \$route  Route name
+     * @param string  \$method Method name
+     * @param integer \$status Http code status
+     *
+     * @return string
+     */
+    public function getLevel(\$route, \$method, \$status)
+    {
+        if (\$filterKey = \$this->getMatchFilterKey(\$route, \$method, \$status)) {
+            return \$this->filters[\$filterKey]['level'];
+        }
+
+        return '{$options['default_level']}';
+    }
+
+    /**
      * addFilter
      *
-     * @param string \$filter Filter
+     * @param string \$filterKey Filter key
+     * @param string \$level     Filter Log level
+     * @param array  \$options   Filter options
      *
      * @return MatcherInterface
      */
-    public function addFilter(\$filter, array \$options = [])
+    public function addFilter(\$filterKey, \$level = '{$options['default_level']}', array \$options = [])
     {
-        if (!\$this->hasFilter(\$filter)) {
-            \$this->filters[\$filter] = \$options;
+        if (!\$this->hasFilter(\$filterKey)) {
+            \$this->filters[\$filterKey]            = [];
+            \$this->filters[\$filterKey]['options'] = \$options;
+            \$this->filters[\$filterKey]['level']   = \$level;
         }
 
         return \$this;
@@ -168,8 +183,17 @@ class {$options['class']} implements {$options['interface']}
         if (\$overwrite) {
             \$this->filters = \$filters;
         } else {
-            foreach (\$filters as \$filter => \$options) {
-                \$this->addFilter(\$filter, \$options);
+            foreach (\$filters as \$filterKey => \$filter) {
+
+                if (!isset(\$filter['level'])) {
+                    \$filter['level'] = '{$options['default_level']}';
+                }
+
+                if (!isset(\$filter['options'])) {
+                    \$filter['options'] = [];
+                }
+
+                \$this->addFilter(\$filterKey, \$filter['level'], \$filter['options']);
             }
         }
 
@@ -189,15 +213,37 @@ class {$options['class']} implements {$options['interface']}
     /**
      * hasFilter
      *
-     * @param string \$filter Filter
+     * @param string \$filterKey Filter key
      *
      * @return boolean
      */
-    public function hasFilter(\$filter)
+    public function hasFilter(\$filterKey)
     {
-        return array_key_exists(\$filter, \$this->filters);
+        return array_key_exists(\$filterKey, \$this->filters);
     }
 
+    /**
+     * get an filter key matched with arguments
+     *
+     * @param string  \$route  Route name
+     * @param string  \$method Method name
+     * @param integer \$status Http code status
+     *
+     * @return bool|string
+     */
+    public function getMatchFilterKey(\$route, \$method, \$status)
+    {
+        if (!empty(\$this->filters)) {
+            foreach (\$this->getPositiveMatcher(\$route, \$method, \$status) as \$rms) {
+                \$filterKey = \$this->generateFilterKey(\$rms[0], \$rms[1], \$rms[2]);
+                if (\$this->hasFilter(\$filterKey)) {
+                    return \$filterKey;
+                }
+            }
+        }
+
+        return false;
+    }
 }
 
 EOF;
@@ -216,17 +262,38 @@ EOF;
         $filters = $this->compile($configuration);
         $code    = "[\n";
 
-        foreach ($filters as $key => $config) {
-            $code .= sprintf("        '%s' => [\n", $key);
+        foreach ($filters as $filterKey => $filter) {
 
-            foreach ($config as $name => $value) {
-                if (is_bool($value)) {
-                    $value = $value == true ? 'true' : 'false';
+            $code .= sprintf("        '%s' => [\n", $filterKey);
+
+            foreach ($filter as $key => $config) {
+
+                if (is_array($config)) {
+
+                    $code .= sprintf("            '%s' => [", $key);
+
+                    if (count($config) > 0) {
+                        $code .= "\n";
+
+                        foreach ($config as $name => $value) {
+                            if (is_bool($value)) {
+                                $value = $value == true ? 'true' : 'false';
+                            } else {
+                                $value = "'" . $value . "'";
+                            }
+
+                            $code .= sprintf("                '%s' => %s,\n", $name, $value);
+                        }
+
+                        $code .= "            ";
+                    }
+
+                    $code .= "],\n";
+
                 } else {
-                    $value = "'". $value ."'";
+                    $code .= sprintf("            '%s' => '%s',\n", $key, $config);
                 }
 
-                $code .= sprintf("            '%s' => %s,\n", $name, $value);
             }
 
             $code = trim($code, ",");
@@ -307,7 +374,6 @@ EOF;
     {
         $compiledKeys = [];
         $compiled     = [];
-        $options      = $filter->getOptions();
         $prefix       = is_null($filter->getRoute()) ? 'all': $filter->getRoute();
 
         if (is_null($filter->getMethod())) {
@@ -321,7 +387,8 @@ EOF;
         }
 
         foreach ($compiledKeys as $key) {
-            $compiled[$key] = $filter->getOptions();
+            $compiled[$key]['options'] = $filter->getOptions();
+            $compiled[$key]['level'] = $filter->getLevel();
         }
 
         return $compiled;

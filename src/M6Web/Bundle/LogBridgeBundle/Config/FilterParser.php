@@ -2,6 +2,7 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Config;
 
+use Psr\Log\LogLevel;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -9,6 +10,22 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class FilterParser
 {
+    const DEFAULT_LEVEL = LogLevel::INFO;
+
+    /**
+     * @var array
+     */
+    protected $allowedLevels = [
+        LogLevel::EMERGENCY,
+        LogLevel::ALERT,
+        LogLevel::CRITICAL,
+        LogLevel::ERROR,
+        LogLevel::WARNING,
+        LogLevel::NOTICE,
+        LogLevel::INFO,
+        LogLevel::DEBUG,
+    ];
+
     /**
      * @var RouterInterface
      */
@@ -28,7 +45,6 @@ class FilterParser
     {
         $this->router      = $router;
         $this->filterClass = '';
-
     }
 
     /**
@@ -78,9 +94,14 @@ class FilterParser
             throw new ParseException(sprintf('Undefined "route", "method" or "status" parameter from filter "%s"', $name));
         }
 
+        if (!array_key_exists('level', $config)) {
+            $config['level'] = self::DEFAULT_LEVEL;
+        }
+
         $this->parseRoute($filter, $config['route']);
         $this->parseMethod($filter, $config['method']);
         $this->parseStatus($filter, $config['status']);
+        $this->parseLevel($filter, $config['level']);
 
         $filter->setOptions(isset($config['options']) ? $config['options'] : []);
 
@@ -92,6 +113,8 @@ class FilterParser
      *
      * @param Filter $filter Filter
      * @param mixed  $route  Route parameter value
+     *
+     * @throws ParseException
      */
     protected function parseRoute(Filter $filter, $route)
     {
@@ -107,6 +130,8 @@ class FilterParser
      *
      * @param Filter $filter Filter
      * @param mixed  $method Method parameter value
+     *
+     * @throws ParseException
      */
     protected function parseMethod(Filter $filter, $method)
     {
@@ -122,6 +147,8 @@ class FilterParser
      *
      * @param Filter $filter Filter
      * @param mixed  $status Status parameter value
+     *
+     * @throws ParseException
      */
     protected function parseStatus(Filter $filter, $status)
     {
@@ -130,6 +157,27 @@ class FilterParser
         }
 
         $filter->setStatus($status);
+    }
+
+    /**
+     * parseLevel
+     *
+     * @param Filter $filter Filter
+     * @param mixed  $level Level parameter value
+     *
+     * @throws ParseException
+     */
+    protected function parseLevel(Filter $filter, $level)
+    {
+        if (!is_string($level) && !is_null($level)) {
+            throw new ParseException(sprintf('Unreconized value "%s" from level parameter', $level));
+        }
+
+        if (!in_array($level, $this->allowedLevels)) {
+            throw new ParseException(sprintf('Invalid value "%s" from level parameter, allowed %s', $level, implode(', ', $this->allowedLevels)));
+        }
+
+        $filter->setLevel($level);
     }
 
     /**
@@ -171,7 +219,7 @@ class FilterParser
             );
         }
 
-        $his->filterClass = $filterClass;
+        $this->filterClass = $filterClass;
 
         return $this;
     }

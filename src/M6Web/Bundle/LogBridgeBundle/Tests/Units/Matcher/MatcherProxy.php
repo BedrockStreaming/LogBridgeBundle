@@ -20,12 +20,20 @@ class MatcherProxy extends BaseMatcher
 
     private function createFilters($matcher)
     {
-        $key500 = $matcher->generateKey('dynamically_un', 'POST', 500);
-        $key422 = $matcher->generateKey('dynamically_deux', 'PUT', 422);
+        $keyNoConfig = $matcher->generateFilterKey('dynamically_no_config', 'GET', 200);
+        $key500      = $matcher->generateFilterKey('dynamically_un', 'POST', 500);
+        $key422      = $matcher->generateFilterKey('dynamically_deux', 'PUT', 422);
 
         return [
-            $key500 => ['response_body' => true],
-            $key422 => ['response_body' => false ]
+            $keyNoConfig => [],
+            $key500 => [
+                'level'   => 'error',
+                'options' => ['response_body' => true]
+            ],
+            $key422 => [
+                'level'   => 'warning',
+                'options' => ['response_body' => false]
+            ],
         ];
     }
 
@@ -58,7 +66,7 @@ class MatcherProxy extends BaseMatcher
                     ->isInstanceOf($this->getMatcherClassName())
                 ->boolean($proxy->match('get_program_dynamically', 'GET', 200))
                     ->isFalse()
-                ->object($proxy->addFilter($matcher->generateKey('get_program_dynamically', 'GET', 200)))
+                ->object($proxy->addFilter($matcher->generateFilterKey('get_program_dynamically', 'GET', 200)))
                     ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Matcher\MatcherProxy')
                 ->boolean($proxy->match('get_program_dynamically', 'GET', 200))
                     ->isTrue()
@@ -68,14 +76,14 @@ class MatcherProxy extends BaseMatcher
                     ->isTrue()
                 ->boolean($proxy->match('dynamically_deux', 'PUT', 422))
                     ->isTrue()
-                ->boolean($proxy->hasFilter($matcher->generateKey('get_program_dynamically', 'GET', 200)))
+                ->boolean($proxy->hasFilter($matcher->generateFilterKey('get_program_dynamically', 'GET', 200)))
                     ->isTrue()
-                ->boolean($proxy->hasFilter($matcher->generateKey('get_program_dynamically', 'GET', 500)))
+                ->boolean($proxy->hasFilter($matcher->generateFilterKey('get_program_dynamically', 'GET', 500)))
                     ->isFalse()
-                ->array($matcher->getFilters())
-                    ->hasKey($matcher->generateKey('get_program', 'GET', 200))
-                    ->hasKey($matcher->generateKey('get_program_dynamically', 'GET', 200))
-                    ->hasKey($matcher->generateKey('dynamically_un', 'POST', 500))
+                ->array($filters = $matcher->getFilters())
+                    ->hasKey($matcher->generateFilterKey('get_program', 'GET', 200))
+                    ->hasKey($matcher->generateFilterKey('get_program_dynamically', 'GET', 200))
+                    ->hasKey($matcher->generateFilterKey('dynamically_un', 'POST', 500))
         ;
     }
 }

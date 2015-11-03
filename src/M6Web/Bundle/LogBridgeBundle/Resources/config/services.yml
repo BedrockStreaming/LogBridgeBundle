@@ -1,7 +1,8 @@
 parameters:
-    m6web_log_bridge.log_request_listener.name: "m6web_log_bridge.log_request_listener"
-    m6web_log_bridge.matcher.name: "m6web_log_bridge.matcher"
-    m6web_log_bridge.matcher_class.name: "LogBridgeMatcher"
+    m6web_log_bridge.log_request_listener.name: m6web_log_bridge.log_request_listener
+    m6web_log_bridge.matcher.name: m6web_log_bridge.matcher
+    m6web_log_bridge.matcher_class.name: LogBridgeMatcher
+    m6web_log_bridge.logger.class: M6Web\Bundle\LogBridgeBundle\Logger\Logger
     m6web_log_bridge.config_parser.class: M6Web\Bundle\LogBridgeBundle\Config\Parser
     m6web_log_bridge.builder.class: M6Web\Bundle\LogBridgeBundle\Matcher\Builder
     m6web_log_bridge.matcher_proxy.class: M6Web\Bundle\LogBridgeBundle\Matcher\MatcherProxy
@@ -12,6 +13,13 @@ parameters:
 
 
 services:
+    m6web_log_bridge.logger:
+        class: %m6web_log_bridge.logger.class%
+        arguments:
+            - @logger
+        tags:
+            - { name: monolog.logger, channel: %m6web_log_bridge.logger.channel% }
+
     m6web_log_bridge.config_parser:
         class: %m6web_log_bridge.config_parser.class%
         arguments:
