@@ -5,6 +5,7 @@ parameters:
     m6web_log_bridge.matcher_class.name: LogBridgeMatcher
     m6web_log_bridge.logger.class: M6Web\Bundle\LogBridgeBundle\Logger\Logger
     m6web_log_bridge.config_parser.class: M6Web\Bundle\LogBridgeBundle\Config\Parser
+    m6web_log_bridge.matcher.status.type_manager.class: M6Web\Bundle\LogBridgeBundle\Matcher\Status\TypeManager
     m6web_log_bridge.builder.class: M6Web\Bundle\LogBridgeBundle\Matcher\Builder
     m6web_log_bridge.matcher_proxy.class: M6Web\Bundle\LogBridgeBundle\Matcher\MatcherProxy
     m6web_log_bridge.log_request_listener.class: M6Web\Bundle\LogBridgeBundle\EventDispatcher\LogRequestListener
@@ -28,9 +29,13 @@ services:
         arguments:
             - @router
 
+    m6web_log_bridge.matcher.status.type_manager:
+        class: %m6web_log_bridge.matcher.status.type_manager.class%
+
     m6web_log_bridge.builder:
         class: %m6web_log_bridge.builder.class%
         arguments:
+            - @m6web_log_bridge.matcher.status.type_manager
             - %m6web_log_bridge.resources%
             - %kernel.environment%
         calls:

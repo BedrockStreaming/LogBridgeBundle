@@ -6,6 +6,8 @@ use Psr\Log\LogLevel;
 use M6Web\Bundle\LogBridgeBundle\Config\Configuration;
 use M6Web\Bundle\LogBridgeBundle\Config\FilterCollection;
 use M6Web\Bundle\LogBridgeBundle\Config\Filter;
+use M6Web\Bundle\LogBridgeBundle\Matcher\Status\TypeManager as StatusTypeManager;
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
 /**
  * PhpMatcherDumper
@@ -15,6 +17,11 @@ use M6Web\Bundle\LogBridgeBundle\Config\Filter;
 class PhpMatcherDumper
 {
     /**
+     * @var StatusTypeManager
+     */
+    private $statusTypeManager;
+
+    /**
      * @var string
      */
     private $environment;
@@ -22,11 +29,13 @@ class PhpMatcherDumper
     /**
      * __construct
      *
-     * @param string $environment Environment
+     * @param StatusTypeManager $statusTypeManager Status type manager
+     * @param string            $environment       Environment
      */
-    public function __construct($environment)
+    public function __construct(StatusTypeManager $statusTypeManager, $environment)
     {
-        $this->environment = $environment;
+        $this->statusTypeManager = $statusTypeManager;
+        $this->environment       = $environment;
     }
 
     /**
@@ -258,7 +267,6 @@ EOF;
      */
     private function generateMatchList(Configuration $configuration)
     {
-
         $filters = $this->compile($configuration);
         $code    = "[\n";
 
@@ -382,7 +390,7 @@ EOF;
         } else {
             foreach ($filter->getMethod() as $method) {
                 $methodPrefix = sprintf('%s.%s', $prefix, $method);
-                $compiledKeys     = array_merge($compiledKeys, $this->compileFilterStatus($methodPrefix, $filter));
+                $compiledKeys = array_merge($compiledKeys, $this->compileFilterStatus($methodPrefix, $filter));
             }
         }
 
@@ -405,16 +413,59 @@ EOF;
     private function compileFilterStatus($prefix, $filter)
     {
         $compiled = [];
+        $filterStatusList = $filter->getStatus();
 
-        if (is_null($filter->getStatus())) {
+        if (is_null($filterStatusList)) {
             $compiled[] = sprintf('%s.all', $prefix);
         } else {
-            foreach ($filter->getStatus() as $status) {
+            foreach ($this->parseStatus($filterStatusList) as $status) {
                 $compiled[] = sprintf('%s.%s', $prefix, $status);
             }
         }
 
         return $compiled;
+    }
+
+    /**
+     * parseStatus
+     *
+     * @param array $filterStatusList
+     *
+     * @throws \Exception status not allowed in log bridge configuration filters
+     *
+     * @return array
+     */
+    private function parseStatus(array $filterStatusList)
+    {
+        $statusList = [];
+        $statusTypes = $this->statusTypeManager->getTypes();
+
+        foreach ($filterStatusList as $value) {
+
+            $matched = false;
+            foreach ($statusTypes as $statusType) {
+
+                if ($statusType->match($value)) {
+                    $matched = true;
+
+                    if ($statusType->isExclude($value)) {
+                        $statusList = array_diff($statusList, $statusType->getStatus($value));
+                    } else {
+                        $statusList = array_merge($statusList, $statusType->getStatus($value));
+                    }
+
+                    break;
+                }
+            }
+
+            if (!$matched) {
+                throw new InvalidArgumentException(sprintf('Status %s not allowed in log bridge configuration filters', $value));
+            }
+        }
+
+        $statusList = array_unique($statusList, SORT_NUMERIC);
+
+        return $statusList;
     }
 
 }

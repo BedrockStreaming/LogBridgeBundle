@@ -5,12 +5,11 @@ namespace M6Web\Bundle\LogBridgeBundle\Matcher;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use M6Web\Bundle\LogBridgeBundle\Config\Parser as ConfigParser;
-use M6Web\Bundle\LogBridgeBundle\Config\Configuration;
 use M6Web\Bundle\LogBridgeBundle\Config\Definition\FilterConfiguration;
 use M6Web\Bundle\LogBridgeBundle\EventDispatcher\BuilderEvent;
+use M6Web\Bundle\LogBridgeBundle\Matcher\Status\TypeManager as StatusTypeManager;
 
 /**
  * Builder
@@ -26,6 +25,11 @@ class Builder implements BuilderInterface
      * @var string
      */
     const COMPILE_RESOURCES_EVENT = 'm6web_log_bridge.compile_resources';
+
+    /**
+     * @var StatusTypeManager
+     */
+    private $statusTypeManager;
 
     /**
      * @var array
@@ -75,20 +79,22 @@ class Builder implements BuilderInterface
     /**
      * __construct
      *
-     * @param array  $resources   Resources
-     * @param string $environment Environment name
+     * @param StatusTypeManager $statusTypeManager Status type manager
+     * @param array             $resources         Resources
+     * @param string            $environment       Environment name
      */
-    public function __construct(array $resources, $environment)
+    public function __construct(StatusTypeManager $statusTypeManager, array $resources, $environment)
     {
-        $this->resources        = $resources;
-        $this->environment      = $environment;
-        $this->cacheResources   = [];
-        $this->dispatcher       = null;
-        $this->configParser     = null;
-        $this->debug            = false;
-        $this->cacheDir         = '';
-        $this->matcherClassName = '';
-        $this->matcher          = null;
+        $this->statusTypeManager = $statusTypeManager;
+        $this->resources         = $resources;
+        $this->environment       = $environment;
+        $this->cacheResources    = [];
+        $this->dispatcher        = null;
+        $this->configParser      = null;
+        $this->debug             = false;
+        $this->cacheDir          = '';
+        $this->matcherClassName  = '';
+        $this->matcher           = null;
     }
 
     /**
@@ -164,7 +170,7 @@ class Builder implements BuilderInterface
     {
         $configs       = $this->loadConfigResources();
         $configuration = $this->configParser->parse($configs);
-        $dumper        = new Dumper\PhpMatcherDumper($this->environment);
+        $dumper        = new Dumper\PhpMatcherDumper($this->statusTypeManager, $this->environment);
         $options       = [];
 
         if ($this->matcherClassName) {

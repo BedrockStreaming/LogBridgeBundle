@@ -1,0 +1,26 @@
+parameters:
+    m6web_log_bridge.matcher.status.type.simple.class: M6Web\Bundle\LogBridgeBundle\Matcher\Status\Type\SimpleType
+    m6web_log_bridge.matcher.status.type.complete.class: M6Web\Bundle\LogBridgeBundle\Matcher\Status\Type\CompleteType
+    m6web_log_bridge.matcher.status.type.range.class: M6Web\Bundle\LogBridgeBundle\Matcher\Status\Type\RangeType
+    m6web_log_bridge.matcher.status.type.upper.class: M6Web\Bundle\LogBridgeBundle\Matcher\Status\Type\UpperType
+
+services:
+     m6web_log_bridge.matcher.status.type.simple:
+        class: % m6web_log_bridge.matcher.status.type.simple.class%
+        tags:
+            - { name: m6web_log_bridge.matcher_status_type }
+
+     m6web_log_bridge.matcher.status.type.complete:
+        class: % m6web_log_bridge.matcher.status.type.complete.class%
+        tags:
+            - { name: m6web_log_bridge.matcher_status_type }
+
+     m6web_log_bridge.matcher.status.type.range:
+        class: % m6web_log_bridge.matcher.status.type.range.class%
+        tags:
+            - { name: m6web_log_bridge.matcher_status_type }
+
+     m6web_log_bridge.matcher.status.type.upper:
+        class: % m6web_log_bridge.matcher.status.type.upper.class%
+        tags:
+            - { name: m6web_log_bridge.matcher_status_type }
