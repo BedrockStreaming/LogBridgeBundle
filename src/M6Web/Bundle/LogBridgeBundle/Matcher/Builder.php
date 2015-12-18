@@ -182,10 +182,11 @@ class Builder implements BuilderInterface
     public function getMatcher()
     {
         if (!$this->matcher) {
-            $cacheCode    = $this->buildMatcherCache();
+
             $matcherCache = new ConfigCache($this->getAbsoluteCachePath(), $this->isDebug());
 
             if (!$matcherCache->isFresh()) {
+                $cacheCode = $this->buildMatcherCache();
                 $resources = [];
 
                 foreach ($this->cacheResources as $resource) {
