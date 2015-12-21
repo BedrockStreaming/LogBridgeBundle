@@ -7,6 +7,7 @@ php:
   - 7
 
 before_script:
+  - phpenv config-rm xdebug.ini
   - wget http://getcomposer.org/composer.phar
   - php composer.phar install --dev
 
