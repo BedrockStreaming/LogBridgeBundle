@@ -32,6 +32,11 @@ class M6WebLogBridgeExtension extends Extension
         $container->setParameter('m6web_log_bridge.resources', $config['resources']);
         $container->setParameter('m6web_log_bridge.prefix_key', $config['prefix_key']);
         $container->setParameter('m6web_log_bridge.content_formatter', $config['content_formatter']);
+        $container->setParameter('m6web_log_bridge.exception.request_attribute', $config['exception']['request_attribute']);
+
+        if ($config['exception']['log']) {
+            $this->loadExceptionListener($container);
+        }
 
         if (!empty($config['ignore_headers'])) {
             $container
@@ -45,7 +50,7 @@ class M6WebLogBridgeExtension extends Extension
         }
 
         $this->validateLogger($container, $config['logger']);
-        $this->loadListener($container);
+        $this->loadRequestListener($container);
     }
 
     /**
@@ -76,11 +81,11 @@ class M6WebLogBridgeExtension extends Extension
     }
 
     /**
-     * loadListener
+     * loadRequestListener
      *
      * @param ContainerBuilder $container Container
      */
-    protected function loadListener(ContainerBuilder $container)
+    protected function loadRequestListener(ContainerBuilder $container)
     {
         $className          = $container->getParameter('m6web_log_bridge.log_request_listener.class');
         $serviceName        = $container->getParameter('m6web_log_bridge.log_request_listener.name');
@@ -94,10 +99,39 @@ class M6WebLogBridgeExtension extends Extension
             ->addArgument(new Reference($contentFormatter))
             ->addMethodCall('setLogger', [new Reference($loggerServiceName)])
             ->addMethodCall('setMatcher', [new Reference($matcherServiceName)])
-            ->addTag('kernel.event_listener', [
-                'event'  => 'kernel.response',
-                'method' => 'onKernelTerminate'
-            ]);
+            ->addTag(
+                'kernel.event_listener',
+                [
+                    'event'  => 'kernel.response',
+                    'method' => 'onKernelTerminate'
+                ]
+            );
+
+        $container->setDefinition($serviceName, $definition);
+    }
+
+    /**
+     * loadExceptionListener
+     *
+     * @param ContainerBuilder $container Container
+     */
+    protected function loadExceptionListener(ContainerBuilder $container)
+    {
+        $className                 = $container->getParameter('m6web_log_bridge.log_exception_listener.class');
+        $serviceName               = $container->getParameter('m6web_log_bridge.log_exception_listener.name');
+        $requestExceptionAttribute = $container->getParameter('m6web_log_bridge.exception.request_attribute');
+
+        $definition = new Definition($className);
+
+        $definition
+            ->addArgument($requestExceptionAttribute)
+            ->addTag(
+                'kernel.event_listener',
+                [
+                    'event'  => 'kernel.exception',
+                    'method' => 'onKernelException'
+                ]
+            );
 
         $container->setDefinition($serviceName, $definition);
     }

@@ -40,7 +40,7 @@ Symfony Bundle to log Request/Response with Monolog.
 m6_web_log_bridge:
     resources:
         - %kernel.root_dir%/config/m6web_log_bridge.yml
-    content_formatter: m6web_log_bridge.log_content_provider # Provider service name
+    content_formatter: m6web_log_bridge.log_content_formatter # Provider service name
     ignore_headers: # key list from mask/ignore header info
         - php-auth-pw
     prefix_key: ~ # define prefix key on log context
@@ -186,6 +186,32 @@ or simply override this parameter : ```m6web_log_bridge.log_content_formatter.cl
     ------------------------
     Here response content
 
+
+## Logging exceptions
+
+The bundle allow detailed logging of exceptions. This is ensured by the use of `exception.log` in the configuration.
+
+```yaml
+# app/config.yml
+
+m6_web_log_bridge:
+    exception: 
+        log: true
+        request_attribute: LogBridgeException
+```
+
+This switch allows the bundle to register a listener which will save any received exception and passed it within the request under the defined attribute.
+
+If you use the default formatter, change it using the configuration. The bundle provides another formatter implementation able to log exceptions.
+  
+```yaml
+# app/config.yml
+
+m6_web_log_bridge:
+    content_formatter: m6web_log_bridge.log_content_exception_formatter
+```
+
+If you prefer to use your own formatter, you will be able to read exceptions directly from the request under the attribute specified in `m6_web_log_bridge.exception.request_attribute`.
 
 
 ## Tests
