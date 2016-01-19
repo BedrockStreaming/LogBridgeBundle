@@ -1,5 +1,6 @@
 parameters:
     m6web_log_bridge.log_request_listener.name: m6web_log_bridge.log_request_listener
+    m6web_log_bridge.log_exception_listener.name: m6web_log_bridge.log_exception_listener
     m6web_log_bridge.matcher.name: m6web_log_bridge.matcher
     m6web_log_bridge.matcher_class.name: LogBridgeMatcher
     m6web_log_bridge.logger.class: M6Web\Bundle\LogBridgeBundle\Logger\Logger
@@ -7,7 +8,9 @@ parameters:
     m6web_log_bridge.builder.class: M6Web\Bundle\LogBridgeBundle\Matcher\Builder
     m6web_log_bridge.matcher_proxy.class: M6Web\Bundle\LogBridgeBundle\Matcher\MatcherProxy
     m6web_log_bridge.log_request_listener.class: M6Web\Bundle\LogBridgeBundle\EventDispatcher\LogRequestListener
+    m6web_log_bridge.log_exception_listener.class: M6Web\Bundle\LogBridgeBundle\EventDispatcher\LogExceptionListener
     m6web_log_bridge.log_content_formatter.class: M6Web\Bundle\LogBridgeBundle\Formatter\DefaultFormatter
+    m6web_log_bridge.log_content_exception_formatter.class: M6Web\Bundle\LogBridgeBundle\Formatter\ExceptionFormatter
     m6web_log_bridge.ignore_headers:
         - php-auth-pw
 
@@ -50,4 +53,9 @@ services:
             - %m6web_log_bridge.prefix_key%
         calls:
             - [ setTokenStorage, [ @?security.token_storage ] ]
-            
+
+    m6web_log_bridge.log_content_exception_formatter:
+        class: %m6web_log_bridge.log_content_exception_formatter.class%
+        parent: m6web_log_bridge.log_content_formatter
+        calls:
+            - [ setRequestExceptionAttribute, [ %m6web_log_bridge.exception.request_attribute% ] ]

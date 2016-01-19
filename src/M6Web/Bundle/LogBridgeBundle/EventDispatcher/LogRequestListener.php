@@ -22,7 +22,7 @@ class LogRequestListener
     protected $matcher;
 
     /**
-     * @var LogContentFormatter
+     * @var FormatterInterface
      */
     protected $contentFormatter;
 
