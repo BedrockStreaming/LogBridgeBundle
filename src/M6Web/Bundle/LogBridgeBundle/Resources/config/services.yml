@@ -19,14 +19,14 @@ services:
     m6web_log_bridge.logger:
         class: %m6web_log_bridge.logger.class%
         arguments:
-            - @logger
+            - '@logger'
         tags:
             - { name: monolog.logger, channel: %m6web_log_bridge.logger.channel% }
 
     m6web_log_bridge.config_parser:
         class: %m6web_log_bridge.config_parser.class%
         arguments:
-            - @router
+            - '@router'
 
     m6web_log_bridge.builder:
         class: %m6web_log_bridge.builder.class%
@@ -34,8 +34,8 @@ services:
             - %m6web_log_bridge.resources%
             - %kernel.environment%
         calls:
-            - [ setDispatcher, [ @event_dispatcher ] ]
-            - [ setConfigParser, [ @m6web_log_bridge.config_parser ] ]
+            - [ setDispatcher, [ '@event_dispatcher' ] ]
+            - [ setConfigParser, [ '@m6web_log_bridge.config_parser' ] ]
             - [ setCacheDir, [ %kernel.cache_dir% ] ]
             - [ isDebug, [ %kernel.debug% ] ]
             - [ setMatcherClassName, [ %m6web_log_bridge.matcher_class.name% ] ]
@@ -43,7 +43,7 @@ services:
     m6web_log_bridge.matcher:
         class: %m6web_log_bridge.matcher_proxy.class%
         arguments:
-            - @m6web_log_bridge.builder
+            - '@m6web_log_bridge.builder'
 
     m6web_log_bridge.log_content_formatter:
         class: %m6web_log_bridge.log_content_formatter.class%
@@ -52,7 +52,7 @@ services:
             - %m6web_log_bridge.ignore_headers%
             - %m6web_log_bridge.prefix_key%
         calls:
-            - [ setTokenStorage, [ @?security.token_storage ] ]
+            - [ setTokenStorage, [ '@?security.token_storage' ] ]
 
     m6web_log_bridge.log_content_exception_formatter:
         class: %m6web_log_bridge.log_content_exception_formatter.class%
