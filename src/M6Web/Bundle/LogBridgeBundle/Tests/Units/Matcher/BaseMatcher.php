@@ -20,13 +20,13 @@ class BaseMatcher extends BaseTest
 
     protected function getResource()
     {
-        return __DIR__ .'/../../Resources/config/config.yml';
+        return __DIR__ .'/../../Fixtures/Resources/config/config.yml';
     }
 
 
     protected function getCacheDir()
     {
-        return __DIR__.'/../../Resources/cache';
+        return __DIR__.'/../../Fixtures/Resources/cache';
     }
 
 

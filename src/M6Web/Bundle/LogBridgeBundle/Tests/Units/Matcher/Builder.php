@@ -7,13 +7,28 @@ use M6Web\Bundle\LogBridgeBundle\Matcher;
 
 class Builder extends BaseMatcher
 {
+    private function getTypeManager()
+    {
+        $typeManager = new Matcher\Status\TypeManager();
+
+        $typeManager->addType(new Matcher\Status\Type\SimpleType());
+        $typeManager->addType(new Matcher\Status\Type\CompleteType());
+        $typeManager->addType(new Matcher\Status\Type\RangeType());
+        $typeManager->addType(new Matcher\Status\Type\UpperType());
+
+        return $typeManager;
+    }
+
     public function testBuilder()
     {
-        $cacheDir     = $this->getCacheDir();
-        $matcherClass = $this->getMatcherClassName();
-
         $this
-            ->if($builder = new Matcher\Builder([], 'test'))
+            ->given(
+                $this->cacheClear(),
+                $cacheDir = $this->getCacheDir(),
+                $matcherClass = $this->getMatcherClassName(),
+                $typeManager = $this->getTypeManager()
+            )
+            ->if($builder = new Matcher\Builder($typeManager, [], 'test'))
             ->then
                 ->object($builder->setCacheDir($cacheDir))
                     ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Matcher\Builder')
@@ -56,7 +71,10 @@ class Builder extends BaseMatcher
     public function testGetMatcherBadConfiguration()
     {
         $this
-            ->if($builder = new Matcher\Builder(['invalidFilename.yml'], 'test'))
+            ->given(
+                $typeManager = $this->getTypeManager()
+            )
+            ->if($builder = new Matcher\Builder($typeManager, ['invalidFilename.yml'], 'test'))
             ->then
                 ->exception(function() use ($builder) {
                     $builder->getMatcher();

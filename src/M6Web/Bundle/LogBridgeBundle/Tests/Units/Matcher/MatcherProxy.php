@@ -6,9 +6,21 @@ use M6Web\Bundle\LogBridgeBundle\Matcher;
 
 class MatcherProxy extends BaseMatcher
 {
+    private function getTypeManager()
+    {
+        $typeManager = new Matcher\Status\TypeManager();
+
+        $typeManager->addType(new Matcher\Status\Type\SimpleType());
+        $typeManager->addType(new Matcher\Status\Type\CompleteType());
+        $typeManager->addType(new Matcher\Status\Type\RangeType());
+        $typeManager->addType(new Matcher\Status\Type\UpperType());
+
+        return $typeManager;
+    }
+
     private function getBuilder()
     {
-        $builder = new Matcher\Builder([$this->getResource()], 'test');
+        $builder = new Matcher\Builder($this->getTypeManager(), [$this->getResource()], 'test');
 
         $builder
                 ->setMatcherClassName($this->getMatcherClassName())

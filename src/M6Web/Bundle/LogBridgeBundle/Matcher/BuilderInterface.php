@@ -2,6 +2,8 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Matcher;
 
+use M6Web\Bundle\LogBridgeBundle\Matcher\Status\TypeManager as StatusTypeManager;
+
 /**
  * BuilderInterface
  */
@@ -10,10 +12,11 @@ interface BuilderInterface
     /**
      * __construct
      *
-     * @param array  $resources   Resources
-     * @param string $environment env
+     * @param StatusTypeManager $statusTypeManager Status type manager
+     * @param array             $resources         Resources
+     * @param string            $environment       Environment name
      */
-    public function __construct(array $resources, $environment);
+    public function __construct(StatusTypeManager $statusTypeManager, array $resources, $environment);
 
     /**
      * getMatcher

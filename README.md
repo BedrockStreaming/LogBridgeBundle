@@ -101,14 +101,14 @@ services:
         edit_category:
             route: get_category
             method: ['POST', 'PUT']
-            status: [400, 422, 500]
+            status: [400-422, ^510, !530-550]
             level: 'error'
             options:
                 post_parameters: true # From add post parameters in response content (with DefaultFormatter)
         all_error: # All route, all method in error
             route: ~
             method: ~
-            status: [400, 404, 422, 500]
+            status: [31*, 4*, 5*]
             level: 'critical'
 
 ```
@@ -116,6 +116,18 @@ services:
 
 You can declare all the options you want. 
 By default, only `response_body` and `post_parameters` is supported by the DefaultFormatter
+
+Status support multiples formats :
+```yaml
+status: [401] # Add status 401
+status: [^456] # Add status hundred greater than 450 (456, 457, 458, ..., 499)
+status: [4*] # Add status hundred (200, 400, 401, 402, ..., 499)
+status: [41*] # Add status decade (410, 411, 412, ..., 419)
+status: [425-440] # Add range status (425, 426, 427, ..., 440)
+status: [2*, 301, !203-210] # Add status (200, 201, 202, 211, ..., 299, 301)
+```
+*Instead of add can be use `!` to exclude status*
+
 
 
 ## Define your Provider from format log content
