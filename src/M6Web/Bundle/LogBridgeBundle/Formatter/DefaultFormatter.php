@@ -4,7 +4,7 @@ namespace M6Web\Bundle\LogBridgeBundle\Formatter;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * DefaultFormatter
@@ -27,7 +27,7 @@ class DefaultFormatter implements FormatterInterface
     protected $prefixKey;
 
     /**
-     * @var TokenStorage
+     * @var TokenStorageInterface
      */
     protected $tokenStorage;
 
@@ -181,11 +181,11 @@ class DefaultFormatter implements FormatterInterface
     /**
      * setContext
      *
-     * @param TokenStorage $tokenStorage User security token storage
+     * @param TokenStorageInterface $tokenStorage User security token storage
      *
      * @return LogRequestListener
      */
-    public function setTokenStorage(TokenStorage $tokenStorage)
+    public function setTokenStorage(TokenStorageInterface $tokenStorage)
     {
         $this->tokenStorage = $tokenStorage;
 
