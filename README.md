@@ -39,7 +39,7 @@ Symfony Bundle to log Request/Response with Monolog.
 
 m6_web_log_bridge:
     resources:
-        - %kernel.root_dir%/config/m6web_log_bridge.yml
+        - '%kernel.root_dir%/config/m6web_log_bridge.yml'
     content_formatter: m6web_log_bridge.log_content_formatter # Provider service name
     ignore_headers: # key list from mask/ignore header info
         - php-auth-pw
@@ -140,13 +140,13 @@ It is advisable to extend default provider M6Web\Bundle\LogBridgeBundle\Formatte
 ```
     services:
         m6web_log_bridge.log_content_provider:
-            class: %m6web_log_bridge.log_content_provider.class%
+            class: '%m6web_log_bridge.log_content_provider.class%'
             arguments:
-                - %kernel.environment%
-                - %m6web_log_bridge.ignore_headers%
-                - %m6web_log_bridge.prefix_key%
+                - '%kernel.environment%'
+                - '%m6web_log_bridge.ignore_headers%'
+                - '%m6web_log_bridge.prefix_key%'
             calls:
-                - [ setContext, [ @security.context ] ]
+                - [ setTokenStorage, [ '@security.token_storage' ] ]
 ```
 
 **From override :**
