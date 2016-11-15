@@ -50,35 +50,7 @@ class M6WebLogBridgeExtension extends Extension
                 );
         }
 
-        $this->validateLogger($container, $config['logger']);
         $this->loadRequestListener($container);
-    }
-
-    /**
-     * validateLogger
-     *
-     * @param ContainerBuilder $container    Container
-     * @param array            $loggerConfig Logger configuration
-     *
-     * @throws \Exception Class logger must be implement "Psr\Log\LoggerInterface"
-     *
-     * @return bool
-     */
-    protected function validateLogger(ContainerBuilder $container, $loggerConfig)
-    {
-        $loggerClass = $container->getDefinition($loggerConfig['service'])->getClass();
-
-        // If $loggerClass is not a valid namespace but a container parameter
-        if (preg_match("/^%[\w\.]+%$/", $loggerClass)) {
-            $loggerClassParameter = substr($loggerClass, 1, -1);
-            $loggerClass = $container->getParameter($loggerClassParameter);
-        }
-
-        if (!in_array('Psr\Log\LoggerInterface', class_implements($loggerClass))) {
-            throw new \Exception(sprintf('Class "%s" must be implement "Psr\Log\LoggerInterface"', $loggerClass));
-        }
-
-        return true;
     }
 
     /**
