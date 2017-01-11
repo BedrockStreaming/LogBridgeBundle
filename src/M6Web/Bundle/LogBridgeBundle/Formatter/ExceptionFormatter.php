@@ -39,7 +39,7 @@ class ExceptionFormatter extends DefaultFormatter implements ExceptionFormatterI
         if ($request->attributes->has($this->requestExceptionAttribute)) {
             $exception = $request->attributes->get($this->requestExceptionAttribute);
 
-            $logContent .= self::getExceptionTrace($exception);
+            $logContent .= $this->getExceptionTrace($exception);
         }
 
         return $logContent;
@@ -53,10 +53,10 @@ class ExceptionFormatter extends DefaultFormatter implements ExceptionFormatterI
      */
     protected function getExceptionTrace(\Exception $exception, $level = 1)
     {
-        $exceptionTrace = self::formatException($exception, $level);
+        $exceptionTrace = $this->formatException($exception, $level);
 
         if (($previousException = $exception->getPrevious()) !== null) {
-            $exceptionTrace .= self::getExceptionTrace($previousException, $level + 1);
+            $exceptionTrace .= $this->getExceptionTrace($previousException, $level + 1);
         }
 
         return $exceptionTrace;
