@@ -26,7 +26,7 @@ class CompleteType extends AbstractType implements TypeInterface
      */
     protected function transform($config)
     {
-        $refStatus = substr($config, 0, strlen($config - 2));
+        $refStatus = substr($config, 0, strlen((int) $config - 2));
 
         $rangeInternval = 100;
         if (strlen($refStatus) == 2) {
