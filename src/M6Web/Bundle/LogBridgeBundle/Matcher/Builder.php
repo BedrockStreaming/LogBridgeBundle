@@ -4,11 +4,8 @@ namespace M6Web\Bundle\LogBridgeBundle\Matcher;
 
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\Resource\FileResource;
-use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use M6Web\Bundle\LogBridgeBundle\Config\Parser as ConfigParser;
-use M6Web\Bundle\LogBridgeBundle\Config\Definition\FilterConfiguration;
-use M6Web\Bundle\LogBridgeBundle\EventDispatcher\BuilderEvent;
 use M6Web\Bundle\LogBridgeBundle\Matcher\Status\TypeManager as StatusTypeManager;
 
 /**
@@ -17,24 +14,9 @@ use M6Web\Bundle\LogBridgeBundle\Matcher\Status\TypeManager as StatusTypeManager
 class Builder implements BuilderInterface
 {
     /**
-     * @var string
-     */
-    const LOAD_RESOURCES_EVENT = 'm6web_log_bridge.load_resources';
-
-    /**
-     * @var string
-     */
-    const COMPILE_RESOURCES_EVENT = 'm6web_log_bridge.compile_resources';
-
-    /**
      * @var StatusTypeManager
      */
     private $statusTypeManager;
-
-    /**
-     * @var array
-     */
-    private $resources;
 
     /**
      * @var string
@@ -77,16 +59,26 @@ class Builder implements BuilderInterface
     private $matcher;
 
     /**
+     * @var array
+     */
+    private $filters;
+
+    /**
+     * @var array
+     */
+    private $activeFilters;
+
+    /**
      * __construct
      *
      * @param StatusTypeManager $statusTypeManager Status type manager
-     * @param array             $resources         Resources
      * @param string            $environment       Environment name
+     * @param array             $filters           Filters
+     * @param array             $activeFilters     Active Filters
      */
-    public function __construct(StatusTypeManager $statusTypeManager, array $resources, $environment)
+    public function __construct(StatusTypeManager $statusTypeManager, array $filters, array $activeFilters, $environment)
     {
         $this->statusTypeManager = $statusTypeManager;
-        $this->resources         = $resources;
         $this->environment       = $environment;
         $this->cacheResources    = [];
         $this->dispatcher        = null;
@@ -95,70 +87,8 @@ class Builder implements BuilderInterface
         $this->cacheDir          = '';
         $this->matcherClassName  = '';
         $this->matcher           = null;
-    }
-
-    /**
-     * dispatch
-     * Dispatch event if EventDispatcher service exists
-     *
-     * @param string $eventName Event name
-     * @param Event  $event     Event class
-     *
-     * @internal param string $name Event name
-     */
-    protected function dispatch($eventName, $event)
-    {
-        if ($this->dispatcher) {
-            $this->dispatcher->dispatch($eventName, $event);
-        }
-    }
-
-    /**
-     * loadConfigResources
-     *
-     * @return array
-     */
-    protected function loadConfigResources()
-    {
-        $config = [];
-        $event  = new BuilderEvent($this, $config);
-
-        /*
-         * Dispatch event before Load and validate/compile resource
-         * From add or extends configuration
-         */
-        $this->dispatch(self::LOAD_RESOURCES_EVENT, $event);
-
-        $config = $event->getConfig();
-
-        foreach ($this->resources as $resource) {
-            $config = array_merge($config, $this->parse($resource));
-
-            $this->cacheResources[] = $resource;
-        }
-
-        $event->setConfig($config);
-        $this->dispatch(self::COMPILE_RESOURCES_EVENT, $event);
-
-        return $event->getConfig();
-    }
-
-    /**
-     * parse
-     *
-     * @param string $path File path
-     *
-     * @throws \Exception
-     *
-     * @return array
-     */
-    protected function parse($path)
-    {
-        if (!is_file($path) || !$content = file_get_contents($path)) {
-            throw new \Exception(sprintf('failed to open stream: No such file or is not readable "%s"', $path));
-        }
-
-        return Yaml::parse($content, true);
+        $this->filters           = $filters;
+        $this->activeFilters     = $activeFilters;
     }
 
     /**
@@ -168,7 +98,9 @@ class Builder implements BuilderInterface
      */
     protected function buildMatcherCache()
     {
-        $configs       = $this->loadConfigResources();
+        $configs['filters'] = $this->filters;
+        $configs['active_filters'] = $this->activeFilters;
+
         $configuration = $this->configParser->parse($configs);
         $dumper        = new Dumper\PhpMatcherDumper($this->statusTypeManager, $this->environment);
         $options       = [];
@@ -219,46 +151,6 @@ class Builder implements BuilderInterface
     public function getAbsoluteCachePath()
     {
         return sprintf('%s/%s.php', $this->getCacheDir(), $this->getMatcherClassName());
-    }
-
-    /**
-     * setResources
-     *
-     * @param array $resources Resources
-     *
-     * @return Builder
-     */
-    public function setResources(array $resources)
-    {
-        $this->resources = $resources;
-
-        return $this;
-    }
-
-    /**
-     * getResources
-     *
-     * @return array
-     */
-    public function getResources()
-    {
-        return $this->resources;
-    }
-
-    /**
-     * addResource
-     *
-     * @param string $resource Resource
-     *
-     * @return Builder
-     */
-    public function addResource($resource)
-    {
-        if (!in_array($resource, $this->resources)) {
-            $this->resources[] = $resource;
-        }
-
-        return $this;
     }
 
     /**

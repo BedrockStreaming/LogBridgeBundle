@@ -83,7 +83,7 @@ class Parser
      * @param array $params
      *
      * @internal param array $config Config
-     * @return Config
+     * @return Configuration
      */
     public function parse(array $params)
     {
@@ -94,8 +94,8 @@ class Parser
             $filters = $this->createFilterCollection($params['filters']);
         }
 
-        if (!empty($params['environments'])) {
-            $config->setEnvironments($this->createEnvironmentCollection($params['environments'], $filters));
+        if (!empty($params['active_filters'])) {
+            $config->setActiveFilters($params['active_filters']);
         }
 
         $config->setFilters($filters);

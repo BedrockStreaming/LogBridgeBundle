@@ -36,7 +36,8 @@ services:
         class: "%m6web_log_bridge.builder.class%"
         arguments:
             - "@m6web_log_bridge.matcher.status.type_manager"
-            - "%m6web_log_bridge.resources%"
+            - "%m6web_log_bridge.filters%"
+            - "%m6web_log_bridge.active_filters%"
             - "%kernel.environment%"
         calls:
             - [ setDispatcher, [ "@event_dispatcher" ] ]

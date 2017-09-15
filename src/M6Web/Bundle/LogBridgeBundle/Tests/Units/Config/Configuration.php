@@ -7,25 +7,11 @@ use M6Web\Bundle\LogBridgeBundle\Config;
 
 class Configuration extends atoum
 {
-    private function getEnvironment()
-    {
-        return [
-            'dev' => [
-                'alias_un',
-                'alias_deux'
-            ],
-            'prod' => [
-                'alias_un',
-                'alias_trois'
-            ]
-        ];
-    }
-
     private function getFilters()
     {
         $collection = new Config\FilterCollection();
 
-        $filter = new Config\Filter('alias_un');
+        $filter = new Config\Filter('active_filters_one');
         $filter
             ->setRoute('route_name')
             ->setMethod(['GET', 'POST'])
@@ -34,18 +20,18 @@ class Configuration extends atoum
         $collection->add($filter);
 
 
-        $filter = new Config\Filter('alias_deux');
+        $filter = new Config\Filter('active_filters_two');
         $filter
-            ->setRoute('route_name_deux')
+            ->setRoute('route_name_two')
             ->setMethod(['PUT', 'POST'])
             ->setStatus('200');
 
         $collection->add($filter);
 
 
-        $filter = new Config\Filter('alias_trois');
+        $filter = new Config\Filter('active_filters_three');
         $filter
-            ->setRoute('route_name_trois')
+            ->setRoute('route_name_three')
             ->setMethod(['all'])
             ->setStatus([422, 404, 500]);
 
@@ -55,21 +41,30 @@ class Configuration extends atoum
     }
 
 
+    private function getActiveFilters()
+    {
+        return [
+            'active_filters_one',
+            'active_filters_two',
+            'active_filters_three'
+            ];
+    }
+
+
     public function testConfiguration()
     {
-        $environments = $this->getEnvironment();
-
+        $activeFilters = $this->getActiveFilters();
 
         $this
             ->if($configuration = new Config\Configuration())
             ->then
-                ->array($configuration->getEnvironments())
-                    ->isEmpty()
-                ->object($configuration->setEnvironments($environments))
+                ->variable($configuration->getActiveFilters())
+                    ->isNull()
+                ->object($configuration->setActiveFilters($activeFilters))
                     ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\Configuration')
-                ->array($configuration->getEnvironments())
-                    ->hasSize(2)
-                    ->hasKeys(array_keys($environments))
+                ->array($configuration->getActiveFilters())
+                    ->hasSize(3)
+                    ->hasKeys(array_keys($activeFilters))
                 ->variable($configuration->getFilters())
                     ->isNull()
                 ->object($configuration->setFilters($this->getFilters()))

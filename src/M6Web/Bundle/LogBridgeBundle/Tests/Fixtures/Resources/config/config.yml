@@ -1,11 +1,8 @@
-environments:
-    test: ~
-    dev:
-        - get_clip_all_status
-        - all_clip_500
-    prod:
-        - put_clip_form_all_status
-        - post_clip_form_all_status
+active_filters:
+    - get_clip_all_status
+    - all_clip_500
+    - put_clip_form_all_status
+    - post_clip_form_all_status
 
 filters:
     get_clip_all_status:

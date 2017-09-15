@@ -10,46 +10,45 @@ namespace M6Web\Bundle\LogBridgeBundle\Config;
 class Configuration
 {
     /**
-     * @var array
-     */
-    private $environments;
-
-    /**
      * @var FilterCollection
      */
     private $filters;
+
+    /**
+     * @var array
+     */
+    private $activeFilters;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->environments = [];
         $this->filters      = null;
+        $this->activeFilters = null;
     }
 
     /**
-     * setEnvironments
+     * setActiveFilters
      *
-     * @param array $environments Environments
-     *
+     * @param array $activeFilters
      * @return Configuration
      */
-    public function setEnvironments(array $environments)
+    public function setActiveFilters(array $activeFilters)
     {
-        $this->environments = $environments;
+        $this->activeFilters = $activeFilters;
 
         return $this;
     }
 
     /**
-     * getEnvironments
+     * getActiveFilters
      *
      * @return array
      */
-    public function getEnvironments()
+    public function getActiveFilters()
     {
-        return $this->environments;
+        return $this->activeFilters;
     }
 
     /**

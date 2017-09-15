@@ -26,6 +26,8 @@ class PhpMatcherDumper
      */
     private $environment;
 
+    private $activeFilter;
+
     /**
      * __construct
      *
@@ -330,38 +332,33 @@ EOF;
      */
     private function compile(Configuration $configuration)
     {
-        $environments    = $configuration->getEnvironments();
-        $compiledFilters = [];
-
-        if (array_key_exists($this->environment, $environments)) {
-            $compiledFilters = $this->compileEnvironment(
-                $environments[$this->environment],
-                $configuration->getFilters()
-            );
-        }
+        $compiledFilters = $this->compileLogsNeeded(
+            $configuration->getActiveFilters(),
+            $configuration->getFilters()
+        );
 
         return $compiledFilters;
     }
 
     /**
-     * compileEnvironment
+     * compileLogsNeeded
      *
-     * @param array            $aliasList List of alias filter
+     * @param array            $activeFilters List of active filters
      * @param FilterCollection $filters   Filters
      *
      * @return array
      */
-    private function compileEnvironment($aliasList, FilterCollection $filters)
+    private function compileLogsNeeded($activeFilters, FilterCollection $filters)
     {
         $compiled = [];
 
-        if (is_null($aliasList)) {
+        if (is_null($activeFilters)) {
             foreach ($filters as $filter) {
                 $compiled = array_merge($compiled, $this->compileFilter($filter));
             }
         } else {
-            foreach ($aliasList as $alias) {
-                if ($filter = $filters->getByName($alias)) {
+            foreach ($activeFilters as $activeFilter) {
+                if ($filter = $filters->getByName($activeFilter)) {
                     $compiled = array_merge($compiled, $this->compileFilter($filter));
                 }
             }
@@ -439,6 +436,8 @@ EOF;
     {
         $statusList = [];
         $statusTypes = $this->statusTypeManager->getTypes();
+
+
 
         foreach ($filterStatusList as $value) {
 
