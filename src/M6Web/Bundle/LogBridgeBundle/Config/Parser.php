@@ -49,34 +49,6 @@ class Parser
     }
 
     /**
-     * createEnvironmentCollection
-     *
-     * @param array            $environments Environments Map
-     * @param FilterCollection $filters      Filters
-     *
-     * @throws ParseException
-     * @return array
-     */
-    protected function createEnvironmentCollection(array $environments, FilterCollection $filters)
-    {
-        $envMap = [];
-
-        foreach ($environments as $name => $filterList) {
-            if (!is_array($filterList)) {
-                if (!is_null($filterList)) {
-                    throw new ParseException(sprintf('Invalid parameter value "route" : "%s"', $filterList));
-                }
-
-                $envMap[$name] = $filters->getkeys();
-            } else {
-                $envMap[$name] = $filterList;
-            }
-        }
-
-        return $envMap;
-    }
-
-    /**
      * parse
      * Load Log Request filter configuration
      *

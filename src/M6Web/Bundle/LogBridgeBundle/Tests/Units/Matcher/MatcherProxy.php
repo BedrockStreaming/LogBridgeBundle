@@ -20,7 +20,7 @@ class MatcherProxy extends BaseMatcher
 
     private function getBuilder()
     {
-        $builder = new Matcher\Builder($this->getTypeManager(), [$this->getResource()], 'test');
+        $builder = new Matcher\Builder($this->getTypeManager(), $this->getFilters(), $this->getActiveFilters(), 'test');
 
         $builder
                 ->setMatcherClassName($this->getMatcherClassName())
@@ -58,9 +58,9 @@ class MatcherProxy extends BaseMatcher
                     ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Matcher\Builder')
                 ->object($proxy->getMatcher())
                     ->isInstanceOf($this->getMatcherClassName())
-                ->boolean($proxy->match('get_program', 'GET', 200))
+                ->boolean($proxy->match('get_clip', 'GET', 200))
                     ->isTrue()
-                ->boolean($proxy->match('get_program', 'POST', 200))
+                ->boolean($proxy->match('get_clip', 'POST', 404))
                     ->isFalse()
                 ->boolean($proxy->match('invalid_route', 'GET', 200))
                     ->isFalse()
@@ -93,7 +93,7 @@ class MatcherProxy extends BaseMatcher
                 ->boolean($proxy->hasFilter($matcher->generateFilterKey('get_program_dynamically', 'GET', 500)))
                     ->isFalse()
                 ->array($filters = $matcher->getFilters())
-                    ->hasKey($matcher->generateFilterKey('get_program', 'GET', 200))
+                    ->hasKey($matcher->generateFilterKey('dynamically_deux', 'PUT', 422))
                     ->hasKey($matcher->generateFilterKey('get_program_dynamically', 'GET', 200))
                     ->hasKey($matcher->generateFilterKey('dynamically_un', 'POST', 500))
         ;

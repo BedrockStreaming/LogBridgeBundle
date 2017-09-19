@@ -72,23 +72,22 @@ class Builder implements BuilderInterface
      * __construct
      *
      * @param StatusTypeManager $statusTypeManager Status type manager
-     * @param string            $environment       Environment name
      * @param array             $filters           Filters
      * @param array             $activeFilters     Active Filters
+     * @param string            $environment       Environment name
      */
     public function __construct(StatusTypeManager $statusTypeManager, array $filters, array $activeFilters, $environment)
     {
         $this->statusTypeManager = $statusTypeManager;
+        $this->filters           = $filters;
+        $this->activeFilters     = $activeFilters;
         $this->environment       = $environment;
-        $this->cacheResources    = [];
         $this->dispatcher        = null;
         $this->configParser      = null;
         $this->debug             = false;
         $this->cacheDir          = '';
         $this->matcherClassName  = '';
         $this->matcher           = null;
-        $this->filters           = $filters;
-        $this->activeFilters     = $activeFilters;
     }
 
     /**
@@ -125,13 +124,7 @@ class Builder implements BuilderInterface
 
             if (!$matcherCache->isFresh()) {
                 $cacheCode = $this->buildMatcherCache();
-                $resources = [];
-
-                foreach ($this->cacheResources as $resource) {
-                    $resources[] = new FileResource($resource);
-                }
-
-                $matcherCache->write($cacheCode, $resources);
+                $matcherCache->write($cacheCode);
             }
 
             require_once $this->getAbsoluteCachePath();
@@ -151,48 +144,6 @@ class Builder implements BuilderInterface
     public function getAbsoluteCachePath()
     {
         return sprintf('%s/%s.php', $this->getCacheDir(), $this->getMatcherClassName());
-    }
-
-    /**
-     * setCacheResources
-     *
-     * @param array $cacheResources Resources
-     *
-     * @return Builder
-     */
-    public function setCacheResources(array $cacheResources)
-    {
-        $this->cacheResources = $cacheResources;
-
-        return $this;
-    }
-
-    /**
-     * getCacheResources
-     *
-     * @return array
-     */
-    public function getCacheResources()
-    {
-        return $this->cacheResources;
-    }
-
-    /**
-     * addResource
-     *
-     * @param array $cacheResource
-     *
-     * @internal param string $resource Resource
-     *
-     * @return Builder
-     */
-    public function addCacheResource($cacheResource)
-    {
-        if (!in_array($cacheResource, $this->cacheResources)) {
-            $this->cacheResources[] = $cacheResource;
-        }
-
-        return $this;
     }
 
     /**

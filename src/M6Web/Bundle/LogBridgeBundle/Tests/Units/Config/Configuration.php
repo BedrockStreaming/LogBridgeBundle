@@ -40,7 +40,6 @@ class Configuration extends atoum
         return $collection;
     }
 
-
     private function getActiveFilters()
     {
         return [
@@ -49,7 +48,6 @@ class Configuration extends atoum
             'active_filters_three'
             ];
     }
-
 
     public function testConfiguration()
     {

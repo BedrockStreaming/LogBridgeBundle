@@ -13,9 +13,9 @@ interface BuilderInterface
      * __construct
      *
      * @param StatusTypeManager $statusTypeManager Status type manager
-     * @param string            $environment       Environment name
      * @param array             $filters           Filters
      * @param array             $activeFilters     Active Filters
+     * @param string            $environment       Environment name
      */
     public function __construct(StatusTypeManager $statusTypeManager, array $filters, array $activeFilters, $environment);
 

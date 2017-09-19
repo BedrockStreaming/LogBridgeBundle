@@ -22,22 +22,13 @@ class PhpMatcherDumper
     private $statusTypeManager;
 
     /**
-     * @var string
-     */
-    private $environment;
-
-    private $activeFilter;
-
-    /**
      * __construct
      *
      * @param StatusTypeManager $statusTypeManager Status type manager
-     * @param string            $environment       Environment
      */
-    public function __construct(StatusTypeManager $statusTypeManager, $environment)
+    public function __construct(StatusTypeManager $statusTypeManager)
     {
         $this->statusTypeManager = $statusTypeManager;
-        $this->environment       = $environment;
     }
 
     /**
@@ -332,7 +323,7 @@ EOF;
      */
     private function compile(Configuration $configuration)
     {
-        $compiledFilters = $this->compileLogsNeeded(
+        $compiledFilters = $this->compileNeededFilters(
             $configuration->getActiveFilters(),
             $configuration->getFilters()
         );
@@ -341,14 +332,12 @@ EOF;
     }
 
     /**
-     * compileLogsNeeded
-     *
      * @param array            $activeFilters List of active filters
      * @param FilterCollection $filters   Filters
      *
      * @return array
      */
-    private function compileLogsNeeded($activeFilters, FilterCollection $filters)
+    private function compileNeededFilters($activeFilters, FilterCollection $filters)
     {
         $compiled = [];
 
@@ -436,8 +425,6 @@ EOF;
     {
         $statusList = [];
         $statusTypes = $this->statusTypeManager->getTypes();
-
-
 
         foreach ($filterStatusList as $value) {
 
