@@ -38,8 +38,39 @@ Symfony Bundle to log Request/Response with Monolog.
 # app/config.yml
 
 m6_web_log_bridge:
-    resources:
-        - '%kernel.root_dir%/config/m6web_log_bridge.yml'
+    actives_filters:
+        - get_article_error
+        - post_article_all
+        - all_error
+    filters:
+            get_article_error:
+                route: get_article
+                method: ['GET']
+                status: [422, 500]
+                level: 'error'
+                options:
+                    response_body: true # from add Response body content (with DefaultFormatter)
+            post_article_all:
+                route: post_article
+                method: ~ # from all methods
+                status: ~ # from all status
+            get_article_not_found:
+                route: get_article
+                method: ['GET']
+                status: [404]
+                level: 'warning'
+            edit_category:
+                route: get_category
+                method: ['POST', 'PUT']
+                status: [400-422, ^510, !530-550]
+                level: 'error'
+                options:
+                    post_parameters: true # From add post parameters in response content (with DefaultFormatter)
+            all_error: # All route, all method in error
+                route: ~
+                method: ~
+                status: [31*, 4*, 5*]
+                level: 'critical'
     content_formatter: m6web_log_bridge.log_content_formatter # Provider service name
     ignore_headers: # key list from mask/ignore header info
         - php-auth-pw
@@ -47,6 +78,24 @@ m6_web_log_bridge:
     logger: 
         channel: my_channel_to_log # monolog channel, optional, default 'log_bridge'
 ```
+
+*By default, `level` is `info`*
+
+You can declare all the options you want. 
+By default, only `response_body` and `post_parameters` is supported by the DefaultFormatter
+
+Status support multiples formats :
+```yaml
+status: [401] # Add status 401
+status: [^456] # Add status hundred greater than 450 (456, 457, 458, ..., 499)
+status: [4*] # Add status hundred (200, 400, 401, 402, ..., 499)
+status: [41*] # Add status decade (410, 411, 412, ..., 419)
+status: [425-440] # Add range status (425, 426, 427, ..., 440)
+status: [2*, 301, !203-210] # Add status (200, 201, 202, 211, ..., 299, 301)
+```
+*Instead of add can be use `!` to exclude status*
+
+
 
 By default, this bundle use a builtin logger with monolog support `m6web_log_bridge.logger`
 You can override this configuration by writing your own logger who must implements `Psr\Log\LoggerInterface` : 
@@ -68,67 +117,6 @@ services:
             - { name: monolog.logger, channel: log_bridge }
 ```
 *`Acme\DemoBundle\Logger\logger` must be implement `Psr\Log\LoggerInterface`*
-
-**Define your filters** :
-
-```
-    #app/config/m6web_log_bridge.yml
-    environments:
-        preprod:
-            - get_article_error
-            - post_article_all
-        prod: ~ #form all filter associated
-        recette:
-            - all_error
-
-    filters:
-        get_article_error:
-            route: get_article
-            method: ['GET']
-            status: [422, 500]
-            level: 'error'
-            options:
-                response_body: true # from add Response body content (with DefaultFormatter)
-        post_article_all:
-            route: post_article
-            method: ~ # from all methods
-            status: ~ # from all status
-        get_article_not_found:
-            route: get_article
-            method: ['GET']
-            status: [404]
-            level: 'warning'
-        edit_category:
-            route: get_category
-            method: ['POST', 'PUT']
-            status: [400-422, ^510, !530-550]
-            level: 'error'
-            options:
-                post_parameters: true # From add post parameters in response content (with DefaultFormatter)
-        all_error: # All route, all method in error
-            route: ~
-            method: ~
-            status: [31*, 4*, 5*]
-            level: 'critical'
-
-```
-*By default, `level` is `info`*
-
-You can declare all the options you want. 
-By default, only `response_body` and `post_parameters` is supported by the DefaultFormatter
-
-Status support multiples formats :
-```yaml
-status: [401] # Add status 401
-status: [^456] # Add status hundred greater than 450 (456, 457, 458, ..., 499)
-status: [4*] # Add status hundred (200, 400, 401, 402, ..., 499)
-status: [41*] # Add status decade (410, 411, 412, ..., 419)
-status: [425-440] # Add range status (425, 426, 427, ..., 440)
-status: [2*, 301, !203-210] # Add status (200, 201, 202, 211, ..., 299, 301)
-```
-*Instead of add can be use `!` to exclude status*
-
-
 
 ## Define your Provider from format log content
 
