@@ -23,12 +23,9 @@ class Parser extends BaseTest
     private function getConfig()
     {
         return [
-            'environments' => [
-                'dev' => [
+            'active_filters' => [
                     'filter_un',
                     'filter_trois'
-                ],
-                'prod' => null
             ],
             'filters' => [
                 'filter_un' => [
@@ -65,9 +62,9 @@ class Parser extends BaseTest
             ->then
                 ->object($configuration = $parser->parse($config))
                     ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\Configuration')
-                ->array($configuration->getEnvironments())
-                    ->hasSize(count($config['environments']))
-                    ->hasKeys(array_keys($config['environments']))
+                ->array($configuration->getActiveFilters())
+                    ->hasSize(count($config['active_filters']))
+                    ->hasKeys(array_keys($config['active_filters']))
                 ->object($collection = $configuration->getFilters())
                     ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\FilterCollection')
                 ->integer($collection->count())
@@ -78,25 +75,6 @@ class Parser extends BaseTest
 
     public function testInvalidConfig()
     {
-        $config = [
-            'environments' => [
-                'dev' => [
-                    'filter_un',
-                    'filter_trois'
-                ],
-                'prod' => 'azerty'
-            ]
-        ];
-
-        $this
-            ->if($parser = $this->getParser())
-            ->then
-                ->exception(function() use($parser, $config) {
-                    $parser->parse($config);
-                })
-                ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\ParseException')
-        ;
-
         $config = [
             'filters' => [
                 'filter_route_invalid' => [

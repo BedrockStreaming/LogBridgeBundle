@@ -30,7 +30,8 @@ class M6WebLogBridgeExtension extends Extension
 
         $container->setParameter('m6web_log_bridge.logger.service', $config['logger']['service']);
         $container->setParameter('m6web_log_bridge.logger.channel', $config['logger']['channel']);
-        $container->setParameter('m6web_log_bridge.resources', $config['resources']);
+        $container->setParameter('m6web_log_bridge.filters', $config['filters']);
+        $container->setParameter('m6web_log_bridge.active_filters', $config['active_filters']);
         $container->setParameter('m6web_log_bridge.prefix_key', $config['prefix_key']);
         $container->setParameter('m6web_log_bridge.content_formatter', $config['content_formatter']);
         $container->setParameter('m6web_log_bridge.exception.request_attribute', $config['exception']['request_attribute']);

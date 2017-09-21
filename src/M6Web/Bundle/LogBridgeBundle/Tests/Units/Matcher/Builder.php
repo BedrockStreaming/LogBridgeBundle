@@ -4,6 +4,7 @@ namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Matcher;
 
 use atoum;
 use M6Web\Bundle\LogBridgeBundle\Matcher;
+use M6Web\Bundle\LogBridgeBundle\Config\Parser;
 
 class Builder extends BaseMatcher
 {
@@ -19,6 +20,16 @@ class Builder extends BaseMatcher
         return $typeManager;
     }
 
+    public function getParserMock()
+    {
+        $this->mockGenerator->orphanize('__construct');
+        $this->mockGenerator->shuntParentClassCalls();
+
+        $parserMock = new \mock\M6Web\Bundle\LogBridgeBundle\Config\Parser();
+
+        return $parserMock;
+    }
+
     public function testBuilder()
     {
         $this
@@ -28,18 +39,12 @@ class Builder extends BaseMatcher
                 $matcherClass = $this->getMatcherClassName(),
                 $typeManager = $this->getTypeManager()
             )
-            ->if($builder = new Matcher\Builder($typeManager, [], 'test'))
+            ->if($builder = new Matcher\Builder($typeManager, $this->getFilters(), $this->getActiveFilters(), 'test'))
             ->then
                 ->object($builder->setCacheDir($cacheDir))
                     ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Matcher\Builder')
                 ->string($builder->getCacheDir())
                     ->isEqualTo($cacheDir)
-                ->object($builder->addResource($this->getResource()))
-                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Matcher\Builder')
-                ->object($builder->setResources([$this->getResource()]))
-                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Matcher\Builder')
-                ->array($builder->getResources())
-                    ->hasSize(1)
                 ->boolean($builder->isDebug(false))
                     ->isFalse()
                 ->boolean($builder->isDebug(true))
@@ -57,29 +62,6 @@ class Builder extends BaseMatcher
                     ->contains($matcherClass)
                 ->object($builder->getMatcher())
                     ->isInstanceOf($matcherClass)
-                ->array($builder->getCacheResources())
-                    ->hasSize(1)
-                    ->isIdenticalTo($builder->getResources())
-                    ->isIdenticalTo([$this->getResource()])
-                ->object($builder->addCacheResource('config2.yml'))
-                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Matcher\Builder')
-                ->array($builder->getCacheResources())
-                    ->hasSize(2)
-        ;
-    }
-
-    public function testGetMatcherBadConfiguration()
-    {
-        $this
-            ->given(
-                $typeManager = $this->getTypeManager()
-            )
-            ->if($builder = new Matcher\Builder($typeManager, ['invalidFilename.yml'], 'test'))
-            ->then
-                ->exception(function() use ($builder) {
-                    $builder->getMatcher();
-                })
-                    ->hasMessage('failed to open stream: No such file or is not readable "invalidFilename.yml"')
         ;
     }
 }

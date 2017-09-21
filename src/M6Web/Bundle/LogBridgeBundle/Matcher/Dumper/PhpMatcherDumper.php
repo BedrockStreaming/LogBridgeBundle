@@ -22,20 +22,13 @@ class PhpMatcherDumper
     private $statusTypeManager;
 
     /**
-     * @var string
-     */
-    private $environment;
-
-    /**
      * __construct
      *
      * @param StatusTypeManager $statusTypeManager Status type manager
-     * @param string            $environment       Environment
      */
-    public function __construct(StatusTypeManager $statusTypeManager, $environment)
+    public function __construct(StatusTypeManager $statusTypeManager)
     {
         $this->statusTypeManager = $statusTypeManager;
-        $this->environment       = $environment;
     }
 
     /**
@@ -330,38 +323,31 @@ EOF;
      */
     private function compile(Configuration $configuration)
     {
-        $environments    = $configuration->getEnvironments();
-        $compiledFilters = [];
-
-        if (array_key_exists($this->environment, $environments)) {
-            $compiledFilters = $this->compileEnvironment(
-                $environments[$this->environment],
-                $configuration->getFilters()
-            );
-        }
+        $compiledFilters = $this->compileNeededFilters(
+            $configuration->getActiveFilters(),
+            $configuration->getFilters()
+        );
 
         return $compiledFilters;
     }
 
     /**
-     * compileEnvironment
-     *
-     * @param array            $aliasList List of alias filter
+     * @param array            $activeFilters List of active filters
      * @param FilterCollection $filters   Filters
      *
      * @return array
      */
-    private function compileEnvironment($aliasList, FilterCollection $filters)
+    private function compileNeededFilters($activeFilters, FilterCollection $filters)
     {
         $compiled = [];
 
-        if (is_null($aliasList)) {
+        if (is_null($activeFilters)) {
             foreach ($filters as $filter) {
                 $compiled = array_merge($compiled, $this->compileFilter($filter));
             }
         } else {
-            foreach ($aliasList as $alias) {
-                if ($filter = $filters->getByName($alias)) {
+            foreach ($activeFilters as $activeFilter) {
+                if ($filter = $filters->getByName($activeFilter)) {
                     $compiled = array_merge($compiled, $this->compileFilter($filter));
                 }
             }

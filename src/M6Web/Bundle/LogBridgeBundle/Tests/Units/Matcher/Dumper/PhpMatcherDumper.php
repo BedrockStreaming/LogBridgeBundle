@@ -22,7 +22,7 @@ class PhpMatcherDumper extends BaseMatcher
 
     private function getBuilder()
     {
-        $builder = new Matcher\Builder($this->getTypeManager(), [$this->getResource()], 'test');
+        $builder = new Matcher\Builder($this->getTypeManager(), $this->getFilters(), $this->getActiveFilters(), 'test');
 
         $builder
                 ->setMatcherClassName($this->getMatcherClassName())
@@ -58,46 +58,6 @@ class PhpMatcherDumper extends BaseMatcher
                 ->boolean($dumper->match('put_clips_form', 'PUT', 258))
                     ->isTrue()
 
-                # delete_clip_500_all_hundred_without_580_to_590
-                ->boolean($dumper->match('delete_clip', 'DELETE', 501))
-                    ->isTrue()
-                ->boolean($dumper->match('delete_clip', 'DELETE', 510))
-                    ->isTrue()
-                ->boolean($dumper->match('delete_clip', 'DELETE', 580))
-                    ->isFalse()
-                ->boolean($dumper->match('delete_clip', 'DELETE', 589))
-                    ->isFalse()
-                ->boolean($dumper->match('delete_clip', 'DELETE', 590))
-                    ->isTrue()
-
-                # edit_clip_5*_30*_without_550_549
-                ->boolean($dumper->match('edit_clip', 'PATH', 501))
-                    ->isTrue()
-                ->boolean($dumper->match('edit_clip', 'PATH', 510))
-                    ->isTrue()
-                ->boolean($dumper->match('edit_clip', 'PATH', 550))
-                    ->isFalse()
-                ->boolean($dumper->match('edit_clip', 'PATH', 549))
-                    ->isFalse()
-                ->boolean($dumper->match('edit_clip', 'PATH', 301))
-                    ->isTrue()
-                ->boolean($dumper->match('edit_clip', 'PATH', 309))
-                    ->isTrue()
-                ->boolean($dumper->match('edit_clip', 'PATH', 310))
-                    ->isFalse()
-                ->boolean($dumper->match('edit_clip', 'PATH', 325))
-                    ->isFalse()
-
-                # edit_clip_404_to_410
-                ->boolean($dumper->match('edit_clip', 'POST', 401))
-                    ->isFalse()
-                ->boolean($dumper->match('edit_clip', 'POST', 404))
-                    ->isTrue()
-                ->boolean($dumper->match('edit_clip', 'POST', 410))
-                    ->isTrue()
-                ->boolean($dumper->match('edit_clip', 'POST', 411))
-                    ->isFalse()
-
                 # delete_clip_450_more_without_452_to_458
                 ->boolean($dumper->match('delete_clip', 'DELETE', 449))
                     ->isFalse()
@@ -113,18 +73,6 @@ class PhpMatcherDumper extends BaseMatcher
                     ->isTrue()
                 ->boolean($dumper->match('delete_clip', 'DELETE', 499))
                     ->isTrue()
-
-                # get_program
-                ->boolean($dumper->match('get_program', 'GET', 200))
-                    ->isTrue()
-                ->boolean($dumper->match('get_program', 'GET', 289))
-                    ->isTrue()
-                ->boolean($dumper->match('get_program', 'GET', 290))
-                    ->isFalse()
-                ->boolean($dumper->match('get_program', 'GET', 294))
-                    ->isFalse()
-                ->boolean($dumper->match('get_program', 'POST', 200))
-                    ->isFalse()
 
                 # invalid_route
                 ->boolean($dumper->match('invalid_route', 'GET', 200))
