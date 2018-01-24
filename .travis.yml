@@ -9,7 +9,7 @@ php:
 before_script:
   - phpenv config-rm xdebug.ini
   - wget http://getcomposer.org/composer.phar
-  - php composer.phar install --dev
+  - php -d memory_limit=3G composer.phar install
 
 script:
   - bin/atoum
