@@ -7,8 +7,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Interface FormatterInterface
- *
- * @package M6Web\Bundle\LogBridgeBundle\Formatter
  */
 interface FormatterInterface
 {
@@ -29,5 +27,4 @@ interface FormatterInterface
      * @return string
      */
     public function getLogContext(Request $request, Response $response, array $options);
-
 }

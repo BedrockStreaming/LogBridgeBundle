@@ -12,11 +12,11 @@ interface MatcherInterface
     /**
      * match
      *
-     * @param string  $route  Route name
-     * @param string  $method Method name
-     * @param integer $status Http code status
+     * @param string $route  Route name
+     * @param string $method Method name
+     * @param int    $status Http code status
      *
-     * @return boolean
+     * @return bool
      */
     public function match($route, $method, $status);
 
@@ -34,8 +34,8 @@ interface MatcherInterface
     /**
      * setFilters
      *
-     * @param array   $filters   Filter list
-     * @param boolean $overwrite Overwrite current filter
+     * @param array $filters   Filter list
+     * @param bool  $overwrite Overwrite current filter
      *
      * @return MatcherInterface
      */
@@ -53,16 +53,16 @@ interface MatcherInterface
      *
      * @param string $filter Filter
      *
-     * @return boolean
+     * @return bool
      */
     public function hasFilter($filter);
 
     /**
      * Get filter level log
      *
-     * @param string  $route  Route name
-     * @param string  $method Method name
-     * @param integer $status Http code status
+     * @param string $route  Route name
+     * @param string $method Method name
+     * @param int    $status Http code status
      *
      * @return string
      */
@@ -71,9 +71,9 @@ interface MatcherInterface
     /**
      * get options
      *
-     * @param string  $route  Route name
-     * @param string  $method Method name
-     * @param integer $status Http code status
+     * @param string $route  Route name
+     * @param string $method Method name
+     * @param int    $status Http code status
      *
      * @return array
      */
@@ -82,12 +82,11 @@ interface MatcherInterface
     /**
      * get an filter key matched with arguments
      *
-     * @param string  $route  Route name
-     * @param string  $method Method name
-     * @param integer $status Http code status
+     * @param string $route  Route name
+     * @param string $method Method name
+     * @param int    $status Http code status
      *
      * @return bool|string
      */
     public function getMatchFilterKey($route, $method, $status);
-
 }

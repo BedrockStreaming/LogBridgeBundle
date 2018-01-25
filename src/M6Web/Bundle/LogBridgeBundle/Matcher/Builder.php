@@ -3,7 +3,6 @@
 namespace M6Web\Bundle\LogBridgeBundle\Matcher;
 
 use Symfony\Component\Config\ConfigCache;
-use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use M6Web\Bundle\LogBridgeBundle\Config\Parser as ConfigParser;
 use M6Web\Bundle\LogBridgeBundle\Matcher\Status\TypeManager as StatusTypeManager;
@@ -39,7 +38,7 @@ class Builder implements BuilderInterface
     private $configParser;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $debug;
 
@@ -79,15 +78,15 @@ class Builder implements BuilderInterface
     public function __construct(StatusTypeManager $statusTypeManager, array $filters, array $activeFilters, $environment)
     {
         $this->statusTypeManager = $statusTypeManager;
-        $this->filters           = $filters;
-        $this->activeFilters     = $activeFilters;
-        $this->environment       = $environment;
-        $this->dispatcher        = null;
-        $this->configParser      = null;
-        $this->debug             = false;
-        $this->cacheDir          = '';
-        $this->matcherClassName  = '';
-        $this->matcher           = null;
+        $this->filters = $filters;
+        $this->activeFilters = $activeFilters;
+        $this->environment = $environment;
+        $this->dispatcher = null;
+        $this->configParser = null;
+        $this->debug = false;
+        $this->cacheDir = '';
+        $this->matcherClassName = '';
+        $this->matcher = null;
     }
 
     /**
@@ -101,8 +100,8 @@ class Builder implements BuilderInterface
         $configs['active_filters'] = $this->activeFilters;
 
         $configuration = $this->configParser->parse($configs);
-        $dumper        = new Dumper\PhpMatcherDumper($this->statusTypeManager, $this->environment);
-        $options       = [];
+        $dumper = new Dumper\PhpMatcherDumper($this->statusTypeManager, $this->environment);
+        $options = [];
 
         if ($this->matcherClassName) {
             $options['class'] = $this->getMatcherClassName();
@@ -119,7 +118,6 @@ class Builder implements BuilderInterface
     public function getMatcher()
     {
         if (!$this->matcher) {
-
             $matcherCache = new ConfigCache($this->getAbsoluteCachePath(), $this->isDebug());
 
             if (!$matcherCache->isFresh()) {
@@ -149,9 +147,9 @@ class Builder implements BuilderInterface
     /**
      * isDebug
      *
-     * @param boolean $debug Debug
+     * @param bool $debug Debug
      *
-     * @return boolean
+     * @return bool
      */
     public function isDebug($debug = null)
     {
@@ -237,5 +235,4 @@ class Builder implements BuilderInterface
     {
         return $this->matcherClassName;
     }
-
 }

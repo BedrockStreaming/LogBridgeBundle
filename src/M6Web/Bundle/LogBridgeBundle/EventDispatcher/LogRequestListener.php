@@ -36,8 +36,8 @@ class LogRequestListener
     public function __construct(FormatterInterface $contentFormatter)
     {
         $this->contentFormatter = $contentFormatter;
-        $this->logger           = null;
-        $this->matcher          = null;
+        $this->logger = null;
+        $this->matcher = null;
     }
 
     /**
@@ -47,13 +47,13 @@ class LogRequestListener
      */
     public function onKernelTerminate($event)
     {
-        $request  = $event->getRequest();
+        $request = $event->getRequest();
         $response = $event->getResponse();
-        $route    = $request->get('_route');
-        $method   = $request->getMethod();
-        $status   = $response->getStatusCode();
-        $level    = $this->matcher->getLevel($route, $method, $status);
-        $options  = $this->matcher->getOptions($route, $method, $status);
+        $route = $request->get('_route');
+        $method = $request->getMethod();
+        $status = $response->getStatusCode();
+        $level = $this->matcher->getLevel($route, $method, $status);
+        $options = $this->matcher->getOptions($route, $method, $status);
 
         if ($this->matcher->match($route, $method, $status)) {
             $this->logger->$level(

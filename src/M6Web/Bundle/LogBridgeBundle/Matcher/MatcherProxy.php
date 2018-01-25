@@ -33,11 +33,11 @@ class MatcherProxy implements MatcherInterface
     /**
      * match
      *
-     * @param string  $route  Route name
-     * @param string  $method Method name
-     * @param integer $status Http code status
+     * @param string $route  Route name
+     * @param string $method Method name
+     * @param int    $status Http code status
      *
-     * @return boolean
+     * @return bool
      */
     public function match($route, $method, $status)
     {
@@ -47,9 +47,9 @@ class MatcherProxy implements MatcherInterface
     /**
      * Get filter level log
      *
-     * @param string  $route  Route name
-     * @param string  $method Method name
-     * @param integer $status Http code status
+     * @param string $route  Route name
+     * @param string $method Method name
+     * @param int    $status Http code status
      *
      * @return string
      */
@@ -61,9 +61,9 @@ class MatcherProxy implements MatcherInterface
     /**
      * get options
      *
-     * @param string  $route  Route name
-     * @param string  $method Method name
-     * @param integer $status Http code status
+     * @param string $route  Route name
+     * @param string $method Method name
+     * @param int    $status Http code status
      *
      * @return array
      */
@@ -118,7 +118,7 @@ class MatcherProxy implements MatcherInterface
      *
      * @param string $filter Filter
      *
-     * @return boolean
+     * @return bool
      */
     public function hasFilter($filter)
     {
@@ -148,9 +148,9 @@ class MatcherProxy implements MatcherInterface
     /**
      * get an filter key matched with arguments
      *
-     * @param string  $route  Route name
-     * @param string  $method Method name
-     * @param integer $status Http code status
+     * @param string $route  Route name
+     * @param string $method Method name
+     * @param int    $status Http code status
      *
      * @return BuilderInterface
      */
@@ -158,6 +158,4 @@ class MatcherProxy implements MatcherInterface
     {
         return $this->matcher->getMatchFilterKey($route, $method, $status);
     }
-
-
 }

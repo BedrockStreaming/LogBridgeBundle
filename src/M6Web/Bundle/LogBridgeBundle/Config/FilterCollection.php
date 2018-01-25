@@ -8,7 +8,7 @@ namespace M6Web\Bundle\LogBridgeBundle\Config;
 class FilterCollection implements \Iterator
 {
     /**
-     * @var integer
+     * @var int
      */
     protected $iterator;
 
@@ -32,8 +32,8 @@ class FilterCollection implements \Iterator
     public function __construct(array $items = [])
     {
         $this->iterator = 0;
-        $this->keys     = array();
-        $this->values   = array();
+        $this->keys = [];
+        $this->values = [];
 
         foreach ($items as $item) {
             $this->add($item);
@@ -46,6 +46,7 @@ class FilterCollection implements \Iterator
      * @param Filter $item
      *
      * @internal param \M6Web\Bundle\LogBridgeBundle\Config\Filter $filter Filter
+     *
      * @return FilterCollection
      */
     public function add(Filter $item)
@@ -80,7 +81,7 @@ class FilterCollection implements \Iterator
      *
      * @param Filter $filter Filter
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(Filter $filter)
     {
@@ -98,7 +99,7 @@ class FilterCollection implements \Iterator
      * get
      * Get item
      *
-     * @param integer $iterator
+     * @param int $iterator
      *
      * @return mixed
      */
@@ -147,7 +148,7 @@ class FilterCollection implements \Iterator
     /**
      * key
      *
-     * @return integer
+     * @return int
      */
     public function key()
     {
@@ -159,7 +160,7 @@ class FilterCollection implements \Iterator
      */
     public function next()
     {
-        ++$this->iterator;
+        $this->iterator++;
     }
 
     /**
@@ -173,7 +174,7 @@ class FilterCollection implements \Iterator
     /**
      * valid
      *
-     * @return boolean
+     * @return bool
      */
     public function valid()
     {
@@ -183,11 +184,10 @@ class FilterCollection implements \Iterator
     /**
      * count
      *
-     * @return integer
+     * @return int
      */
     public function count()
     {
         return count($this->values);
     }
-
 }

@@ -71,8 +71,8 @@ class ExceptionFormatter extends DefaultFormatter implements ExceptionFormatterI
     protected function formatException(\Exception $exception, $level = 1)
     {
         return
-            "\nException class : \n------------------------\n" . get_class($exception) . "\n" .
-            "\nException message ($level) :\n------------------------\n" . $exception->getMessage() . "\n" .
-            "\nException trace ($level) :\n------------------------\n" . $exception->getTraceAsString() . "\n";
+            "\nException class : \n------------------------\n".get_class($exception)."\n".
+            "\nException message ($level) :\n------------------------\n".$exception->getMessage()."\n".
+            "\nException trace ($level) :\n------------------------\n".$exception->getTraceAsString()."\n";
     }
 }

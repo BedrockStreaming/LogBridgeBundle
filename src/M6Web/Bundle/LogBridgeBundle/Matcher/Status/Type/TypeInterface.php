@@ -12,7 +12,7 @@ interface TypeInterface
      *
      * @param string $config
      *
-     * @return boolean
+     * @return bool
      */
     public function match($config);
 

@@ -38,12 +38,12 @@ class DefaultFormatter implements FormatterInterface
      * @param array  $ignoreHeaders Array list from ignore header info
      * @param string $prefixKey     Log context prefix key
      */
-    public function __construct($environment, array $ignoreHeaders = array(), $prefixKey = '')
+    public function __construct($environment, array $ignoreHeaders = [], $prefixKey = '')
     {
-        $this->environment   = $environment;
+        $this->environment = $environment;
         $this->ignoreHeaders = $ignoreHeaders;
-        $this->prefixKey     = $prefixKey;
-        $this->tokenStorage  = null;
+        $this->prefixKey = $prefixKey;
+        $this->tokenStorage = null;
     }
 
     /**
@@ -64,7 +64,7 @@ class DefaultFormatter implements FormatterInterface
         $content = '';
 
         foreach ($tree as $key => $value) {
-            $content .= $tree->getPrefix() . $key . ' : ' . $tree->getEntry()."\n";
+            $content .= $tree->getPrefix().$key.' : '.$tree->getEntry()."\n";
         }
 
         return $content;
@@ -85,7 +85,7 @@ class DefaultFormatter implements FormatterInterface
         $requestContent = "Request\n------------------------\n";
 
         foreach ($requestHeaders as $name => $values) {
-            $requestContent .= str_pad($name, 20, ' ', STR_PAD_RIGHT) .': '. $values[0] ."\n";
+            $requestContent .= str_pad($name, 20, ' ', STR_PAD_RIGHT).': '.$values[0]."\n";
         }
 
         $responseContent = sprintf(
@@ -110,7 +110,7 @@ class DefaultFormatter implements FormatterInterface
         // Render response body content
         if (isset($options['response_body'])) {
             $responseContent .= "Response body\n------------------------\n";
-            $responseContent .= $response->getContent() ."\n";
+            $responseContent .= $response->getContent()."\n";
         }
 
         return sprintf(
@@ -131,19 +131,19 @@ class DefaultFormatter implements FormatterInterface
      */
     public function getLogContext(Request $request, Response $response, array $options)
     {
-        $route   = $request->get('_route');
-        $method  = $request->getMethod();
-        $status  = $response->getStatusCode();
+        $route = $request->get('_route');
+        $method = $request->getMethod();
+        $status = $response->getStatusCode();
 
-        $context = array(
+        $context = [
             'environment' => $this->environment,
-            'route'       => $route,
-            'method'      => $method,
-            'status'      => $status,
-            'user'        => $this->getUsername(),
-            'key'         => sprintf('%s.%s.%s.%s', $this->environment, $route, $method, $status),
-            'uri'         => $request->getUri()
-        );
+            'route' => $route,
+            'method' => $method,
+            'status' => $status,
+            'user' => $this->getUsername(),
+            'key' => sprintf('%s.%s.%s.%s', $this->environment, $route, $method, $status),
+            'uri' => $request->getUri(),
+        ];
 
         if ($this->prefixKey) {
             $context['key'] = sprintf('%s.%s', $this->prefixKey, $context['key']);
@@ -237,5 +237,4 @@ class DefaultFormatter implements FormatterInterface
     {
         return $this->prefixKey;
     }
-
 }

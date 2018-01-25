@@ -32,7 +32,7 @@ class MatcherStatusTypeCompilerPass implements CompilerPassInterface
             foreach ($tags as $attributes) {
                 $typeManager->addMethodCall(
                     'addType',
-                    array(new Reference($id))
+                    [new Reference($id)]
                 );
             }
         }

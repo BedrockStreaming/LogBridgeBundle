@@ -4,8 +4,6 @@ namespace M6Web\Bundle\LogBridgeBundle\Config;
 
 /**
  * Class Configuration
- *
- * @package M6Web\Bundle\LogBridgeBundle\Config
  */
 class Configuration
 {
@@ -24,7 +22,7 @@ class Configuration
      */
     public function __construct()
     {
-        $this->filters      = null;
+        $this->filters = null;
         $this->activeFilters = null;
     }
 
@@ -75,5 +73,4 @@ class Configuration
     {
         return $this->filters;
     }
-
 }

@@ -3,15 +3,12 @@
  * Class - not so cool - to build a default logger
  */
 
-
 namespace M6Web\Bundle\LogBridgeBundle\Logger;
 
 use Psr\Log\LoggerInterface;
 
 /**
  * Class Logger
- *
- * @package M6Web\Bundle\LogBridgeBundle\Logger
  */
 class Logger implements LoggerInterface
 {
@@ -28,81 +25,72 @@ class Logger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function emergency($message, array $context = array())
+    public function emergency($message, array $context = [])
     {
-
         return $this->logger->emergency($message, $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function alert($message, array $context = array())
+    public function alert($message, array $context = [])
     {
-
         return $this->logger->alert($message, $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function critical($message, array $context = array())
+    public function critical($message, array $context = [])
     {
-
         return $this->logger->critical($message, $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function error($message, array $context = array())
+    public function error($message, array $context = [])
     {
-
         return $this->logger->error($message, $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function warning($message, array $context = array())
+    public function warning($message, array $context = [])
     {
-
         return $this->logger->warning($message, $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function notice($message, array $context = array())
+    public function notice($message, array $context = [])
     {
-
         return $this->logger->notice($message, $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function info($message, array $context = array())
+    public function info($message, array $context = [])
     {
-
         return $this->logger->info($message, $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function debug($message, array $context = array())
+    public function debug($message, array $context = [])
     {
-
         return $this->logger->debug($message, $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function log($level, $message, array $context = array())
+    public function log($level, $message, array $context = [])
     {
-
         return $this->logger->log($level, $message, $context);
     }
 }

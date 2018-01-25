@@ -12,7 +12,6 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 /**
  * PhpMatcherDumper
  * Generate Php class cache
- *
  */
 class PhpMatcherDumper
 {
@@ -41,11 +40,10 @@ class PhpMatcherDumper
      */
     public function dump(Configuration $configuration, array $options = [])
     {
-
         $options = array_replace([
-            'class'         => 'LogBridgeMatcher',
-            'interface'     => 'M6Web\\Bundle\\LogBridgeBundle\\Matcher\\MatcherInterface',
-            'default_level' => LogLevel::INFO
+            'class' => 'LogBridgeMatcher',
+            'interface' => 'M6Web\\Bundle\\LogBridgeBundle\\Matcher\\MatcherInterface',
+            'default_level' => LogLevel::INFO,
         ], $options);
 
         return <<<EOF
@@ -261,16 +259,13 @@ EOF;
     private function generateMatchList(Configuration $configuration)
     {
         $filters = $this->compile($configuration);
-        $code    = "[\n";
+        $code = "[\n";
 
         foreach ($filters as $filterKey => $filter) {
-
             $code .= sprintf("        '%s' => [\n", $filterKey);
 
             foreach ($filter as $key => $config) {
-
                 if (is_array($config)) {
-
                     $code .= sprintf("            '%s' => [", $key);
 
                     if (count($config) > 0) {
@@ -280,24 +275,22 @@ EOF;
                             if (is_bool($value)) {
                                 $value = $value == true ? 'true' : 'false';
                             } else {
-                                $value = "'" . $value . "'";
+                                $value = "'".$value."'";
                             }
 
                             $code .= sprintf("                '%s' => %s,\n", $name, $value);
                         }
 
-                        $code .= "            ";
+                        $code .= '            ';
                     }
 
                     $code .= "],\n";
-
                 } else {
                     $code .= sprintf("            '%s' => '%s',\n", $key, $config);
                 }
-
             }
 
-            $code = trim($code, ",");
+            $code = trim($code, ',');
             $code .= "        ],\n";
         }
 
@@ -311,7 +304,6 @@ EOF;
      */
     private \$filters = {$code};
 EOF;
-
     }
 
     /**
@@ -333,7 +325,7 @@ EOF;
 
     /**
      * @param array            $activeFilters List of active filters
-     * @param FilterCollection $filters   Filters
+     * @param FilterCollection $filters       Filters
      *
      * @return array
      */
@@ -362,16 +354,17 @@ EOF;
      * @param Filter $filter Filter
      *
      * @internal param string $prefix Prefix key
+     *
      * @return array
      */
     private function compileFilter(Filter $filter)
     {
         $compiledKeys = [];
-        $compiled     = [];
-        $prefix       = is_null($filter->getRoute()) ? 'all': $filter->getRoute();
+        $compiled = [];
+        $prefix = is_null($filter->getRoute()) ? 'all' : $filter->getRoute();
 
         if (is_null($filter->getMethod())) {
-            $prefix   = sprintf('%s.all', $prefix, $filter->getMethod());
+            $prefix = sprintf('%s.all', $prefix, $filter->getMethod());
             $compiledKeys = $this->compileFilterStatus($prefix, $filter);
         } else {
             foreach ($filter->getMethod() as $method) {
@@ -427,10 +420,8 @@ EOF;
         $statusTypes = $this->statusTypeManager->getTypes();
 
         foreach ($filterStatusList as $value) {
-
             $matched = false;
             foreach ($statusTypes as $statusType) {
-
                 if ($statusType->match($value)) {
                     $matched = true;
 
@@ -453,5 +444,4 @@ EOF;
 
         return $statusList;
     }
-
 }
