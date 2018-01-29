@@ -2,8 +2,6 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Matcher\Status\Type;
 
-use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-
 /**
  * Abstract class AbstractType
  */
@@ -19,7 +17,7 @@ abstract class AbstractType implements TypeInterface
      *
      * @param string $config
      *
-     * @return boolean
+     * @return bool
      */
     public function match($config)
     {
@@ -58,7 +56,7 @@ abstract class AbstractType implements TypeInterface
      *
      * @param string $config
      *
-     * @return boolean
+     * @return bool
      */
     final public function isExclude($config)
     {

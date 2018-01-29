@@ -10,8 +10,6 @@ use M6Web\Bundle\LogBridgeBundle\DependencyInjection\CompilerPass\MatcherStatusT
 
 /**
  * Class M6WebLogBridgeBundle
- *
- * @package M6Web\Bundle\LogBridgeBundle
  */
 class M6WebLogBridgeBundle extends Bundle
 {

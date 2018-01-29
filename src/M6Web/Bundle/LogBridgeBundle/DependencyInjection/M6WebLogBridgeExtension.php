@@ -17,14 +17,14 @@ use Symfony\Component\DependencyInjection\Reference;
 class M6WebLogBridgeExtension extends Extension
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
-        $config        = $this->processConfiguration($configuration, $configs);
+        $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('matcher/status/types.yml');
         $loader->load('services.yml');
 
@@ -61,11 +61,11 @@ class M6WebLogBridgeExtension extends Extension
      */
     protected function loadRequestListener(ContainerBuilder $container)
     {
-        $className          = $container->getParameter('m6web_log_bridge.log_request_listener.class');
-        $serviceName        = $container->getParameter('m6web_log_bridge.log_request_listener.name');
+        $className = $container->getParameter('m6web_log_bridge.log_request_listener.class');
+        $serviceName = $container->getParameter('m6web_log_bridge.log_request_listener.name');
         $matcherServiceName = $container->getParameter('m6web_log_bridge.matcher.name');
-        $contentFormatter   = $container->getParameter('m6web_log_bridge.content_formatter');
-        $loggerServiceName  = $container->getParameter('m6web_log_bridge.logger.service');
+        $contentFormatter = $container->getParameter('m6web_log_bridge.content_formatter');
+        $loggerServiceName = $container->getParameter('m6web_log_bridge.logger.service');
 
         $definition = new Definition($className);
 
@@ -76,8 +76,8 @@ class M6WebLogBridgeExtension extends Extension
             ->addTag(
                 'kernel.event_listener',
                 [
-                    'event'  => 'kernel.response',
-                    'method' => 'onKernelTerminate'
+                    'event' => 'kernel.response',
+                    'method' => 'onKernelTerminate',
                 ]
             );
 
@@ -91,8 +91,8 @@ class M6WebLogBridgeExtension extends Extension
      */
     protected function loadExceptionListener(ContainerBuilder $container)
     {
-        $className                 = $container->getParameter('m6web_log_bridge.log_exception_listener.class');
-        $serviceName               = $container->getParameter('m6web_log_bridge.log_exception_listener.name');
+        $className = $container->getParameter('m6web_log_bridge.log_exception_listener.class');
+        $serviceName = $container->getParameter('m6web_log_bridge.log_exception_listener.name');
         $requestExceptionAttribute = $container->getParameter('m6web_log_bridge.exception.request_attribute');
 
         $definition = new Definition($className);
@@ -102,8 +102,8 @@ class M6WebLogBridgeExtension extends Extension
             ->addTag(
                 'kernel.event_listener',
                 [
-                    'event'  => 'kernel.exception',
-                    'method' => 'onKernelException'
+                    'event' => 'kernel.exception',
+                    'method' => 'onKernelException',
                 ]
             );
 

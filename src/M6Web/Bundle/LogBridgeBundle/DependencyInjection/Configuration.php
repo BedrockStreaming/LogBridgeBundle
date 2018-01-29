@@ -13,12 +13,12 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class Configuration implements ConfigurationInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode    = $treeBuilder->root('m6web_log_bridge');
+        $rootNode = $treeBuilder->root('m6web_log_bridge');
 
         $rootNode
             ->children()
@@ -44,7 +44,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('ignore_headers')
                     ->prototype('scalar')
-                        ->defaultValue(array())
+                        ->defaultValue([])
                     ->end()
                 ->end()
                 ->arrayNode('filters')->isRequired()
@@ -73,5 +73,4 @@ class Configuration implements ConfigurationInterface
 
         return $treeBuilder;
     }
-
 }

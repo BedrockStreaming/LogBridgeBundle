@@ -25,5 +25,4 @@ interface BuilderInterface
      * @return MatcherInterface
      */
     public function getMatcher();
-
 }

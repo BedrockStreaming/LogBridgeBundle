@@ -26,10 +26,10 @@ class BuilderEvent extends Event
      * @param BuilderInterface $builder Builder
      * @param array            $config  Config
      */
-    public function __construct(BuilderInterface $builder, array $config = array())
+    public function __construct(BuilderInterface $builder, array $config = [])
     {
         $this->builder = $builder;
-        $this->config  = $config;
+        $this->config = $config;
     }
 
     /**
@@ -79,5 +79,4 @@ class BuilderEvent extends Event
     {
         return $this->config;
     }
-
 }

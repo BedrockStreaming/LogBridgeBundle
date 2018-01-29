@@ -43,7 +43,7 @@ class FilterParser
      */
     public function __construct(RouterInterface $router = null)
     {
-        $this->router      = $router;
+        $this->router = $router;
         $this->filterClass = '';
     }
 
@@ -68,7 +68,7 @@ class FilterParser
      *
      * @param string $name Route name
      *
-     * @return boolean
+     * @return bool
      */
     protected function isRoute($name)
     {
@@ -82,6 +82,7 @@ class FilterParser
      * @param array  $config configuration
      *
      * @throws ParseException
+     *
      * @internal param array $filterConfig
      *
      * @return Filter
@@ -163,7 +164,7 @@ class FilterParser
      * parseLevel
      *
      * @param Filter $filter Filter
-     * @param mixed  $level Level parameter value
+     * @param mixed  $level  Level parameter value
      *
      * @throws ParseException
      */
@@ -194,13 +195,13 @@ class FilterParser
         return $this;
     }
 
-
     /**
      * setFilterClass
      *
      * @param string $filterClass Filter class name
      *
      * @return FilterParser
+     *
      * @throws \RuntimeException
      */
     public function setFilterClass($filterClass)
@@ -233,5 +234,4 @@ class FilterParser
     {
         return $this->filterClass;
     }
-
 }

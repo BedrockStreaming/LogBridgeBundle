@@ -44,11 +44,11 @@ class Filter
      */
     public function __construct($name)
     {
-        $this->name    = $name;
-        $this->route   = null;
-        $this->method  = null;
-        $this->status  = null;
-        $this->level  = null;
+        $this->name = $name;
+        $this->route = null;
+        $this->method = null;
+        $this->status = null;
+        $this->level = null;
         $this->options = [];
     }
 
@@ -181,5 +181,4 @@ class Filter
     {
         return $this->options;
     }
-
 }

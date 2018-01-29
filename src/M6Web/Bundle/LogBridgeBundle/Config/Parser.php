@@ -26,7 +26,7 @@ class Parser
      */
     public function __construct(RouterInterface $router)
     {
-        $this->router       = $router;
+        $this->router = $router;
         $this->filterParser = null;
     }
 
@@ -55,11 +55,12 @@ class Parser
      * @param array $params
      *
      * @internal param array $config Config
+     *
      * @return Configuration
      */
     public function parse(array $params)
     {
-        $config  = new Configuration();
+        $config = new Configuration();
         $filters = new FilterCollection();
 
         if (!empty($params['filters'])) {
@@ -88,5 +89,4 @@ class Parser
 
         return $this->filterParser;
     }
-
 }
