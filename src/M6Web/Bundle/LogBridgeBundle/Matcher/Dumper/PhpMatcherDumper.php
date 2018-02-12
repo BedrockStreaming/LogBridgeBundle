@@ -363,7 +363,7 @@ EOF;
         $compiled = [];
         $prefix = is_null($filter->getRoute()) ? 'all' : $filter->getRoute();
 
-        if (is_null($filter->getMethod())) {
+        if (empty($filter->getMethod())) {
             $prefix = sprintf('%s.all', $prefix, $filter->getMethod());
             $compiledKeys = $this->compileFilterStatus($prefix, $filter);
         } else {
