@@ -38,7 +38,7 @@ Symfony Bundle to log Request/Response with Monolog.
 # app/config.yml
 
 m6_web_log_bridge:
-    actives_filters:
+    active_filters:
         - get_article_error
         - post_article_all
         - all_error
