@@ -17,8 +17,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('m6web_log_bridge');
+        $treeBuilder = new TreeBuilder('m6web_log_bridge');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
