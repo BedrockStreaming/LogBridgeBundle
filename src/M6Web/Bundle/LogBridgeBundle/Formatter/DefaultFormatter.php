@@ -49,8 +49,6 @@ class DefaultFormatter implements FormatterInterface
     /**
      * Format parameters as tree
      *
-     * @param array $parameters
-     *
      * @return string
      */
     protected function formatParameters(array $parameters)

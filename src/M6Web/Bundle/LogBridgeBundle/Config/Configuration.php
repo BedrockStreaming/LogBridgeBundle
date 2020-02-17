@@ -29,8 +29,6 @@ class Configuration
     /**
      * setActiveFilters
      *
-     * @param array $activeFilters
-     *
      * @return Configuration
      */
     public function setActiveFilters(array $activeFilters)

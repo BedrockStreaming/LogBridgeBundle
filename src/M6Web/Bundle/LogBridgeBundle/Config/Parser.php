@@ -52,8 +52,6 @@ class Parser
      * parse
      * Load Log Request filter configuration
      *
-     * @param array $params
-     *
      * @internal param array $config Config
      *
      * @return Configuration

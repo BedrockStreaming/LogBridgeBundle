@@ -42,10 +42,7 @@ abstract class AbstractType implements TypeInterface
         $status = $this->transform($config);
 
         if (!is_array($status)) {
-            throw new \Exception(
-                sprintf('"transform" method must be return an array in class "%s"', get_class($this)),
-                500
-            );
+            throw new \Exception(sprintf('"transform" method must be return an array in class "%s"', get_class($this)), 500);
         }
 
         return $status;

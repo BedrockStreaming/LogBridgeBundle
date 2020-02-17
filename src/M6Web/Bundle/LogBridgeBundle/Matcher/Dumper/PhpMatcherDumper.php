@@ -2,11 +2,11 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Matcher\Dumper;
 
-use Psr\Log\LogLevel;
 use M6Web\Bundle\LogBridgeBundle\Config\Configuration;
-use M6Web\Bundle\LogBridgeBundle\Config\FilterCollection;
 use M6Web\Bundle\LogBridgeBundle\Config\Filter;
+use M6Web\Bundle\LogBridgeBundle\Config\FilterCollection;
 use M6Web\Bundle\LogBridgeBundle\Matcher\Status\TypeManager as StatusTypeManager;
+use Psr\Log\LogLevel;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
 /**
@@ -32,9 +32,6 @@ class PhpMatcherDumper
 
     /**
      * dump
-     *
-     * @param Configuration $configuration
-     * @param array         $options
      *
      * @return string
      */
@@ -252,8 +249,6 @@ EOF;
     /**
      * generateMatchList
      *
-     * @param Configuration $configuration
-     *
      * @return string
      */
     private function generateMatchList(Configuration $configuration)
@@ -407,8 +402,6 @@ EOF;
 
     /**
      * parseStatus
-     *
-     * @param array $filterStatusList
      *
      * @throws \Exception status not allowed in log bridge configuration filters
      *

@@ -2,10 +2,10 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Matcher;
 
-use Symfony\Component\Config\ConfigCache;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use M6Web\Bundle\LogBridgeBundle\Config\Parser as ConfigParser;
 use M6Web\Bundle\LogBridgeBundle\Matcher\Status\TypeManager as StatusTypeManager;
+use Symfony\Component\Config\ConfigCache;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Builder
@@ -186,8 +186,6 @@ class Builder implements BuilderInterface
 
     /**
      * setDispatcher
-     *
-     * @param EventDispatcherInterface $dispatcher
      *
      * @return Builder
      */

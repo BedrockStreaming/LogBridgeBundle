@@ -212,12 +212,7 @@ class FilterParser
             !$reflection->isInstantiable()
              || !$reflection->isSubclassOf('M6Web\Bundle\LogBridgeBundle\Config\Filter')
         ) {
-            throw new \RuntimeException(
-                sprintf(
-                    '"%s" is not instantiable or is not a subclass of "M6Web\Bundle\LogBridgeBundle\Config\Filter"',
-                    $filterClass
-                )
-            );
+            throw new \RuntimeException(sprintf('"%s" is not instantiable or is not a subclass of "M6Web\Bundle\LogBridgeBundle\Config\Filter"', $filterClass));
         }
 
         $this->filterClass = $filterClass;
