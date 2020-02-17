@@ -25,8 +25,6 @@ class FilterCollection implements \Iterator
     /**
      * __construct
      *
-     * @param array $items
-     *
      * @internal param array $filters Filters
      */
     public function __construct(array $items = [])
@@ -42,8 +40,6 @@ class FilterCollection implements \Iterator
 
     /**
      * add
-     *
-     * @param Filter $item
      *
      * @internal param \M6Web\Bundle\LogBridgeBundle\Config\Filter $filter Filter
      *

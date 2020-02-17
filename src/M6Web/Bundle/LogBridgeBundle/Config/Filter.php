@@ -161,8 +161,6 @@ class Filter
     /**
      * set filter options
      *
-     * @param array $options
-     *
      * @return Filter
      */
     public function setOptions(array $options)

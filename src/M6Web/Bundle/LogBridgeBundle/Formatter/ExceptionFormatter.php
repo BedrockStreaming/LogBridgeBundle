@@ -46,8 +46,7 @@ class ExceptionFormatter extends DefaultFormatter implements ExceptionFormatterI
     }
 
     /**
-     * @param \Exception $exception
-     * @param int        $level
+     * @param int $level
      *
      * @return string
      */
@@ -63,8 +62,7 @@ class ExceptionFormatter extends DefaultFormatter implements ExceptionFormatterI
     }
 
     /**
-     * @param \Exception $exception
-     * @param int        $level
+     * @param int $level
      *
      * @return string
      */

@@ -27,8 +27,6 @@ class TypeManager
     /**
      * Add a type
      *
-     * @param TypeInterface $type
-     *
      * @return $this
      */
     public function addType(TypeInterface $type)
@@ -44,8 +42,6 @@ class TypeManager
 
     /**
      * Remove a type
-     *
-     * @param TypeInterface $typeToRemove
      *
      * @return $this
      */
@@ -63,8 +59,6 @@ class TypeManager
 
     /**
      * Check if type pass is already record as type
-     *
-     * @param TypeInterface $typeToCheck
      *
      * @return bool
      */

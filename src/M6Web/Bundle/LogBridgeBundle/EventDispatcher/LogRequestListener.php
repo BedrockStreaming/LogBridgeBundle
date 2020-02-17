@@ -2,9 +2,9 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\EventDispatcher;
 
-use Psr\Log\LoggerInterface;
-use M6Web\Bundle\LogBridgeBundle\Matcher\MatcherInterface;
 use M6Web\Bundle\LogBridgeBundle\Formatter\FormatterInterface;
+use M6Web\Bundle\LogBridgeBundle\Matcher\MatcherInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * LogRequestListener
@@ -28,8 +28,6 @@ class LogRequestListener
 
     /**
      * Construct
-     *
-     * @param FormatterInterface $contentFormatter
      *
      * @internal param \Psr\Log\LoggerInterface $logger Logger
      */

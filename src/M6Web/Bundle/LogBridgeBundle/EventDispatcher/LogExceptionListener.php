@@ -24,8 +24,6 @@ class LogExceptionListener
 
     /**
      * React to an exception to give error message to log bridge
-     *
-     * @param GetResponseForExceptionEvent $event
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
