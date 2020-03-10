@@ -27,8 +27,14 @@ class LogExceptionListener
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
+        if (method_exists($event, 'getThrowable')) {
+            $exception = $event->getThrowable();
+        } else {
+            $exception = $event->getException();
+        }
+
         $request = $event->getRequest();
         $request->setRequestFormat('json');
-        $request->attributes->add([$this->requestExceptionAttribute => $event->getException()]);
+        $request->attributes->add([$this->requestExceptionAttribute => $exception]);
     }
 }
