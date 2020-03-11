@@ -9,14 +9,10 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class Parser
 {
-    /**
-     * @var RouterInterface
-     */
+    /** @var RouterInterface */
     private $router;
 
-    /**
-     * @var FilterParser
-     */
+    /** @var FilterParser */
     private $filterParser;
 
     /**
@@ -51,8 +47,6 @@ class Parser
     /**
      * parse
      * Load Log Request filter configuration
-     *
-     * @param array $params
      *
      * @internal param array $config Config
      *

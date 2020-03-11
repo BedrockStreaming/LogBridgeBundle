@@ -9,9 +9,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
  */
 class LogExceptionListener
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $requestExceptionAttribute;
 
     /**
@@ -24,8 +22,6 @@ class LogExceptionListener
 
     /**
      * React to an exception to give error message to log bridge
-     *
-     * @param GetResponseForExceptionEvent $event
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {

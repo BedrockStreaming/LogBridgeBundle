@@ -9,9 +9,7 @@ use M6Web\Bundle\LogBridgeBundle\Matcher\Status\Type\TypeInterface;
  */
 class TypeManager
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $types = [];
 
     /**
@@ -26,8 +24,6 @@ class TypeManager
 
     /**
      * Add a type
-     *
-     * @param TypeInterface $type
      *
      * @return $this
      */
@@ -45,8 +41,6 @@ class TypeManager
     /**
      * Remove a type
      *
-     * @param TypeInterface $typeToRemove
-     *
      * @return $this
      */
     public function removeType(TypeInterface $typeToRemove)
@@ -63,8 +57,6 @@ class TypeManager
 
     /**
      * Check if type pass is already record as type
-     *
-     * @param TypeInterface $typeToCheck
      *
      * @return bool
      */

@@ -2,69 +2,47 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Matcher;
 
-use Symfony\Component\Config\ConfigCache;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use M6Web\Bundle\LogBridgeBundle\Config\Parser as ConfigParser;
 use M6Web\Bundle\LogBridgeBundle\Matcher\Status\TypeManager as StatusTypeManager;
+use Symfony\Component\Config\ConfigCache;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Builder
  */
 class Builder implements BuilderInterface
 {
-    /**
-     * @var StatusTypeManager
-     */
+    /** @var StatusTypeManager */
     private $statusTypeManager;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $environment;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $cacheResources;
 
-    /**
-     * @var EventDispatcherInterface
-     */
+    /** @var EventDispatcherInterface */
     private $dispatcher;
 
-    /**
-     * @var Loader
-     */
+    /** @var Loader */
     private $configParser;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     private $debug;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $cacheDir;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $matcherClassName;
 
-    /**
-     * @var MatcherInterface
-     */
+    /** @var MatcherInterface */
     private $matcher;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $filters;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $activeFilters;
 
     /**
@@ -186,8 +164,6 @@ class Builder implements BuilderInterface
 
     /**
      * setDispatcher
-     *
-     * @param EventDispatcherInterface $dispatcher
      *
      * @return Builder
      */

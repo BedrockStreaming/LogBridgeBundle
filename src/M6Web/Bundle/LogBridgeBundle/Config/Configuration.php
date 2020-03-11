@@ -7,14 +7,10 @@ namespace M6Web\Bundle\LogBridgeBundle\Config;
  */
 class Configuration
 {
-    /**
-     * @var FilterCollection
-     */
+    /** @var FilterCollection */
     private $filters;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $activeFilters;
 
     /**
@@ -28,8 +24,6 @@ class Configuration
 
     /**
      * setActiveFilters
-     *
-     * @param array $activeFilters
      *
      * @return Configuration
      */

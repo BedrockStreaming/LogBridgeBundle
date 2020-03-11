@@ -2,8 +2,8 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\DependencyInjection\CompilerPass;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -11,9 +11,6 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class MatcherStatusTypeCompilerPass implements CompilerPassInterface
 {
-    /**
-     * @param ContainerBuilder $container
-     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->has('m6web_log_bridge.matcher.status.type_manager')) {

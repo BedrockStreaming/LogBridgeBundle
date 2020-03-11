@@ -10,9 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ExceptionFormatter extends DefaultFormatter implements ExceptionFormatterInterface
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $requestExceptionAttribute;
 
     /**
@@ -46,8 +44,7 @@ class ExceptionFormatter extends DefaultFormatter implements ExceptionFormatterI
     }
 
     /**
-     * @param \Exception $exception
-     * @param int        $level
+     * @param int $level
      *
      * @return string
      */
@@ -63,8 +60,7 @@ class ExceptionFormatter extends DefaultFormatter implements ExceptionFormatterI
     }
 
     /**
-     * @param \Exception $exception
-     * @param int        $level
+     * @param int $level
      *
      * @return string
      */

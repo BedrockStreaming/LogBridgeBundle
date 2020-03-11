@@ -2,22 +2,18 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\EventDispatcher;
 
-use Symfony\Component\EventDispatcher\Event;
 use M6Web\Bundle\LogBridgeBundle\Matcher\BuilderInterface;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * BuilderEvent
  */
 class BuilderEvent extends Event
 {
-    /**
-     * @var BuilderInterface
-     */
+    /** @var BuilderInterface */
     private $builder;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $config;
 
     /**

@@ -12,9 +12,7 @@ class FilterParser
 {
     const DEFAULT_LEVEL = LogLevel::INFO;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $allowedLevels = [
         LogLevel::EMERGENCY,
         LogLevel::ALERT,
@@ -26,14 +24,10 @@ class FilterParser
         LogLevel::DEBUG,
     ];
 
-    /**
-     * @var RouterInterface
-     */
+    /** @var RouterInterface */
     protected $router;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $filterClass;
 
     /**
@@ -212,12 +206,7 @@ class FilterParser
             !$reflection->isInstantiable()
              || !$reflection->isSubclassOf('M6Web\Bundle\LogBridgeBundle\Config\Filter')
         ) {
-            throw new \RuntimeException(
-                sprintf(
-                    '"%s" is not instantiable or is not a subclass of "M6Web\Bundle\LogBridgeBundle\Config\Filter"',
-                    $filterClass
-                )
-            );
+            throw new \RuntimeException(sprintf('"%s" is not instantiable or is not a subclass of "M6Web\Bundle\LogBridgeBundle\Config\Filter"', $filterClass));
         }
 
         $this->filterClass = $filterClass;
