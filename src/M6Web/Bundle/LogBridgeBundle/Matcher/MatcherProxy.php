@@ -9,14 +9,10 @@ use Psr\Log\LogLevel;
  */
 class MatcherProxy implements MatcherInterface
 {
-    /**
-     * @var BuilderInterface
-     */
+    /** @var BuilderInterface */
     private $builder;
 
-    /**
-     * @var MatcherInterface
-     */
+    /** @var MatcherInterface */
     private $matcher;
 
     /**

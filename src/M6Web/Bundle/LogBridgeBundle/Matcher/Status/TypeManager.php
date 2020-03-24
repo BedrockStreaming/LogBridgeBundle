@@ -9,9 +9,7 @@ use M6Web\Bundle\LogBridgeBundle\Matcher\Status\Type\TypeInterface;
  */
 class TypeManager
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $types = [];
 
     /**

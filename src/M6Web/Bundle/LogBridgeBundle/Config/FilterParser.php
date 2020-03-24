@@ -12,9 +12,7 @@ class FilterParser
 {
     const DEFAULT_LEVEL = LogLevel::INFO;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $allowedLevels = [
         LogLevel::EMERGENCY,
         LogLevel::ALERT,
@@ -26,14 +24,10 @@ class FilterParser
         LogLevel::DEBUG,
     ];
 
-    /**
-     * @var RouterInterface
-     */
+    /** @var RouterInterface */
     protected $router;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $filterClass;
 
     /**

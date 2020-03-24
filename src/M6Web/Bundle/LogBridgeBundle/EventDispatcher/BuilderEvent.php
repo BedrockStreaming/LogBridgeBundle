@@ -10,14 +10,10 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class BuilderEvent extends Event
 {
-    /**
-     * @var BuilderInterface
-     */
+    /** @var BuilderInterface */
     private $builder;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $config;
 
     /**

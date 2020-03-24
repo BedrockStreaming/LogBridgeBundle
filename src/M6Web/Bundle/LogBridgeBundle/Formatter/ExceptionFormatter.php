@@ -10,9 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ExceptionFormatter extends DefaultFormatter implements ExceptionFormatterInterface
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $requestExceptionAttribute;
 
     /**

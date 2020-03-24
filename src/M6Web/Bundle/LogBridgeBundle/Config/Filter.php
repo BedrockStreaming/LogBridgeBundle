@@ -7,34 +7,22 @@ namespace M6Web\Bundle\LogBridgeBundle\Config;
  */
 class Filter
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $name;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $route;
 
-    /**
-     * @var mixed
-     */
+    /** @var mixed */
     private $method;
 
-    /**
-     * @var mixed
-     */
+    /** @var mixed */
     private $status;
 
-    /**
-     * @var mixed
-     */
+    /** @var mixed */
     private $level;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $options;
 
     /**

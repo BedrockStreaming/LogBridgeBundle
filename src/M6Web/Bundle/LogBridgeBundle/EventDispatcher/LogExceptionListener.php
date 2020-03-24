@@ -9,9 +9,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
  */
 class LogExceptionListener
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $requestExceptionAttribute;
 
     /**

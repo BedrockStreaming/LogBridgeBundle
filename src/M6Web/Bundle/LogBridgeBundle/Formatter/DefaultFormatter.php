@@ -11,24 +11,16 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class DefaultFormatter implements FormatterInterface
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $environment;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $ignoreHeaders;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $prefixKey;
 
-    /**
-     * @var TokenStorageInterface
-     */
+    /** @var TokenStorageInterface */
     protected $tokenStorage;
 
     /**

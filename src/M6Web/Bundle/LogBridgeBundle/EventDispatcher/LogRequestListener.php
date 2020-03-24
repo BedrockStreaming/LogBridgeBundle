@@ -11,19 +11,13 @@ use Psr\Log\LoggerInterface;
  */
 class LogRequestListener
 {
-    /**
-     * @var LoggerInterface
-     */
+    /** @var LoggerInterface */
     protected $logger;
 
-    /**
-     * @var MatcherInterface
-     */
+    /** @var MatcherInterface */
     protected $matcher;
 
-    /**
-     * @var FormatterInterface
-     */
+    /** @var FormatterInterface */
     protected $contentFormatter;
 
     /**

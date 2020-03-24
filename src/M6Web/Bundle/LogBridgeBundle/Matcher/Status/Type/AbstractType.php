@@ -7,9 +7,7 @@ namespace M6Web\Bundle\LogBridgeBundle\Matcher\Status\Type;
  */
 abstract class AbstractType implements TypeInterface
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $pattern;
 
     /**

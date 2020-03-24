@@ -9,14 +9,10 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class Parser
 {
-    /**
-     * @var RouterInterface
-     */
+    /** @var RouterInterface */
     private $router;
 
-    /**
-     * @var FilterParser
-     */
+    /** @var FilterParser */
     private $filterParser;
 
     /**

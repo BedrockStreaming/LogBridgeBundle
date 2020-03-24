@@ -7,19 +7,13 @@ namespace M6Web\Bundle\LogBridgeBundle\Config;
  */
 class FilterCollection implements \Iterator
 {
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $iterator;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $keys;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $values;
 
     /**

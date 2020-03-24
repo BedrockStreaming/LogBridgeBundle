@@ -15,9 +15,7 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
  */
 class PhpMatcherDumper
 {
-    /**
-     * @var StatusTypeManager
-     */
+    /** @var StatusTypeManager */
     private $statusTypeManager;
 
     /**
