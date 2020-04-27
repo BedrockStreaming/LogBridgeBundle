@@ -131,7 +131,7 @@ class FilterParser
     protected function parseMethod(Filter $filter, $method)
     {
         if (!is_array($method) && !is_null($method)) {
-            throw new ParseException(sprintf('Unreconized value "%s" from method parameter', $method));
+            throw new ParseException(sprintf('Unrecognized value "%s" from method parameter', $method));
         }
 
         $filter->setMethod($method);
@@ -148,7 +148,7 @@ class FilterParser
     protected function parseStatus(Filter $filter, $status)
     {
         if (!is_array($status) && !is_null($status)) {
-            throw new ParseException(sprintf('Unreconized value "%s" from status parameter', $status));
+            throw new ParseException(sprintf('Unrecognized value "%s" from status parameter', $status));
         }
 
         $filter->setStatus($status);
@@ -165,7 +165,7 @@ class FilterParser
     protected function parseLevel(Filter $filter, $level)
     {
         if (!is_string($level) && !is_null($level)) {
-            throw new ParseException(sprintf('Unreconized value "%s" from level parameter', $level));
+            throw new ParseException(sprintf('Unrecognized value "%s" from level parameter', $level));
         }
 
         if (!in_array($level, $this->allowedLevels)) {
