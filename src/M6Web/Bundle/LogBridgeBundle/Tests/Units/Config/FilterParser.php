@@ -138,7 +138,7 @@ class FilterParser extends BaseTest
                 })
                 ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\ParseException')
                 ->message
-                    ->contains('Unreconized value')
+                    ->contains('Unrecognized value')
         ;
     }
 
@@ -154,7 +154,7 @@ class FilterParser extends BaseTest
                 })
                 ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\ParseException')
                 ->message
-                    ->contains('Unreconized value')
+                    ->contains('Unrecognized value')
         ;
     }
 }
