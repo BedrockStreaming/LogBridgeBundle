@@ -48,7 +48,7 @@ class ExceptionFormatter extends DefaultFormatter implements ExceptionFormatterI
      *
      * @return string
      */
-    protected function getExceptionTrace(\Exception $exception, $level = 1)
+    protected function getExceptionTrace(\Throwable $exception, $level = 1)
     {
         $exceptionTrace = $this->formatException($exception, $level);
 
@@ -64,7 +64,7 @@ class ExceptionFormatter extends DefaultFormatter implements ExceptionFormatterI
      *
      * @return string
      */
-    protected function formatException(\Exception $exception, $level = 1)
+    protected function formatException(\Throwable $exception, $level = 1)
     {
         return
             "\nException class : \n------------------------\n".get_class($exception)."\n".

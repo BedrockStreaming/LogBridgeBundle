@@ -149,4 +149,25 @@ class ExceptionFormatter extends atoum
                 ->contains($exception3->getTraceAsString())
         ;
     }
+
+    public function testTypeErrorException()
+    {
+        $request = new Request();
+        $exception = new \TypeError('Test: TypeError exception thrown.');
+
+        $this
+            ->given(
+                $request->attributes->add([$this->requestExceptionAttribute => $exception])
+            )
+            ->if($provider = $this->createProvider())
+            ->then
+            ->object($provider->setTokenStorage($this->getMockedTokenStorage()))
+            ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Formatter\ExceptionFormatter')
+            ->string($provider->getLogContent($request, new Response('Body content response'), []))
+            ->contains('Exception message (1) :')
+            ->contains($exception->getMessage())
+            ->contains('Exception trace (1) :')
+            ->contains($exception->getTraceAsString())
+        ;
+    }
 }
