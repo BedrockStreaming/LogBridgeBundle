@@ -24,7 +24,7 @@ interface FormatterInterface
      * @param Response $response Response service
      * @param array    $options  Request options
      *
-     * @return string
+     * @return array
      */
     public function getLogContext(Request $request, Response $response, array $options);
 }
