@@ -2,8 +2,8 @@
 
 Symfony Bundle to log Request/Response with Monolog. 
 
-**NOTE:** Require `Symfony >= 2.6` since version 3.0. For previsous version of symfony use the `~2.2` release.
-
+**NOTE:** The actual version of this bundle support `Symfony >= 4.4`.
+If you need support for older versions, please use `~7.0` release.
 
 ## Features
 
