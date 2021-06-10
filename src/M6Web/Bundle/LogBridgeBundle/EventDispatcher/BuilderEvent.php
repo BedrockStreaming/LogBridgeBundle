@@ -3,7 +3,7 @@
 namespace M6Web\Bundle\LogBridgeBundle\EventDispatcher;
 
 use M6Web\Bundle\LogBridgeBundle\Matcher\BuilderInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * BuilderEvent
