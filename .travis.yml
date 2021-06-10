@@ -5,10 +5,15 @@ php:
   - 7.3
   - 7.4
 
+matrix:
+  include:
+    - env: COMPOSER_FLAGS="--prefer-lowest"
+
 before_script:
   - phpenv config-rm xdebug.ini
   - wget http://getcomposer.org/composer.phar
   - php -d memory_limit=4G composer.phar install
+  - composer update --prefer-dist --no-interaction $COMPOSER_FLAGS
 
 script:
   - bin/atoum
