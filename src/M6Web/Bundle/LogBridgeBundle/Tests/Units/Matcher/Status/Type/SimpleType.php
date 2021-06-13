@@ -2,10 +2,10 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Matcher\Status\Type;
 
-use atoum\AtoumBundle\Test\Units;
+use atoum;
 use M6Web\Bundle\LogBridgeBundle\Matcher\Status\Type\SimpleType as TestedClass;
 
-class SimpleType extends Units\Test
+class SimpleType extends atoum
 {
     /**
      * Test get status
