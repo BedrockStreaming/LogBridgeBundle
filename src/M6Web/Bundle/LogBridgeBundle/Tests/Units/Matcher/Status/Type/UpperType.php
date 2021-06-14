@@ -2,10 +2,10 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Matcher\Status\Type;
 
-use atoum\AtoumBundle\Test\Units;
+use atoum;
 use M6Web\Bundle\LogBridgeBundle\Matcher\Status\Type\UpperType as TestedClass;
 
-class UpperType extends Units\Test
+class UpperType extends atoum
 {
     /**
      * Test get status

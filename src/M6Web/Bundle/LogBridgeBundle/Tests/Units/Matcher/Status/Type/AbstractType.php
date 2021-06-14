@@ -2,10 +2,10 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Matcher\Status\Type;
 
-use atoum\AtoumBundle\Test\Units;
+use atoum;
 use M6Web\Bundle\LogBridgeBundle\Tests\Fixtures\Matcher\Status\Type\Sample1Type as TestedClass;
 
-class AbstractType extends Units\Test
+class AbstractType extends atoum
 {
     public function getSample1TypeMock()
     {

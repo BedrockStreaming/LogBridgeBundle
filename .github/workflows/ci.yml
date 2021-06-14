@@ -1,0 +1,30 @@
+name: Continuous Integration
+on: [push]
+
+jobs:
+  linter:
+    name: Code style
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+      - run: composer install --prefer-dist --no-interaction
+      - run: bin/php-cs-fixer fix --dry-run --stop-on-violation --diff --ansi
+
+  tests:
+    name: Tests
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        version: ['7.1', 7.2', '7.3', '7.4', '8.0']
+        flags: ['', '--prefer-lowest']
+    steps:
+      - uses: actions/checkout@master
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.version }}
+          coverage: xdebug2
+      - run: composer update --prefer-dist --no-interaction ${{ matrix.flags }}
+      - run: bin/atoum
