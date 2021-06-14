@@ -2,11 +2,11 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Matcher\Status;
 
-use atoum\AtoumBundle\Test\Units;
+use atoum;
 use M6Web\Bundle\LogBridgeBundle\Matcher\Status\Type\TypeInterface;
 use M6Web\Bundle\LogBridgeBundle\Matcher\Status\TypeManager as TestedClass;
 
-class TypeManager extends Units\Test
+class TypeManager extends atoum
 {
     /**
      * Get type

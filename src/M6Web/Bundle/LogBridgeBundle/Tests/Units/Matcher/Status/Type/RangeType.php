@@ -2,10 +2,10 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Matcher\Status\Type;
 
-use atoum\AtoumBundle\Test\Units;
+use atoum;
 use M6Web\Bundle\LogBridgeBundle\Matcher\Status\Type\RangeType as TestedClass;
 
-class RangeType extends Units\Test
+class RangeType extends atoum
 {
     /**
      * Test get status
