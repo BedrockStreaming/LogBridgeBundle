@@ -149,11 +149,16 @@ class DefaultFormatter implements FormatterInterface
      */
     protected function getUsername()
     {
-        if ($this->tokenStorage && $this->tokenStorage->getToken()) {
-            return $this->tokenStorage->getToken()->getUsername();
+        if (!$this->tokenStorage || !$token = $this->tokenStorage->getToken()) {
+            return '';
         }
 
-        return '';
+        // compatibility Symfony < 6
+        if (method_exists('Symfony\Component\Security\Core\Authentication\Token\TokenInterface', 'getUsername')) {
+            return $token->getUsername();
+        }
+
+        return $token->getUserIdentifier();
     }
 
     /**
