@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        version: ['7.1', '7.2', '7.3', '7.4', '8.0']
+        version: ['7.1', '7.2', '7.3', '7.4', '8.0', '8.1']
         flags: ['', '--prefer-lowest']
       fail-fast: false
     steps:
