@@ -1,4 +1,4 @@
-# LogBridgeBundle [![Build Status](https://travis-ci.org/M6Web/LogBridgeBundle.svg?branch=master)](https://travis-ci.org/M6Web/LogBridgeBundle)
+# LogBridgeBundle [![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2FBedrockStreaming%2FLogBridgeBundle%2Fbadge%3Fref%3Dmaster&style=flat)](https://actions-badge.atrox.dev/BedrockStreaming/LogBridgeBundle/goto?ref=master)
 
 Symfony Bundle to log Request/Response with Monolog. 
 

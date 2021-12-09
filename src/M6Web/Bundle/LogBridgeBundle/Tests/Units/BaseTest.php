@@ -4,6 +4,7 @@ namespace M6Web\Bundle\LogBridgeBundle\Tests\Units;
 
 use atoum;
 use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\Route;
 
 /**
  * Base Class Unit test
@@ -14,7 +15,7 @@ class BaseTest extends atoum
     {
         $collection = new \mock\Symfony\Component\Routing\RouteCollection();
         $collection->getMockController()->get = function($name) {
-            return $name != 'invalid_route' ? true : false;
+            return $name != 'invalid_route' ? new Route('/path') : null;
         };
 
         return $collection;

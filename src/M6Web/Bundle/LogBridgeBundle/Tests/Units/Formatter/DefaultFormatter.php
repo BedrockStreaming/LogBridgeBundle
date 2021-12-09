@@ -3,6 +3,7 @@
 namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Formatter;
 
 use atoum;
+use Symfony\Component\Security\Core\User\InMemoryUser;
 use Symfony\Component\Security\Core\User\User;
 use M6Web\Bundle\LogBridgeBundle\Formatter;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,21 +15,30 @@ use Symfony\Component\HttpFoundation\Response;
 class DefaultFormatter extends atoum
 {
     const ENVIRONMENT = 'test';
+    const USERNAME = 'test-username';
+    const PASSWORD = 'test-password';
 
     private function getUser()
     {
-        return new User('test', 'password');
+        if (class_exists(User::class)) {
+            return new User(self::USERNAME, self::PASSWORD);
+        }
+
+        return new InMemoryUser(self::USERNAME, self::PASSWORD);
     }
 
-    private function getMockedToken(User $user = null)
+    private function getMockedToken()
     {
-        $user  = $user ?: $this->getUser();
-        $token = new \mock\Symfony\Component\Security\Core\Authentication\TokenInterface();
+        $usernameMethod = 'getUserIdentifier';
+        if (method_exists('Symfony\Component\Security\Core\Authentication\Token\TokenInterface', 'getUsername')) {
+            // compatibility Symfony < 6
+            $usernameMethod = 'getUsername';
+        }
 
-        $token->getMockController()->getUsername    = $user->getUsername();
-        $token->getMockController()->getUser        = $user;
-        $token->getMockController()->__toString     = $user->getUsername();
-        $token->getMockController()->getCredentials = 'test';
+        $token = new \mock\Symfony\Component\Security\Core\Authentication\Token\TokenInterface();
+        $token->getMockController()->$usernameMethod = self::USERNAME;
+        $token->getMockController()->getUser = $this->getUser();
+        $token->getMockController()->__toString = self::USERNAME;
 
         return $token;
     }
@@ -85,7 +95,7 @@ class DefaultFormatter extends atoum
             ->integer($logContext['status'])
                 ->isEqualTo($status)
             ->string($logContext['user'])
-                ->isEqualTo($tokenstorage->getToken()->getUsername())
+                ->isEqualTo(self::USERNAME)
             ->string($logContext['key'])
                 ->isEqualTo(sprintf('%s.%s.%s.%s', self::ENVIRONMENT, $route, $method, $status))
         ;
@@ -104,14 +114,10 @@ class DefaultFormatter extends atoum
         ];
 
 
-        $request = new \mock\Symfony\Component\HttpFoundation\Request([], $post);
-        $request->getMockController()->getMethod = 'POST';
+        $request = new Request([], $post, [], [], [], ['REQUEST_METHOD' => 'POST']);
 
         $response      = new Response('Body content response');
         $tokenstorage  = $this->getMockedTokenStorage();
-        $route         = $request->get('_route');
-        $method        = $request->getMethod();
-        $status        = $response->getStatusCode();
 
         $this
             ->if($provider = $this->createProvider())
