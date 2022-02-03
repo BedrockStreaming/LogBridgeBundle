@@ -145,18 +145,12 @@ class FilterCollection implements \Iterator
         return $this->iterator;
     }
 
-    /**
-     * next
-     */
-    public function next()
+    public function next(): void
     {
         $this->iterator++;
     }
 
-    /**
-     * rewind
-     */
-    public function rewind()
+    public function rewind(): void
     {
         $this->iterator = 0;
     }
