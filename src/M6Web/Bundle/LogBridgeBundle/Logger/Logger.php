@@ -25,72 +25,72 @@ class Logger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function emergency($message, array $context = [])
+    public function emergency($message, array $context = []): void
     {
-        return $this->logger->emergency($message, $context);
+        $this->logger->emergency($message, $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function alert($message, array $context = [])
+    public function alert($message, array $context = []): void
     {
-        return $this->logger->alert($message, $context);
+        $this->logger->alert($message, $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function critical($message, array $context = [])
+    public function critical($message, array $context = []): void
     {
-        return $this->logger->critical($message, $context);
+        $this->logger->critical($message, $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function error($message, array $context = [])
+    public function error($message, array $context = []): void
     {
-        return $this->logger->error($message, $context);
+        $this->logger->error($message, $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function warning($message, array $context = [])
+    public function warning($message, array $context = []): void
     {
-        return $this->logger->warning($message, $context);
+        $this->logger->warning($message, $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function notice($message, array $context = [])
+    public function notice($message, array $context = []): void
     {
-        return $this->logger->notice($message, $context);
+        $this->logger->notice($message, $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function info($message, array $context = [])
+    public function info($message, array $context = []): void
     {
-        return $this->logger->info($message, $context);
+        $this->logger->info($message, $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function debug($message, array $context = [])
+    public function debug($message, array $context = []): void
     {
-        return $this->logger->debug($message, $context);
+        $this->logger->debug($message, $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function log($level, $message, array $context = [])
+    public function log($level, $message, array $context = []): void
     {
-        return $this->logger->log($level, $message, $context);
+        $this->logger->log($level, $message, $context);
     }
 }
