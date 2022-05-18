@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\LogBridgeBundle\Matcher;
 
 use M6Web\Bundle\LogBridgeBundle\Config\Parser as ConfigParser;

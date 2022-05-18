@@ -133,8 +133,8 @@ class ExceptionFormatter extends atoum
         $response      = new Response('Body content response');
         $tokenstorage  = $this->getMockedTokenStorage();
         $exception3    = new \Exception('Test: first exception thrown.');
-        $exception2    = new \Exception('Test: second exception thrown.', null, $exception3);
-        $exception1    = new \Exception('Test: third exception thrown.', null, $exception2);
+        $exception2    = new \Exception('Test: second exception thrown.', 0, $exception3);
+        $exception1    = new \Exception('Test: third exception thrown.', 0, $exception2);
 
         $this
             ->given(

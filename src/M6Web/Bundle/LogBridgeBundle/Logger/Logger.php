@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Class - not so cool - to build a default logger
  */

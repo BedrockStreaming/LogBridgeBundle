@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\LogBridgeBundle\Config;
 
 /**
@@ -36,10 +38,8 @@ class FilterCollection implements \Iterator
      * add
      *
      * @internal param \M6Web\Bundle\LogBridgeBundle\Config\Filter $filter Filter
-     *
-     * @return FilterCollection
      */
-    public function add(Filter $item)
+    public function add(Filter $item): FilterCollection
     {
         if (!in_array($item->getName(), $this->keys)) {
             $this->keys[] = $item->getName();
@@ -70,10 +70,8 @@ class FilterCollection implements \Iterator
      * remove
      *
      * @param Filter $filter Filter
-     *
-     * @return bool
      */
-    public function remove(Filter $filter)
+    public function remove(Filter $filter): bool
     {
         if ($key = array_search($filter->getName(), $this->keys)) {
             unset($this->keys[$key]);
@@ -90,10 +88,8 @@ class FilterCollection implements \Iterator
      * Get item
      *
      * @param int $iterator
-     *
-     * @return mixed
      */
-    public function get($iterator)
+    public function get($iterator): mixed
     {
         if ($key = $this->getKey($iterator)) {
             return $this->values[$key];
@@ -107,20 +103,16 @@ class FilterCollection implements \Iterator
      * Define filter name with iterator position
      *
      * @param string $iterator
-     *
-     * @return string
      */
-    public function getKey($iterator)
+    public function getKey($iterator): string
     {
         return isset($this->keys[$iterator]) ? $this->keys[$iterator] : '';
     }
 
     /**
      * getkeys
-     *
-     * @return array
      */
-    public function getKeys()
+    public function getKeys(): array
     {
         return $this->keys;
     }
@@ -130,17 +122,15 @@ class FilterCollection implements \Iterator
      *
      * @return Filter
      */
-    public function current()
+    public function current(): mixed
     {
         return $this->get($this->iterator);
     }
 
     /**
      * key
-     *
-     * @return int
      */
-    public function key()
+    public function key(): int
     {
         return $this->iterator;
     }
@@ -157,20 +147,16 @@ class FilterCollection implements \Iterator
 
     /**
      * valid
-     *
-     * @return bool
      */
-    public function valid()
+    public function valid(): bool
     {
         return isset($this->keys[$this->iterator]);
     }
 
     /**
      * count
-     *
-     * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->values);
     }

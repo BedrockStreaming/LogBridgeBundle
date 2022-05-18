@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\LogBridgeBundle\Matcher\Status\Type;
 
 /**
@@ -55,11 +57,7 @@ abstract class AbstractType implements TypeInterface
      */
     final public function isExclude($config)
     {
-        if (strpos($config, '!') !== false) {
-            return true;
-        }
-
-        return false;
+        return str_contains($config, '!');
     }
 
     /**

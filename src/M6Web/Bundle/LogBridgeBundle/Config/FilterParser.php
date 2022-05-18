@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\LogBridgeBundle\Config;
 
 use Psr\Log\LogLevel;
@@ -10,7 +12,7 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class FilterParser
 {
-    const DEFAULT_LEVEL = LogLevel::INFO;
+    public const DEFAULT_LEVEL = LogLevel::INFO;
 
     /** @var array */
     protected $allowedLevels = [

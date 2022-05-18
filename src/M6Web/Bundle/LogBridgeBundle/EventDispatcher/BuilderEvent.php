@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\LogBridgeBundle\EventDispatcher;
 
 use M6Web\Bundle\LogBridgeBundle\Matcher\BuilderInterface;
