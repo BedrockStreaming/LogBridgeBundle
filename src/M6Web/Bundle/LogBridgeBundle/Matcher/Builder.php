@@ -14,73 +14,48 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class Builder implements BuilderInterface
 {
-    /** @var StatusTypeManager */
-    private $statusTypeManager;
+    private StatusTypeManager $statusTypeManager;
 
-    /** @var string */
-    private $environment;
+    private ConfigParser $configParser;
 
-    /** @var array */
-    private $cacheResources;
+    private ?EventDispatcherInterface $dispatcher;
 
-    /** @var EventDispatcherInterface */
-    private $dispatcher;
+    private bool $debug;
 
-    /** @var Loader */
-    private $configParser;
+    private string $cacheDir;
 
-    /** @var bool */
-    private $debug;
+    private string $matcherClassName;
 
-    /** @var string */
-    private $cacheDir;
+    private ?MatcherInterface $matcher;
 
-    /** @var string */
-    private $matcherClassName;
+    private array $filters;
 
-    /** @var MatcherInterface */
-    private $matcher;
+    private array $activeFilters;
 
-    /** @var array */
-    private $filters;
-
-    /** @var array */
-    private $activeFilters;
-
-    /**
-     * __construct
-     *
-     * @param StatusTypeManager $statusTypeManager Status type manager
-     * @param array             $filters           Filters
-     * @param array             $activeFilters     Active Filters
-     * @param string            $environment       Environment name
-     */
-    public function __construct(StatusTypeManager $statusTypeManager, array $filters, array $activeFilters, $environment)
-    {
+    public function __construct(
+        StatusTypeManager $statusTypeManager,
+        array $filters,
+        array $activeFilters
+    ) {
         $this->statusTypeManager = $statusTypeManager;
         $this->filters = $filters;
         $this->activeFilters = $activeFilters;
-        $this->environment = $environment;
         $this->dispatcher = null;
-        $this->configParser = null;
         $this->debug = false;
         $this->cacheDir = '';
         $this->matcherClassName = '';
-        $this->matcher = null;
     }
 
     /**
      * buildMatcherCache
-     *
-     * @return string
      */
-    protected function buildMatcherCache()
+    protected function buildMatcherCache(): string
     {
         $configs['filters'] = $this->filters;
         $configs['active_filters'] = $this->activeFilters;
 
         $configuration = $this->configParser->parse($configs);
-        $dumper = new Dumper\PhpMatcherDumper($this->statusTypeManager, $this->environment);
+        $dumper = new Dumper\PhpMatcherDumper($this->statusTypeManager);
         $options = [];
 
         if ($this->matcherClassName) {
@@ -90,14 +65,9 @@ class Builder implements BuilderInterface
         return $dumper->dump($configuration, $options);
     }
 
-    /**
-     * getMatcher
-     *
-     * @return MatcherInterface
-     */
-    public function getMatcher()
+    public function getMatcher(): MatcherInterface
     {
-        if (!$this->matcher) {
+        if (!isset($this->matcher)) {
             $matcherCache = new ConfigCache($this->getAbsoluteCachePath(), $this->isDebug());
 
             if (!$matcherCache->isFresh()) {
@@ -114,24 +84,14 @@ class Builder implements BuilderInterface
     }
 
     /**
-     * getAbsoluteCachePath
      * Absolute path matcher class
-     *
-     * @return string
      */
-    public function getAbsoluteCachePath()
+    public function getAbsoluteCachePath(): string
     {
         return sprintf('%s/%s.php', $this->getCacheDir(), $this->getMatcherClassName());
     }
 
-    /**
-     * isDebug
-     *
-     * @param bool $debug Debug
-     *
-     * @return bool
-     */
-    public function isDebug($debug = null)
+    public function isDebug(bool $debug = null): bool
     {
         if (is_bool($debug)) {
             $this->debug = $debug;
@@ -140,76 +100,40 @@ class Builder implements BuilderInterface
         return $this->debug;
     }
 
-    /**
-     * setCacheDir
-     *
-     * @param string $cacheDir cache directory path
-     *
-     * @return Builder
-     */
-    public function setCacheDir($cacheDir)
+    public function setCacheDir(string $cacheDir): self
     {
         $this->cacheDir = $cacheDir;
 
         return $this;
     }
 
-    /**
-     * getCacheDir
-     *
-     * @return string
-     */
-    public function getCacheDir()
+    public function getCacheDir(): string
     {
         return $this->cacheDir;
     }
 
-    /**
-     * setDispatcher
-     *
-     * @return Builder
-     */
-    public function setDispatcher(EventDispatcherInterface $dispatcher)
+    public function setDispatcher(EventDispatcherInterface $dispatcher): self
     {
         $this->dispatcher = $dispatcher;
 
         return $this;
     }
 
-    /**
-     * setConfigParser
-     *
-     * @param Loader $configParser Config loader
-     *
-     * @return Builder
-     */
-    public function setConfigParser(ConfigParser $configParser)
+    public function setConfigParser(ConfigParser $configParser): self
     {
         $this->configParser = $configParser;
 
         return $this;
     }
 
-    /**
-     * setMatcherClassName
-     *
-     * @param string $matcherClassName Matcher class name
-     *
-     * @return Builder
-     */
-    public function setMatcherClassName($matcherClassName)
+    public function setMatcherClassName(string $matcherClassName): self
     {
         $this->matcherClassName = $matcherClassName;
 
         return $this;
     }
 
-    /**
-     * getMatcherClassName
-     *
-     * @return string
-     */
-    public function getMatcherClassName()
+    public function getMatcherClassName(): string
     {
         return $this->matcherClassName;
     }

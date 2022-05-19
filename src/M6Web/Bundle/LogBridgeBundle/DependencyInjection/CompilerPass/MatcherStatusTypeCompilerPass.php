@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class MatcherStatusTypeCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->has('m6web_log_bridge.matcher.status.type_manager')) {
             return;

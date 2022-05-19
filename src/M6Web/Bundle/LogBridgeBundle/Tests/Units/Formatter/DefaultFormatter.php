@@ -8,17 +8,18 @@ use Symfony\Component\Security\Core\User\User;
 use M6Web\Bundle\LogBridgeBundle\Formatter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * DefaultFormatter
  */
 class DefaultFormatter extends atoum
 {
-    const ENVIRONMENT = 'test';
-    const USERNAME = 'test-username';
-    const PASSWORD = 'test-password';
+    private const ENVIRONMENT = 'test';
+    private const USERNAME = 'test-username';
+    private const PASSWORD = 'test-password';
 
-    private function getUser()
+    private function getUser(): UserInterface
     {
         if (class_exists(User::class)) {
             return new User(self::USERNAME, self::PASSWORD);
@@ -53,14 +54,12 @@ class DefaultFormatter extends atoum
         return $context;
     }
 
-    private function createProvider($environment = self::ENVIRONMENT, array $ignores = array('php-auth-pw'), $prefix = '')
+    private function createProvider(string $environment = self::ENVIRONMENT, array $ignores = array('php-auth-pw'), string $prefix = ''): Formatter\DefaultFormatter
     {
-        $provider = new Formatter\DefaultFormatter($environment, $ignores, $prefix);
-
-        return $provider;
+        return new Formatter\DefaultFormatter($environment, $ignores, $prefix);
     }
 
-    public function testProvider()
+    public function testProvider(): void
     {
         $request       = new Request();
         $response      = new Response('Body content response');
@@ -102,7 +101,7 @@ class DefaultFormatter extends atoum
 
     }
 
-    public function testPostProvider()
+    public function testPostProvider(): void
     {
         $post = [
             'postVar1' => 'value un',

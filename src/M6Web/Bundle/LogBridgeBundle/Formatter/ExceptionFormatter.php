@@ -12,27 +12,14 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ExceptionFormatter extends DefaultFormatter implements ExceptionFormatterInterface
 {
-    /** @var string */
-    protected $requestExceptionAttribute;
+    protected string $requestExceptionAttribute;
 
-    /**
-     * @param string $requestExceptionAttribute
-     */
-    public function setRequestExceptionAttribute($requestExceptionAttribute)
+    public function setRequestExceptionAttribute(string $requestExceptionAttribute): void
     {
         $this->requestExceptionAttribute = $requestExceptionAttribute;
     }
 
-    /**
-     * Overload getLogContent to add details about the exception.
-     *
-     * @param Request  $request  Request service
-     * @param Response $response Response service
-     * @param array    $options  Request options
-     *
-     * @return string
-     */
-    public function getLogContent(Request $request, Response $response, array $options)
+    public function getLogContent(Request $request, Response $response, array $options): string
     {
         $logContent = parent::getLogContent($request, $response, $options);
 
@@ -45,12 +32,7 @@ class ExceptionFormatter extends DefaultFormatter implements ExceptionFormatterI
         return $logContent;
     }
 
-    /**
-     * @param int $level
-     *
-     * @return string
-     */
-    protected function getExceptionTrace(\Throwable $exception, $level = 1)
+    protected function getExceptionTrace(\Throwable $exception, int $level = 1): string
     {
         $exceptionTrace = $this->formatException($exception, $level);
 
@@ -61,12 +43,7 @@ class ExceptionFormatter extends DefaultFormatter implements ExceptionFormatterI
         return $exceptionTrace;
     }
 
-    /**
-     * @param int $level
-     *
-     * @return string
-     */
-    protected function formatException(\Throwable $exception, $level = 1)
+    protected function formatException(\Throwable $exception, int $level = 1): string
     {
         return
             "\nException class : \n------------------------\n".get_class($exception)."\n".

@@ -3,31 +3,21 @@
 namespace M6Web\Bundle\LogBridgeBundle\Tests\Fixtures\Matcher\Status\Type;
 
 use M6Web\Bundle\LogBridgeBundle\Matcher\Status\Type\AbstractType;
-use M6Web\Bundle\LogBridgeBundle\Matcher\Status\Type\TypeInterface;
 
 /**
  * Class Sample2Type
  */
-class Sample2Type extends AbstractType implements TypeInterface
+class Sample2Type extends AbstractType
 {
-    /**
-     * getPattern
-     *
-     * @return string
-     */
-    protected function getPattern()
+    protected function getPattern(): string
     {
         return '/^!?[\d]{3}$/';
     }
 
     /**
      * Transform config to status list
-     *
-     * @param string $config
-     *
-     * @return array
      */
-    protected function transform($config)
+    protected function transform(string $config): array
     {
         return [$config];
     }

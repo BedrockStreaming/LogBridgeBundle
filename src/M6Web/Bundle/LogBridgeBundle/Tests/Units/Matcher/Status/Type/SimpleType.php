@@ -11,11 +11,8 @@ class SimpleType extends atoum
      * Test get status
      *
      * @dataProvider dataTestGetStatus
-     *
-     * @param string $config
-     * @param array  $statusResult
      */
-    public function testGetStatus($config, $statusResult)
+    public function testGetStatus(string $config, array $statusResult): void
     {
         $this
             ->given(
@@ -30,7 +27,7 @@ class SimpleType extends atoum
     /**
      * Data to testGetStatus
      */
-    public function dataTestGetStatus()
+    public function dataTestGetStatus(): array
     {
         return [
             [

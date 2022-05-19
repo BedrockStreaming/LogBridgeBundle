@@ -17,8 +17,7 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
  */
 class PhpMatcherDumper
 {
-    /** @var StatusTypeManager */
-    private $statusTypeManager;
+    private StatusTypeManager $statusTypeManager;
 
     /**
      * __construct
@@ -30,12 +29,7 @@ class PhpMatcherDumper
         $this->statusTypeManager = $statusTypeManager;
     }
 
-    /**
-     * dump
-     *
-     * @return string
-     */
-    public function dump(Configuration $configuration, array $options = [])
+    public function dump(Configuration $configuration, array $options = []): string
     {
         $options = array_replace([
             'class' => 'LogBridgeMatcher',
@@ -56,16 +50,7 @@ class {$options['class']} implements {$options['interface']}
 {
     {$this->generateMatchList($configuration)}
 
-    /**
-     * getPositiveMatcher
-     *
-     * @param string  \$route       Route name
-     * @param string  \$method      Method name
-     * @param integer \$status      Http code status
-     *
-     * @return array
-     */
-    private function getPositiveMatcher(\$route, \$method, \$status)
+    private function getPositiveMatcher(string \$route, string \$method, int \$status): array
     {
         return [
             [\$route, \$method, \$status],
@@ -79,48 +64,17 @@ class {$options['class']} implements {$options['interface']}
         ];
     }
 
-    /**
-     * match
-     *
-     * @param string  \$route       Route name
-     * @param string  \$method      Method name
-     * @param integer \$status      Http code status
-     *
-     * @return boolean
-     */   
-    public function match(\$route, \$method, \$status)
+    public function match(string \$route, string \$method, int \$status): bool
     {
-        if (\$filterKey = \$this->getMatchFilterKey(\$route, \$method, \$status)) {
-            return true;
-        }
-
-        return false;
+        return \$this->getMatchFilterKey(\$route, \$method, \$status) !== '';
     }
 
-    /**
-     * generate filter key
-     *
-     * @param string  \$route  Route name
-     * @param string  \$method Method name
-     * @param integer \$status Http code status
-     *
-     * @return string
-     */
-    public function generateFilterKey(\$route, \$method, \$status)
+    public function generateFilterKey(string \$route, string \$method, string \$status): string
     {
         return sprintf('%s.%s.%s', \$route, \$method, \$status);
     }
 
-    /**
-     * Get filter options
-     *
-     * @param string  \$route  Route name
-     * @param string  \$method Method name
-     * @param integer \$status Http code status
-     *
-     * @return array
-     */
-    public function getOptions(\$route, \$method, \$status)
+    public function getOptions(string \$route, string \$method, int \$status): array
     {
         if (\$filterKey = \$this->getMatchFilterKey(\$route, \$method, \$status)) {
             return \$this->filters[\$filterKey]['options'];
@@ -129,16 +83,7 @@ class {$options['class']} implements {$options['interface']}
         return [];
     }
 
-    /**
-     * Get filter level log
-     *
-     * @param string  \$route  Route name
-     * @param string  \$method Method name
-     * @param integer \$status Http code status
-     *
-     * @return string
-     */
-    public function getLevel(\$route, \$method, \$status)
+    public function getLevel(string \$route, string \$method, int \$status): string
     {
         if (\$filterKey = \$this->getMatchFilterKey(\$route, \$method, \$status)) {
             return \$this->filters[\$filterKey]['level'];
@@ -147,35 +92,18 @@ class {$options['class']} implements {$options['interface']}
         return '{$options['default_level']}';
     }
 
-    /**
-     * addFilter
-     *
-     * @param string \$filterKey Filter key
-     * @param string \$level     Filter Log level
-     * @param array  \$options   Filter options
-     *
-     * @return MatcherInterface
-     */
-    public function addFilter(\$filterKey, \$level = '{$options['default_level']}', array \$options = [])
+    public function addFilter(string \$filter, string \$level = '{$options['default_level']}', array \$options = []): self
     {
-        if (!\$this->hasFilter(\$filterKey)) {
-            \$this->filters[\$filterKey]            = [];
-            \$this->filters[\$filterKey]['options'] = \$options;
-            \$this->filters[\$filterKey]['level']   = \$level;
+        if (!\$this->hasFilter(\$filter)) {
+            \$this->filters[\$filter]            = [];
+            \$this->filters[\$filter]['options'] = \$options;
+            \$this->filters[\$filter]['level']   = \$level;
         }
 
         return \$this;
     }
 
-    /**
-     * setFilters
-     *
-     * @param array   \$filters   Filter list
-     * @param boolean \$overwrite Overwrite current filter
-     *
-     * @return MatcherInterface
-     */
-    public function setFilters(array \$filters, \$overwrite = false)
+    public function setFilters(array \$filters, bool \$overwrite = false): self
     {
         if (\$overwrite) {
             \$this->filters = \$filters;
@@ -197,38 +125,17 @@ class {$options['class']} implements {$options['interface']}
         return \$this;
     }
 
-    /**
-     * getFilters
-     *
-     * @return array
-     */
-    public function getFilters()
+    public function getFilters(): array
     {
         return \$this->filters;
     }
 
-    /**
-     * hasFilter
-     *
-     * @param string \$filterKey Filter key
-     *
-     * @return boolean
-     */
-    public function hasFilter(\$filterKey)
+    public function hasFilter(string \$filter): bool
     {
-        return array_key_exists(\$filterKey, \$this->filters);
+        return array_key_exists(\$filter, \$this->filters);
     }
 
-    /**
-     * get an filter key matched with arguments
-     *
-     * @param string  \$route  Route name
-     * @param string  \$method Method name
-     * @param integer \$status Http code status
-     *
-     * @return bool|string
-     */
-    public function getMatchFilterKey(\$route, \$method, \$status)
+    public function getMatchFilterKey(string \$route, string \$method, int \$status): string
     {
         if (!empty(\$this->filters)) {
             foreach (\$this->getPositiveMatcher(\$route, \$method, \$status) as \$rms) {
@@ -239,19 +146,14 @@ class {$options['class']} implements {$options['interface']}
             }
         }
 
-        return false;
+        return '';
     }
 }
 
 EOF;
     }
 
-    /**
-     * generateMatchList
-     *
-     * @return string
-     */
-    private function generateMatchList(Configuration $configuration)
+    private function generateMatchList(Configuration $configuration): string
     {
         $filters = $this->compile($configuration);
         $code = "[\n";
@@ -294,21 +196,13 @@ EOF;
 
         return <<<EOF
 /**
-     * @var array
      * List of compiled filters
      */
-    private \$filters = {$code};
+    private array \$filters = {$code};
 EOF;
     }
 
-    /**
-     * compile
-     *
-     * @param Configuration $configuration Config
-     *
-     * @return array
-     */
-    private function compile(Configuration $configuration)
+    private function compile(Configuration $configuration): array
     {
         $compiledFilters = $this->compileNeededFilters(
             $configuration->getActiveFilters(),
@@ -318,17 +212,11 @@ EOF;
         return $compiledFilters;
     }
 
-    /**
-     * @param array            $activeFilters List of active filters
-     * @param FilterCollection $filters       Filters
-     *
-     * @return array
-     */
-    private function compileNeededFilters($activeFilters, FilterCollection $filters)
+    private function compileNeededFilters(?array $activeFilters, FilterCollection $filters): array
     {
         $compiled = [];
 
-        if (is_null($activeFilters)) {
+        if ($activeFilters === null) {
             foreach ($filters as $filter) {
                 $compiled = array_merge($compiled, $this->compileFilter($filter));
             }
@@ -343,16 +231,7 @@ EOF;
         return $compiled;
     }
 
-    /**
-     * compileFilter
-     *
-     * @param Filter $filter Filter
-     *
-     * @internal param string $prefix Prefix key
-     *
-     * @return array
-     */
-    private function compileFilter(Filter $filter)
+    private function compileFilter(Filter $filter): array
     {
         $compiledKeys = [];
         $compiled = [];
@@ -376,15 +255,7 @@ EOF;
         return $compiled;
     }
 
-    /**
-     * compileFilterStatus
-     *
-     * @param string $prefix Prefix key
-     * @param Filter $filter Filter
-     *
-     * @return array
-     */
-    private function compileFilterStatus($prefix, $filter)
+    private function compileFilterStatus(string $prefix, Filter $filter): array
     {
         $compiled = [];
         $filterStatusList = $filter->getStatus();
@@ -400,14 +271,7 @@ EOF;
         return $compiled;
     }
 
-    /**
-     * parseStatus
-     *
-     * @throws \Exception status not allowed in log bridge configuration filters
-     *
-     * @return array
-     */
-    private function parseStatus(array $filterStatusList)
+    private function parseStatus(array $filterStatusList): array
     {
         $statusList = [];
         $statusTypes = $this->statusTypeManager->getTypes();
@@ -433,8 +297,6 @@ EOF;
             }
         }
 
-        $statusList = array_unique($statusList, SORT_NUMERIC);
-
-        return $statusList;
+        return array_unique($statusList, SORT_NUMERIC);
     }
 }

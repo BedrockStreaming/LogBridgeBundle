@@ -9,70 +9,42 @@ namespace M6Web\Bundle\LogBridgeBundle\Matcher\Status\Type;
  */
 abstract class AbstractType implements TypeInterface
 {
-    /** @var string */
-    protected $pattern;
+    protected string $pattern;
 
     /**
      * Match with config status
-     *
-     * @param string $config
-     *
-     * @return bool
      */
-    public function match($config)
+    public function match(string $config): bool
     {
-        return preg_match($this->getPattern(), $config);
+        return preg_match($this->getPattern(), $config) === 1;
     }
 
     /**
      * Get status list
      *
-     * @param string $config
-     *
      * @throws \Exception transform method must be return an array
-     *
-     * @return array
      */
-    final public function getStatus($config)
+    final public function getStatus(string $config): array
     {
         if ($this->isExclude($config)) {
             $config = substr($config, 1);
         }
 
-        $status = $this->transform($config);
-
-        if (!is_array($status)) {
-            throw new \Exception(sprintf('"transform" method must be return an array in class "%s"', get_class($this)), 500);
-        }
-
-        return $status;
+        return $this->transform($config);
     }
 
     /**
      * Match with config status
-     *
-     * @param string $config
-     *
-     * @return bool
      */
-    final public function isExclude($config)
+    final public function isExclude(string $config): bool
     {
         return str_contains($config, '!');
     }
 
-    /**
-     * getPattern
-     *
-     * @return string
-     */
-    abstract protected function getPattern();
+    abstract protected function getPattern(): string;
 
     /**
      * Transform config to status list
-     *
-     * @param string $config
-     *
-     * @return array
      */
-    abstract protected function transform($config);
+    abstract protected function transform(string $config): array;
 }

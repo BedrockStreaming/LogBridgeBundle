@@ -7,7 +7,7 @@ use M6Web\Bundle\LogBridgeBundle\Config;
 
 class Filter extends atoum
 {
-    public function testFilter()
+    public function testFilter(): void
     {
         $this
             ->if($filter = new Config\Filter('filter_name'))

@@ -7,7 +7,7 @@ use M6Web\Bundle\LogBridgeBundle\Config;
 
 class FilterCollection extends atoum
 {
-    private function createFilter($name, $route, $method, $status)
+    private function createFilter(string $name, string $route, mixed $method, mixed $status): Config\Filter
     {
         $filter = new Config\Filter($name);
         $filter
@@ -18,7 +18,7 @@ class FilterCollection extends atoum
         return $filter;  
     }
 
-    public function testCollection()
+    public function testCollection(): void
     {
         $filters = [];
         $filters[] = $this->createFilter('filter_un', 'get_clip', 'all', 'all');

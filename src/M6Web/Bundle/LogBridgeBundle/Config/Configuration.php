@@ -9,63 +9,36 @@ namespace M6Web\Bundle\LogBridgeBundle\Config;
  */
 class Configuration
 {
-    /** @var FilterCollection */
-    private $filters;
+    private ?FilterCollection $filters;
 
-    /** @var array */
-    private $activeFilters;
+    private ?array $activeFilters;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
         $this->filters = null;
         $this->activeFilters = null;
     }
 
-    /**
-     * setActiveFilters
-     *
-     * @return Configuration
-     */
-    public function setActiveFilters(array $activeFilters)
+    public function setActiveFilters(array $activeFilters): self
     {
         $this->activeFilters = $activeFilters;
 
         return $this;
     }
 
-    /**
-     * getActiveFilters
-     *
-     * @return array
-     */
-    public function getActiveFilters()
+    public function getActiveFilters(): ?array
     {
         return $this->activeFilters;
     }
 
-    /**
-     * setFilters
-     *
-     * @param FilterCollection $filters Filters
-     *
-     * @return Configuration
-     */
-    public function setFilters(FilterCollection $filters)
+    public function setFilters(FilterCollection $filters): self
     {
         $this->filters = $filters;
 
         return $this;
     }
 
-    /**
-     * getFilters
-     *
-     * @return FilterCollection
-     */
-    public function getFilters()
+    public function getFilters(): ?FilterCollection
     {
         return $this->filters;
     }

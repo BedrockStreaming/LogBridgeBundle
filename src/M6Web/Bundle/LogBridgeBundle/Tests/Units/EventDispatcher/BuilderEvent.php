@@ -9,7 +9,7 @@ use M6Web\Bundle\LogBridgeBundle\EventDispatcher\BuilderEvent as TestedClass;
 
 class BuilderEvent extends atoum
 {
-    public function testBuildEventIsInstanciable()
+    public function testBuildEventIsInstanciable(): void
     {
         $this
             ->given($this->mockGenerator->orphanize('__construct'))

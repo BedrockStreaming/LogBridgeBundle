@@ -8,15 +8,16 @@ use Symfony\Component\Security\Core\User\User;
 use M6Web\Bundle\LogBridgeBundle\Formatter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * ExceptionFormatter
  */
 class ExceptionFormatter extends atoum
 {
-    const ENVIRONMENT = 'test';
-    const USERNAME = 'test-username';
-    const PASSWORD = 'test-password';
+    private const ENVIRONMENT = 'test';
+    private const USERNAME = 'test-username';
+    private const PASSWORD = 'test-password';
 
     /**
      * @var string
@@ -26,12 +27,12 @@ class ExceptionFormatter extends atoum
     /**
      * @param string $method
      */
-    public function beforeTestMethod($method)
+    public function beforeTestMethod(string $method): void
     {
         $this->requestExceptionAttribute = 'LogBridgeBundle_'.time();
     }
 
-    private function getUser()
+    private function getUser(): UserInterface
     {
         if (class_exists(User::class)) {
             return new User(self::USERNAME, self::PASSWORD);
@@ -66,7 +67,7 @@ class ExceptionFormatter extends atoum
         return $context;
     }
 
-    private function createProvider($environment = self::ENVIRONMENT, array $ignores = ['php-auth-pw'], $prefix = '')
+    private function createProvider(string $environment = self::ENVIRONMENT, array $ignores = ['php-auth-pw'], string $prefix = ''): Formatter\ExceptionFormatter
     {
         $provider = new Formatter\ExceptionFormatter($environment, $ignores, $prefix);
         $provider->setRequestExceptionAttribute($this->requestExceptionAttribute);
@@ -74,7 +75,7 @@ class ExceptionFormatter extends atoum
         return $provider;
     }
 
-    public function testProvider()
+    public function testProvider(): void
     {
         $request       = new Request();
         $response      = new Response('Body content response');
@@ -127,7 +128,7 @@ class ExceptionFormatter extends atoum
         ;
     }
 
-    public function testProviderExceptionsDepth()
+    public function testProviderExceptionsDepth(): void
     {
         $request       = new Request();
         $response      = new Response('Body content response');
@@ -160,7 +161,7 @@ class ExceptionFormatter extends atoum
         ;
     }
 
-    public function testTypeErrorException()
+    public function testTypeErrorException(): void
     {
         $request = new Request();
         $exception = new \TypeError('Test: TypeError exception thrown.');

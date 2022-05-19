@@ -2,7 +2,7 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Config;
 
-use M6Web\Bundle\LogBridgeBundle\Tests\Units\BaseTest;  
+use M6Web\Bundle\LogBridgeBundle\Tests\Units\BaseTest;
 use M6Web\Bundle\LogBridgeBundle\Config;
 
 /**
@@ -15,17 +15,17 @@ class Parser extends BaseTest
         return new MockRouter();
     }
 
-    private function getParser()
+    private function getParser(): Config\Parser
     {
         return new Config\Parser($this->getMockedRouter());
     }
 
-    private function getConfig()
+    private function getConfig(): array
     {
         return [
             'active_filters' => [
-                    'filter_un',
-                    'filter_trois'
+                'filter_un',
+                'filter_trois'
             ],
             'filters' => [
                 'filter_un' => [
@@ -53,7 +53,7 @@ class Parser extends BaseTest
     }
 
 
-    public function testValidConfig()
+    public function testValidConfig(): void
     {
         $config = $this->getConfig();
 
@@ -73,7 +73,7 @@ class Parser extends BaseTest
     }
 
 
-    public function testInvalidConfig()
+    public function testInvalidConfig(): void
     {
         $config = [
             'filters' => [

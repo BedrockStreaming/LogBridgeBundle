@@ -15,7 +15,7 @@ class LoggerValidationPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasParameter('m6web_log_bridge.logger.service')) {
             return;
@@ -30,7 +30,7 @@ class LoggerValidationPass implements CompilerPassInterface
             $loggerClass = $container->getParameter($loggerClassParameter);
         }
 
-        if (!in_array('Psr\Log\LoggerInterface', class_implements($loggerClass))) {
+        if (!in_array('Psr\Log\LoggerInterface', class_implements($loggerClass), true)) {
             throw new \InvalidArgumentException(sprintf('Class "%s" must be implement "Psr\Log\LoggerInterface"', $loggerClass));
         }
     }

@@ -10,12 +10,12 @@ use M6Web\Bundle\LogBridgeBundle\Config;
  */
 class FilterParser extends BaseTest
 {
-    private function getParser()
+    private function getParser(): Config\FilterParser
     {
         return new Config\FilterParser($this->getMockedRouter());
     }
 
-    private function getConfig()
+    private function getConfig(): array
     {
         return [
             'filter_un' => [
@@ -56,7 +56,7 @@ class FilterParser extends BaseTest
         ];
     }
 
-    public function testValidParse()
+    public function testValidParse(): void
     {
         $config = $this->getConfig();
 
@@ -110,7 +110,7 @@ class FilterParser extends BaseTest
 
     }
 
-    public function testInvalidRoute()
+    public function testInvalidRoute(): void
     {
         $config = $this->getConfig()['filter_route_invalid'];
 
@@ -126,7 +126,7 @@ class FilterParser extends BaseTest
         ;
     }
 
-    public function testInvalidMethod()
+    public function testInvalidMethod(): void
     {
         $config = $this->getConfig()['filter_method_invalid'];
 
@@ -142,7 +142,7 @@ class FilterParser extends BaseTest
         ;
     }
 
-    public function testInvalidStatus()
+    public function testInvalidStatus(): void
     {
         $config = $this->getConfig()['filter_status_invalid'];
 

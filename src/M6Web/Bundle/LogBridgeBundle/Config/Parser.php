@@ -11,11 +11,9 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class Parser
 {
-    /** @var RouterInterface */
-    private $router;
+    private RouterInterface $router;
 
-    /** @var FilterParser */
-    private $filterParser;
+    private ?FilterParser $filterParser;
 
     /**
      * __construct
@@ -28,14 +26,7 @@ class Parser
         $this->filterParser = null;
     }
 
-    /**
-     * createFilterCollection
-     *
-     * @param array $filters Filters configuration
-     *
-     * @return FilterCollection
-     */
-    protected function createFilterCollection(array $filters)
+    protected function createFilterCollection(array $filters): FilterCollection
     {
         $collection = new FilterCollection();
 
@@ -72,14 +63,9 @@ class Parser
         return $config;
     }
 
-    /**
-     * getFilterParser
-     *
-     * @return FilterParser
-     */
-    public function getFilterParser()
+    public function getFilterParser(): FilterParser
     {
-        if (!$this->filterParser) {
+        if ($this->filterParser === null) {
             $this->filterParser = new FilterParser($this->router);
         }
 

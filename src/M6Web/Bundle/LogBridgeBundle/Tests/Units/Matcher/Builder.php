@@ -39,7 +39,7 @@ class Builder extends BaseMatcher
                 $matcherClass = $this->getMatcherClassName(),
                 $typeManager = $this->getTypeManager()
             )
-            ->if($builder = new Matcher\Builder($typeManager, $this->getFilters(), $this->getActiveFilters(), 'test'))
+            ->if($builder = new Matcher\Builder($typeManager, $this->getFilters(), $this->getActiveFilters()))
             ->then
                 ->object($builder->setCacheDir($cacheDir))
                     ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Matcher\Builder')

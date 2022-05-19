@@ -12,68 +12,36 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class BuilderEvent extends Event
 {
-    /** @var BuilderInterface */
-    private $builder;
+    private BuilderInterface $builder;
 
-    /** @var array */
-    private $config;
+    private array $config;
 
-    /**
-     * __construct
-     *
-     * @param BuilderInterface $builder Builder
-     * @param array            $config  Config
-     */
     public function __construct(BuilderInterface $builder, array $config = [])
     {
         $this->builder = $builder;
         $this->config = $config;
     }
 
-    /**
-     * setBuilder
-     *
-     * @param BuilderInterface $builder Builder
-     *
-     * @return BuilderEvent
-     */
-    public function setBuilder(BuilderInterface $builder)
+    public function setBuilder(BuilderInterface $builder): self
     {
         $this->builder = $builder;
 
         return $this;
     }
 
-    /**
-     * getBuilder
-     *
-     * @return BuilderInterface
-     */
-    public function getBuilder()
+    public function getBuilder(): BuilderInterface
     {
         return $this->builder;
     }
 
-    /**
-     * setConfig
-     *
-     * @param array $config Config
-     *
-     * @return BuilderEvent
-     */
-    public function setConfig(array $config)
+    public function setConfig(array $config): self
     {
         $this->config = $config;
 
         return $this;
     }
 
-    /**
-     * getConfig
-     *
-     * @return array
-     */
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }

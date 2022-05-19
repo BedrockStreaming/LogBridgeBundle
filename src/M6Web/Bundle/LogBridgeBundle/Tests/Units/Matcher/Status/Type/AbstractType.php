@@ -17,29 +17,29 @@ class AbstractType extends atoum
         return $sample1Type;
     }
 
-    public function testMatch()
+    public function testMatch(): void
     {
         $this
             ->given(
                 $type = new TestedClass()
             )
             ->then
-            ->integer($type->match('350'))
-                ->isEqualTo(1)
-            ->integer($type->match('3500'))
-                ->isEqualTo(0)
-            ->integer($type->match('50'))
-                ->isEqualTo(0)
-            ->integer($type->match('!350'))
-                ->isEqualTo(1)
-            ->integer($type->match('!3500'))
-                ->isEqualTo(0)
-            ->integer($type->match('!50'))
-                ->isEqualTo(0)
+            ->boolean($type->match('350'))
+                ->isTrue()
+            ->boolean($type->match('3500'))
+                ->isFalse()
+            ->boolean($type->match('50'))
+                ->isFalse()
+            ->boolean($type->match('!350'))
+                ->isTrue()
+            ->boolean($type->match('!3500'))
+                ->isFalse()
+            ->boolean($type->match('!50'))
+                ->isFalse()
         ;
     }
 
-    public function testGetStatus()
+    public function testGetStatus(): void
     {
         $this
             ->given(
@@ -53,15 +53,15 @@ class AbstractType extends atoum
                 ->isEqualTo(['200'])
             ->exception(
                 function () use ($typeBadTransform) {
-                    $status = $typeBadTransform->getStatus('200');
+                    $typeBadTransform->getStatus('200');
                 }
             )
-            ->hasCode(500)
-            ->hasMessage('"transform" method must be return an array in class "mock\M6Web\Bundle\LogBridgeBundle\Tests\Fixtures\Matcher\Status\Type\Sample1Type"')
+            ->hasCode(0)
+            ->hasMessage('mock\M6Web\Bundle\LogBridgeBundle\Tests\Fixtures\Matcher\Status\Type\Sample1Type::transform(): Return value must be of type array, string returned')
         ;
     }
 
-    public function testIsExclude()
+    public function testIsExclude(): void
     {
         $this
             ->given(

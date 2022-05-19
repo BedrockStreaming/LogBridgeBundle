@@ -9,30 +9,19 @@ namespace M6Web\Bundle\LogBridgeBundle\Config;
  */
 class Filter
 {
-    /** @var string */
-    private $name;
+    private string $name;
 
-    /** @var string */
-    private $route;
+    private ?string $route;
 
-    /** @var mixed */
-    private $method;
+    private mixed $method;
 
-    /** @var mixed */
-    private $status;
+    private mixed $status;
 
-    /** @var mixed */
-    private $level;
+    private ?string $level;
 
-    /** @var array */
-    private $options;
+    private array $options;
 
-    /**
-     * __construct
-     *
-     * @param string $name name Filter name
-     */
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->name = $name;
         $this->route = null;
@@ -42,130 +31,67 @@ class Filter
         $this->options = [];
     }
 
-    /**
-     * getName
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * setRoute
-     *
-     * @param string $route Route
-     *
-     * @return Filter
-     */
-    public function setRoute($route)
+    public function setRoute(?string $route): self
     {
         $this->route = $route;
 
         return $this;
     }
 
-    /**
-     * getRoute
-     *
-     * @return string
-     */
-    public function getRoute()
+    public function getRoute(): ?string
     {
         return $this->route;
     }
 
-    /**
-     * setMethod
-     *
-     * @param mixed $method Method
-     *
-     * @return Filter
-     */
-    public function setMethod($method)
+    public function setMethod(mixed $method): self
     {
         $this->method = $method;
 
         return $this;
     }
 
-    /**
-     * getMethod
-     *
-     * @return mixed
-     */
-    public function getMethod()
+    public function getMethod(): mixed
     {
         return $this->method;
     }
 
-    /**
-     * setStatus
-     *
-     * @param mixed $status Http code status
-     *
-     * @return Filter
-     */
-    public function setStatus($status)
+    public function setStatus(mixed $status): self
     {
         $this->status = $status;
 
         return $this;
     }
 
-    /**
-     * getStatus
-     *
-     * @return mixed
-     */
-    public function getStatus()
+    public function getStatus(): mixed
     {
         return $this->status;
     }
 
-    /**
-     * setLevel
-     *
-     * @param mixed $level Log level
-     *
-     * @return Filter
-     */
-    public function setLevel($level)
+    public function setLevel(?string $level): self
     {
         $this->level = $level;
 
         return $this;
     }
 
-    /**
-     * getLevel
-     *
-     * @return mixed
-     */
-    public function getLevel()
+    public function getLevel(): ?string
     {
         return $this->level;
     }
 
-    /**
-     * set filter options
-     *
-     * @return Filter
-     */
-    public function setOptions(array $options)
+    public function setOptions(array $options): self
     {
         $this->options = $options;
 
         return $this;
     }
 
-    /**
-     * get filter options
-     *
-     * @return array
-     */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }

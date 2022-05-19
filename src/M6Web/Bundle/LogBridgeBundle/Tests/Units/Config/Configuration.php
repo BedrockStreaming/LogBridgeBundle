@@ -2,12 +2,12 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Config;
 
-use atoum;  
+use atoum;
 use M6Web\Bundle\LogBridgeBundle\Config;
 
 class Configuration extends atoum
 {
-    private function getFilters()
+    private function getFilters(): Config\FilterCollection
     {
         $collection = new Config\FilterCollection();
 
@@ -40,16 +40,16 @@ class Configuration extends atoum
         return $collection;
     }
 
-    private function getActiveFilters()
+    private function getActiveFilters(): array
     {
         return [
             'active_filters_one',
             'active_filters_two',
             'active_filters_three'
-            ];
+        ];
     }
 
-    public function testConfiguration()
+    public function testConfiguration(): void
     {
         $activeFilters = $this->getActiveFilters();
 

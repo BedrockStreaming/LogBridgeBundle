@@ -11,19 +11,11 @@ interface TypeInterface
 {
     /**
      * Match with config status
-     *
-     * @param string $config
-     *
-     * @return bool
      */
-    public function match($config);
+    public function match(string $config): bool;
 
     /**
      * Get status list
-     *
-     * @param string $config
-     *
-     * @return array
      */
-    public function getStatus($config);
+    public function getStatus(string $config): array;
 }

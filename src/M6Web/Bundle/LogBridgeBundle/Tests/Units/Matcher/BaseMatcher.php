@@ -7,7 +7,7 @@ use M6Web\Bundle\LogBridgeBundle\Config\Parser;
 
 class BaseMatcher extends BaseTest
 {
-    protected function cacheClear()
+    protected function cacheClear(): void
     {
         $files = glob($this->getCacheDir() .'/*');
 
@@ -18,23 +18,23 @@ class BaseMatcher extends BaseTest
         }
     }
 
-    protected function getCacheDir()
+    protected function getCacheDir(): string
     {
         return __DIR__.'/../../Fixtures/Resources/cache';
     }
 
 
-    protected function getParser()
+    protected function getParser(): Parser
     {
         return new Parser($this->getMockedRouter());
     }
 
-    protected function getMatcherClassName()
+    protected function getMatcherClassName(): string
     {
         return 'TestLogMatcher';
     }
 
-    protected function getActiveFilters()
+    protected function getActiveFilters(): array
     {
         return [
             'get_clip_all_status',
@@ -43,7 +43,7 @@ class BaseMatcher extends BaseTest
         ];
     }
 
-    protected function getFilters()
+    protected function getFilters(): array
     {
         return [
             'get_clip_all_status' => [

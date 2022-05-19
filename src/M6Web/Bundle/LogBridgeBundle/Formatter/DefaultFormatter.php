@@ -13,17 +13,13 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class DefaultFormatter implements FormatterInterface
 {
-    /** @var string */
-    protected $environment;
+    protected string $environment;
 
-    /** @var array */
-    protected $ignoreHeaders;
+    protected array $ignoreHeaders;
 
-    /** @var string */
-    protected $prefixKey;
+    protected string $prefixKey;
 
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
+    protected ?TokenStorageInterface $tokenStorage;
 
     /**
      * __construct
@@ -32,7 +28,7 @@ class DefaultFormatter implements FormatterInterface
      * @param array  $ignoreHeaders Array list from ignore header info
      * @param string $prefixKey     Log context prefix key
      */
-    public function __construct($environment, array $ignoreHeaders = [], $prefixKey = '')
+    public function __construct(string $environment, array $ignoreHeaders = [], string $prefixKey = '')
     {
         $this->environment = $environment;
         $this->ignoreHeaders = $ignoreHeaders;
@@ -42,10 +38,8 @@ class DefaultFormatter implements FormatterInterface
 
     /**
      * Format parameters as tree
-     *
-     * @return string
      */
-    protected function formatParameters(array $parameters)
+    protected function formatParameters(array $parameters): string
     {
         $tree = new \RecursiveTreeIterator(new \RecursiveArrayIterator($parameters));
         $tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_LEFT, ' ');
@@ -64,14 +58,8 @@ class DefaultFormatter implements FormatterInterface
 
     /**
      * getLogContent
-     *
-     * @param Request  $request  Request service
-     * @param Response $response Response service
-     * @param array    $options  Request options
-     *
-     * @return string
      */
-    public function getLogContent(Request $request, Response $response, array $options)
+    public function getLogContent(Request $request, Response $response, array $options): string
     {
         $requestHeaders = $this->getFilteredHeaders($request);
         $requestContent = "Request\n------------------------\n";
@@ -112,16 +100,7 @@ class DefaultFormatter implements FormatterInterface
         );
     }
 
-    /**
-     * getLogContext
-     *
-     * @param Request  $request  Request service
-     * @param Response $response Response service
-     * @param array    $options  Request options
-     *
-     * @return array
-     */
-    public function getLogContext(Request $request, Response $response, array $options)
+    public function getLogContext(Request $request, Response $response, array $options): array
     {
         $route = $request->get('_route');
         $method = $request->getMethod();
@@ -144,12 +123,7 @@ class DefaultFormatter implements FormatterInterface
         return $context;
     }
 
-    /**
-     * getUsername
-     *
-     * @return string
-     */
-    protected function getUsername()
+    protected function getUsername(): string
     {
         if (!$this->tokenStorage || !$token = $this->tokenStorage->getToken()) {
             return '';
@@ -163,74 +137,38 @@ class DefaultFormatter implements FormatterInterface
         return $token->getUserIdentifier();
     }
 
-    /**
-     * getFilteredHeaders
-     *
-     * @param Request $request Request service
-     *
-     * @return array
-     */
-    protected function getFilteredHeaders(Request $request)
+    protected function getFilteredHeaders(Request $request): array
     {
         return array_diff_key($request->headers->all(), array_flip($this->ignoreHeaders));
     }
 
-    /**
-     * setContext
-     *
-     * @param TokenStorageInterface $tokenStorage User security token storage
-     *
-     * @return LogRequestListener
-     */
-    public function setTokenStorage(TokenStorageInterface $tokenStorage)
+    public function setTokenStorage(TokenStorageInterface $tokenStorage): self
     {
         $this->tokenStorage = $tokenStorage;
 
         return $this;
     }
 
-    /**
-     * setIgnoreHeaders
-     *
-     * @param array $ignoreHeaders Array list of ignore header info
-     *
-     * @return $this
-     */
-    public function setIgnoreHeaders(array $ignoreHeaders)
+    public function setIgnoreHeaders(array $ignoreHeaders): self
     {
         $this->ignoreHeaders = $ignoreHeaders;
 
         return $this;
     }
 
-    /**
-     * getIgnoreHeaders
-     *
-     * @return array
-     */
-    public function getIgnoreHeaders()
+    public function getIgnoreHeaders(): array
     {
         return $this->ignoreHeaders;
     }
 
-    /**
-     * setPrefixKey
-     *
-     * @param string $prefixKey Prefix key
-     *
-     * @return $this
-     */
-    public function setPrefixKey($prefixKey)
+    public function setPrefixKey(string $prefixKey): self
     {
         $this->prefixKey = $prefixKey;
+
+        return $this;
     }
 
-    /**
-     * getPrefixKey
-     *
-     * @return string
-     */
-    public function getPrefixKey()
+    public function getPrefixKey(): string
     {
         return $this->prefixKey;
     }

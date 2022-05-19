@@ -11,13 +11,9 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
  */
 class LogExceptionListener
 {
-    /** @var string */
-    protected $requestExceptionAttribute;
+    protected string $requestExceptionAttribute;
 
-    /**
-     * @param string $requestExceptionAttribute
-     */
-    public function __construct($requestExceptionAttribute)
+    public function __construct(string $requestExceptionAttribute)
     {
         $this->requestExceptionAttribute = $requestExceptionAttribute;
     }
@@ -25,12 +21,10 @@ class LogExceptionListener
     /**
      * React to an exception to give error message to log bridge
      */
-    public function onKernelException(ExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event): void
     {
-        $exception = $event->getThrowable();
-
         $request = $event->getRequest();
         $request->setRequestFormat('json');
-        $request->attributes->add([$this->requestExceptionAttribute => $exception]);
+        $request->attributes->add([$this->requestExceptionAttribute => $event->getThrowable()]);
     }
 }

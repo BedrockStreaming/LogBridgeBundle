@@ -11,84 +11,22 @@ use Psr\Log\LogLevel;
  */
 interface MatcherInterface
 {
-    /**
-     * match
-     *
-     * @param string $route  Route name
-     * @param string $method Method name
-     * @param int    $status Http code status
-     *
-     * @return bool
-     */
-    public function match($route, $method, $status);
+    public function match(string $route, string $method, int $status): bool;
+
+    public function addFilter(string $filter, string $level = LogLevel::INFO, array $options = []): self;
+
+    public function setFilters(array $filters, bool $overwrite = false): self;
+
+    public function getFilters(): array;
+
+    public function hasFilter(string $filter): bool;
+
+    public function getLevel(string $route, string $method, int $status): string;
+
+    public function getOptions(string $route, string $method, int $status): array;
 
     /**
-     * addFilter
-     *
-     * @param string $filter  Filter name
-     * @param string $level   Filter log level
-     * @param array  $options Filter options
-     *
-     * @return MatcherInterface
+     * get a filter key matched with arguments
      */
-    public function addFilter($filter, $level = LogLevel::INFO, array $options = []);
-
-    /**
-     * setFilters
-     *
-     * @param array $filters   Filter list
-     * @param bool  $overwrite Overwrite current filter
-     *
-     * @return MatcherInterface
-     */
-    public function setFilters(array $filters, $overwrite = false);
-
-    /**
-     * getFilters
-     *
-     * @return array
-     */
-    public function getFilters();
-
-    /**
-     * hasFilter
-     *
-     * @param string $filter Filter
-     *
-     * @return bool
-     */
-    public function hasFilter($filter);
-
-    /**
-     * Get filter level log
-     *
-     * @param string $route  Route name
-     * @param string $method Method name
-     * @param int    $status Http code status
-     *
-     * @return string
-     */
-    public function getLevel($route, $method, $status);
-
-    /**
-     * get options
-     *
-     * @param string $route  Route name
-     * @param string $method Method name
-     * @param int    $status Http code status
-     *
-     * @return array
-     */
-    public function getOptions($route, $method, $status);
-
-    /**
-     * get an filter key matched with arguments
-     *
-     * @param string $route  Route name
-     * @param string $method Method name
-     * @param int    $status Http code status
-     *
-     * @return bool|string
-     */
-    public function getMatchFilterKey($route, $method, $status);
+    public function getMatchFilterKey(string $route, string $method, int $status): string;
 }

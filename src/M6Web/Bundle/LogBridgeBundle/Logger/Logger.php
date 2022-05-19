@@ -21,6 +21,7 @@ class Logger implements LoggerInterface
      */
     public function __construct($logger)
     {
+        dd(get_class($logger));
         $this->logger = $logger;
     }
 
