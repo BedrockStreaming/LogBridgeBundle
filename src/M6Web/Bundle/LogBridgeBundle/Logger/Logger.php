@@ -24,7 +24,7 @@ class Logger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function emergency(string|\Stringable $message, array $context = []): void
+    public function emergency($message, array $context = []): void
     {
         $this->logger->emergency($message, $context);
     }
@@ -32,7 +32,7 @@ class Logger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function alert(string|\Stringable $message, array $context = []): void
+    public function alert($message, array $context = []): void
     {
         $this->logger->alert($message, $context);
     }
@@ -40,7 +40,7 @@ class Logger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function critical(string|\Stringable $message, array $context = []): void
+    public function critical($message, array $context = []): void
     {
         $this->logger->critical($message, $context);
     }
@@ -48,7 +48,7 @@ class Logger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function error(string|\Stringable $message, array $context = []): void
+    public function error($message, array $context = []): void
     {
         $this->logger->error($message, $context);
     }
@@ -56,7 +56,7 @@ class Logger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function warning(string|\Stringable $message, array $context = []): void
+    public function warning($message, array $context = []): void
     {
         $this->logger->warning($message, $context);
     }
@@ -64,7 +64,7 @@ class Logger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function notice(string|\Stringable $message, array $context = []): void
+    public function notice($message, array $context = []): void
     {
         $this->logger->notice($message, $context);
     }
@@ -72,7 +72,7 @@ class Logger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function info(string|\Stringable $message, array $context = []): void
+    public function info($message, array $context = []): void
     {
         $this->logger->info($message, $context);
     }
@@ -80,7 +80,7 @@ class Logger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function debug(string|\Stringable $message, array $context = []): void
+    public function debug($message, array $context = []): void
     {
         $this->logger->debug($message, $context);
     }
@@ -88,7 +88,7 @@ class Logger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function log($level, string|\Stringable $message, array $context = []): void
+    public function log($level, $message, array $context = []): void
     {
         $this->logger->log($level, $message, $context);
     }
