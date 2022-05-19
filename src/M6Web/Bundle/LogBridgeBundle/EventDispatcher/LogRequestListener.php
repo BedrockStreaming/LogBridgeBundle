@@ -31,7 +31,7 @@ class LogRequestListener
     {
         $request = $event->getRequest();
         $response = $event->getResponse();
-        $route = $request->get('_route');
+        $route = $request->get('_route', '');
         $method = $request->getMethod();
         $status = $response->getStatusCode();
         $level = $this->matcher->getLevel($route, $method, $status);
