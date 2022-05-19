@@ -3,3 +3,4 @@ vendor/
 src/M6Web/Bundle/LogBridgeBundle/Tests/Resources/cache/*
 .php_cs.cache
 .php-cs-fixer.cache
+composer.lock
