@@ -7,7 +7,7 @@ namespace M6Web\Bundle\LogBridgeBundle\EventDispatcher;
 use M6Web\Bundle\LogBridgeBundle\Formatter\FormatterInterface;
 use M6Web\Bundle\LogBridgeBundle\Matcher\MatcherInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpKernel\Event\TerminateEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 /**
  * LogRequestListener
@@ -27,7 +27,7 @@ class LogRequestListener
         $this->matcher = null;
     }
 
-    public function onKernelTerminate(TerminateEvent $event): void
+    public function onKernelTerminate(ResponseEvent $event): void
     {
         $request = $event->getRequest();
         $response = $event->getResponse();
