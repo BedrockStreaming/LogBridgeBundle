@@ -51,8 +51,6 @@ class FilterParser
 
     public function parse(string $name, array $config): Filter
     {
-        $filter = $this->createFilter($name);
-
         if (
             !array_key_exists('route', $config) ||
             !array_key_exists('method', $config) ||
@@ -65,14 +63,14 @@ class FilterParser
             $config['level'] = self::DEFAULT_LEVEL;
         }
 
+        $filter = $this->createFilter($name);
+
         $this->parseRoute($filter, $config['route']);
         $this->parseMethod($filter, $config['method']);
         $this->parseStatus($filter, $config['status']);
         $this->parseLevel($filter, $config['level']);
 
-        $filter->setOptions(isset($config['options']) ? $config['options'] : []);
-
-        return $filter;
+        return $filter->setOptions($config['options'] ?? []);
     }
 
     protected function parseRoute(Filter $filter, ?string $route): void
@@ -104,7 +102,7 @@ class FilterParser
 
     protected function parseLevel(Filter $filter, ?string $level): void
     {
-        if (!is_string($level) && !is_null($level)) {
+        if (!is_string($level) && $level !== null) {
             throw new ParseException(sprintf('Unrecognized value "%s" from level parameter', $level));
         }
 

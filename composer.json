@@ -14,8 +14,8 @@
         "symfony/routing": "^4.4|^5.0|^6.0",
         "symfony/expression-language": "^4.4|^5.0|^6.0",
         "symfony/security-core": "^4.4|^5.0|^6.0",
-        "symfony/dependency-injection": "^6.0",
-        "symfony/http-kernel": "^6.0"
+        "symfony/dependency-injection": "^4.4|^5.0|^6.0",
+        "symfony/http-kernel": "^4.4|^5.0|^6.0"
     },
     "require-dev": {
         "atoum/atoum": "^3.4|^4.0",

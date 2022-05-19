@@ -43,7 +43,6 @@ class TypeManager extends atoum
      */
     public function dataTestAddType(): array
     {
-
         $type1 = $this->getType(1);
         $type2 = $this->getType(2);
         $type3 = $this->getType(3);
@@ -62,7 +61,6 @@ class TypeManager extends atoum
                 ]
             ]
         ];
-
     }
 
     /**
@@ -70,7 +68,6 @@ class TypeManager extends atoum
      */
     public function testRemoveType(array $types, TypeInterface $typeToRemove, array $result): void
     {
-
         $this
             ->given(
                 $typeManager = new TestedClass()
@@ -93,7 +90,6 @@ class TypeManager extends atoum
      */
     public function dataTestRemoveType(): array
     {
-
         $type1 = $this->getType(1);
         $type2 = $this->getType(2);
         $type3 = $this->getType(3);
@@ -112,6 +108,5 @@ class TypeManager extends atoum
                 ]
             ]
         ];
-
     }
 }
