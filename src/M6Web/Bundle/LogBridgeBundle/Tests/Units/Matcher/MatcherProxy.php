@@ -6,7 +6,7 @@ use M6Web\Bundle\LogBridgeBundle\Matcher;
 
 class MatcherProxy extends BaseMatcher
 {
-    private function getTypeManager()
+    private function getTypeManager(): Matcher\Status\TypeManager
     {
         $typeManager = new Matcher\Status\TypeManager();
 
@@ -18,7 +18,7 @@ class MatcherProxy extends BaseMatcher
         return $typeManager;
     }
 
-    private function getBuilder()
+    private function getBuilder(): Matcher\Builder
     {
         $builder = new Matcher\Builder($this->getTypeManager(), $this->getFilters(), $this->getActiveFilters());
 
@@ -30,7 +30,7 @@ class MatcherProxy extends BaseMatcher
         return $builder;
     }
 
-    private function createFilters($matcher)
+    private function createFilters($matcher): array
     {
         $keyNoConfig = $matcher->generateFilterKey('dynamically_no_config', 'GET', 200);
         $key500      = $matcher->generateFilterKey('dynamically_un', 'POST', 500);
@@ -49,7 +49,7 @@ class MatcherProxy extends BaseMatcher
         ];
     }
 
-    public function testProxy()
+    public function testProxy(): void
     {
         $this
             ->if($proxy = new Matcher\MatcherProxy($this->getBuilder()))
@@ -67,7 +67,7 @@ class MatcherProxy extends BaseMatcher
         ;
     }
 
-    public function testDynamicallyFilter()
+    public function testDynamicallyFilter(): void
     {
         $this
             ->if($proxy = new Matcher\MatcherProxy($this->getBuilder()))

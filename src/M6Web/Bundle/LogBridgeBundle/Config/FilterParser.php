@@ -73,7 +73,7 @@ class FilterParser
         return $filter->setOptions($config['options'] ?? []);
     }
 
-    protected function parseRoute(Filter $filter, ?string $route): void
+    protected function parseRoute(Filter $filter, mixed $route): void
     {
         if ($route !== null && !$this->isRoute($route)) {
             throw new ParseException(sprintf('Undefined route "%s" from router service', $route));
@@ -100,7 +100,7 @@ class FilterParser
         $filter->setStatus($status);
     }
 
-    protected function parseLevel(Filter $filter, ?string $level): void
+    protected function parseLevel(Filter $filter, mixed $level): void
     {
         if (!is_string($level) && $level !== null) {
             throw new ParseException(sprintf('Unrecognized value "%s" from level parameter', $level));

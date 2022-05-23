@@ -11,7 +11,7 @@ class Filter
 {
     private string $name;
 
-    private ?string $route;
+    private mixed $route;
 
     private mixed $method;
 
@@ -36,14 +36,14 @@ class Filter
         return $this->name;
     }
 
-    public function setRoute(?string $route): self
+    public function setRoute(mixed $route): self
     {
         $this->route = $route;
 
         return $this;
     }
 
-    public function getRoute(): ?string
+    public function getRoute(): mixed
     {
         return $this->route;
     }

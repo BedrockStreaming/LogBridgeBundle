@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Route;
  */
 class BaseTest extends atoum
 {
-    protected function getMockedRouterCollection()
+    protected function getMockedRouterCollection(): object
     {
         $collection = new \mock\Symfony\Component\Routing\RouteCollection();
         $collection->getMockController()->get = function($name) {
@@ -21,7 +21,7 @@ class BaseTest extends atoum
         return $collection;
     }
 
-    protected function getMockedRouter()
+    protected function getMockedRouter(): object
     {
         $this->mockGenerator->orphanize('__construct');
         $router = new \mock\Symfony\Component\Routing\Router();
