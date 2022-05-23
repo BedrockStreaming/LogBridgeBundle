@@ -17,7 +17,7 @@ class Filter
 
     private mixed $status;
 
-    private ?string $level;
+    private mixed $level;
 
     private array $options;
 
@@ -72,14 +72,14 @@ class Filter
         return $this->status;
     }
 
-    public function setLevel(?string $level): self
+    public function setLevel(mixed $level): self
     {
         $this->level = $level;
 
         return $this;
     }
 
-    public function getLevel(): ?string
+    public function getLevel(): mixed
     {
         return $this->level;
     }
