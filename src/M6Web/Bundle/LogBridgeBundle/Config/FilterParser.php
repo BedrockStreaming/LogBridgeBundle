@@ -25,11 +25,10 @@ class FilterParser
         LogLevel::DEBUG,
     ];
 
-    protected string $filterClass;
+    protected string $filterClass = '';
 
     public function __construct(protected ?RouterInterface $router = null)
     {
-        $this->filterClass = '';
     }
 
     protected function createFilter(string $name): Filter

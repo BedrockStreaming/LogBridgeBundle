@@ -6,18 +6,14 @@ namespace M6Web\Bundle\LogBridgeBundle\Config;
 
 class FilterCollection implements \Iterator
 {
-    protected int $iterator;
+    protected int $iterator = 0;
 
-    protected array $keys;
+    protected array $keys = [];
 
-    protected array $values;
+    protected array $values = [];
 
     public function __construct(array $items = [])
     {
-        $this->iterator = 0;
-        $this->keys = [];
-        $this->values = [];
-
         foreach ($items as $item) {
             $this->add($item);
         }

@@ -31,7 +31,7 @@ class DefaultFormatter extends atoum
     private function getMockedToken()
     {
         $usernameMethod = 'getUserIdentifier';
-        if (method_exists('Symfony\Component\Security\Core\Authentication\Token\TokenInterface', 'getUsername')) {
+        if (method_exists(\Symfony\Component\Security\Core\Authentication\Token\TokenInterface::class, 'getUsername')) {
             // compatibility Symfony < 6
             $usernameMethod = 'getUsername';
         }
@@ -72,7 +72,7 @@ class DefaultFormatter extends atoum
             ->if($provider = $this->createProvider())
             ->then
             ->object($provider->setTokenStorage($tokenstorage))
-                ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Formatter\DefaultFormatter')
+                ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Formatter\DefaultFormatter::class)
             ->string($provider->getLogContent($request, $response, []))
                 ->contains('HTTP 1.0 200')
                 ->contains('Cache-Control')
@@ -122,7 +122,7 @@ class DefaultFormatter extends atoum
             ->if($provider = $this->createProvider())
             ->then
             ->object($provider->setTokenStorage($tokenstorage))
-                ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Formatter\DefaultFormatter')
+                ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Formatter\DefaultFormatter::class)
             ->string($provider->getLogContent($request, $response, ['post_parameters' => true]))
                 ->contains('HTTP 1.0 200')
                 ->contains('Cache-Control')

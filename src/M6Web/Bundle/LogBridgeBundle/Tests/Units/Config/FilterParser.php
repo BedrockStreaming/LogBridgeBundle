@@ -120,7 +120,7 @@ class FilterParser extends BaseTest
                 ->exception(function() use ($parser, $config) {
                     $parser->parse('filter_route_invalid', $config);
                 })
-                ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\ParseException')
+                ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\ParseException::class)
                 ->message
                     ->contains('Undefined route')
         ;

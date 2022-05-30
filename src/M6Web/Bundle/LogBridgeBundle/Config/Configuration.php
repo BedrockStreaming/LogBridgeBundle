@@ -9,14 +9,12 @@ namespace M6Web\Bundle\LogBridgeBundle\Config;
  */
 class Configuration
 {
-    private ?FilterCollection $filters;
+    private ?FilterCollection $filters = null;
 
-    private ?array $activeFilters;
+    private ?array $activeFilters = null;
 
     public function __construct()
     {
-        $this->filters = null;
-        $this->activeFilters = null;
     }
 
     public function setActiveFilters(array $activeFilters): self

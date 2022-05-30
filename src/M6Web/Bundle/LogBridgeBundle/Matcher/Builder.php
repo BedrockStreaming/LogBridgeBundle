@@ -16,29 +16,26 @@ class Builder implements BuilderInterface
 {
     private ConfigParser $configParser;
 
-    private ?EventDispatcherInterface $dispatcher;
+    private ?EventDispatcherInterface $dispatcher = null;
 
-    private bool $debug;
+    private bool $debug = false;
 
-    private string $cacheDir;
+    private string $cacheDir = '';
 
-    private string $matcherClassName;
+    private string $matcherClassName = '';
 
-    private ?MatcherInterface $matcher;
+    private ?MatcherInterface $matcher = null;
 
     public function __construct(
         private StatusTypeManager $statusTypeManager,
         private array $filters,
         private array $activeFilters
     ) {
-        $this->dispatcher = null;
-        $this->debug = false;
-        $this->cacheDir = '';
-        $this->matcherClassName = '';
     }
 
     protected function buildMatcherCache(): string
     {
+        $configs = [];
         $configs['filters'] = $this->filters;
         $configs['active_filters'] = $this->activeFilters;
 

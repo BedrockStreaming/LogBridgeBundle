@@ -11,11 +11,10 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class Parser
 {
-    private ?FilterParser $filterParser;
+    private ?FilterParser $filterParser = null;
 
     public function __construct(private RouterInterface $router)
     {
-        $this->filterParser = null;
     }
 
     protected function createFilterCollection(array $filters): FilterCollection

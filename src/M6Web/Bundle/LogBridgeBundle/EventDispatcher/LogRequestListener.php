@@ -14,14 +14,12 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
  */
 class LogRequestListener
 {
-    protected ?LoggerInterface $logger;
+    protected ?LoggerInterface $logger = null;
 
-    protected ?MatcherInterface $matcher;
+    protected ?MatcherInterface $matcher = null;
 
     public function __construct(protected FormatterInterface $contentFormatter)
     {
-        $this->logger = null;
-        $this->matcher = null;
     }
 
     public function onKernelTerminate(ResponseEvent $event): void

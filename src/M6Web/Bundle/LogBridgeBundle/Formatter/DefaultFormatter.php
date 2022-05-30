@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class DefaultFormatter implements FormatterInterface
 {
-    protected ?TokenStorageInterface $tokenStorage;
+    protected ?TokenStorageInterface $tokenStorage = null;
 
     /**
      * __construct
@@ -27,7 +27,6 @@ class DefaultFormatter implements FormatterInterface
         protected array $ignoreHeaders = [],
         protected string $prefixKey = ''
     ) {
-        $this->tokenStorage = null;
     }
 
     /**
@@ -124,7 +123,7 @@ class DefaultFormatter implements FormatterInterface
         }
 
         // compatibility Symfony < 6
-        if (method_exists('Symfony\Component\Security\Core\Authentication\Token\TokenInterface', 'getUsername')) {
+        if (method_exists(\Symfony\Component\Security\Core\Authentication\Token\TokenInterface::class, 'getUsername')) {
             return $token->getUsername();
         }
 

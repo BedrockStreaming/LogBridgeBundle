@@ -61,14 +61,14 @@ class Parser extends BaseTest
             ->if($parser = $this->getParser())
             ->then
                 ->object($configuration = $parser->parse($config))
-                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\Configuration')
+                    ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\Configuration::class)
                 ->array($configuration->getActiveFilters())
-                    ->hasSize(count($config['active_filters']))
+                    ->hasSize(is_countable($config['active_filters']) ? count($config['active_filters']) : 0)
                     ->hasKeys(array_keys($config['active_filters']))
                 ->object($collection = $configuration->getFilters())
-                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\FilterCollection')
+                    ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\FilterCollection::class)
                 ->integer($collection->count())
-                    ->isEqualTo(count($config['filters']))
+                    ->isEqualTo(is_countable($config['filters']) ? count($config['filters']) : 0)
         ;
     }
 
@@ -101,7 +101,7 @@ class Parser extends BaseTest
                 ->exception(function() use($parser, $config) {
                     $parser->parse($config);
                 })
-                ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\ParseException')
+                ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\ParseException::class)
         ;
 
     }

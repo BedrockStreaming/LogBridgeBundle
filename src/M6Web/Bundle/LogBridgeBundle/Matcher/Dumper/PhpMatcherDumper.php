@@ -30,7 +30,7 @@ class PhpMatcherDumper
     {
         $options = array_replace([
             'class' => 'LogBridgeMatcher',
-            'interface' => 'M6Web\\Bundle\\LogBridgeBundle\\Matcher\\MatcherInterface',
+            'interface' => \M6Web\Bundle\LogBridgeBundle\Matcher\MatcherInterface::class,
             'default_level' => LogLevel::INFO,
         ], $options);
 
