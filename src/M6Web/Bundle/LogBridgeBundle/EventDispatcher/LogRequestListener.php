@@ -18,11 +18,8 @@ class LogRequestListener
 
     protected ?MatcherInterface $matcher;
 
-    protected FormatterInterface $contentFormatter;
-
-    public function __construct(FormatterInterface $contentFormatter)
+    public function __construct(protected FormatterInterface $contentFormatter)
     {
-        $this->contentFormatter = $contentFormatter;
         $this->logger = null;
         $this->matcher = null;
     }

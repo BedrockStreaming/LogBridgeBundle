@@ -13,12 +13,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class DefaultFormatter implements FormatterInterface
 {
-    protected string $environment;
-
-    protected array $ignoreHeaders;
-
-    protected string $prefixKey;
-
     protected ?TokenStorageInterface $tokenStorage;
 
     /**
@@ -28,11 +22,11 @@ class DefaultFormatter implements FormatterInterface
      * @param array  $ignoreHeaders Array list from ignore header info
      * @param string $prefixKey     Log context prefix key
      */
-    public function __construct(string $environment, array $ignoreHeaders = [], string $prefixKey = '')
-    {
-        $this->environment = $environment;
-        $this->ignoreHeaders = $ignoreHeaders;
-        $this->prefixKey = $prefixKey;
+    public function __construct(
+        protected string $environment,
+        protected array $ignoreHeaders = [],
+        protected string $prefixKey = ''
+    ) {
         $this->tokenStorage = null;
     }
 

@@ -9,8 +9,6 @@ namespace M6Web\Bundle\LogBridgeBundle\Config;
  */
 class Filter
 {
-    private string $name;
-
     private mixed $route;
 
     private mixed $method;
@@ -21,9 +19,8 @@ class Filter
 
     private array $options;
 
-    public function __construct(string $name)
+    public function __construct(private string $name)
     {
-        $this->name = $name;
         $this->route = null;
         $this->method = null;
         $this->status = null;

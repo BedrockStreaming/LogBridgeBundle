@@ -11,13 +11,10 @@ use Psr\Log\LogLevel;
  */
 class MatcherProxy implements MatcherInterface
 {
-    private BuilderInterface $builder;
-
     private MatcherInterface $matcher;
 
-    public function __construct(BuilderInterface $builder)
+    public function __construct(private BuilderInterface $builder)
     {
-        $this->builder = $builder;
         $this->matcher = $builder->getMatcher();
     }
 

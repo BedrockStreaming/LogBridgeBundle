@@ -17,16 +17,13 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
  */
 class PhpMatcherDumper
 {
-    private StatusTypeManager $statusTypeManager;
-
     /**
      * __construct
      *
      * @param StatusTypeManager $statusTypeManager Status type manager
      */
-    public function __construct(StatusTypeManager $statusTypeManager)
+    public function __construct(private StatusTypeManager $statusTypeManager)
     {
-        $this->statusTypeManager = $statusTypeManager;
     }
 
     public function dump(Configuration $configuration, array $options = []): string

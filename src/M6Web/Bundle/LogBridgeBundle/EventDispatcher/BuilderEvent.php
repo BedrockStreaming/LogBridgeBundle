@@ -12,14 +12,8 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class BuilderEvent extends Event
 {
-    private BuilderInterface $builder;
-
-    private array $config;
-
-    public function __construct(BuilderInterface $builder, array $config = [])
+    public function __construct(private BuilderInterface $builder, private array $config = [])
     {
-        $this->builder = $builder;
-        $this->config = $config;
     }
 
     public function setBuilder(BuilderInterface $builder): self

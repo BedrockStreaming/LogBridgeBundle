@@ -11,11 +11,8 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
  */
 class LogExceptionListener
 {
-    protected string $requestExceptionAttribute;
-
-    public function __construct(string $requestExceptionAttribute)
+    public function __construct(protected string $requestExceptionAttribute)
     {
-        $this->requestExceptionAttribute = $requestExceptionAttribute;
     }
 
     /**

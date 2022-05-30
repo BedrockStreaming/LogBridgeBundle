@@ -25,19 +25,16 @@ class FilterParser
         LogLevel::DEBUG,
     ];
 
-    protected ?RouterInterface $router;
-
     protected string $filterClass;
 
-    public function __construct(RouterInterface $router = null)
+    public function __construct(protected ?RouterInterface $router = null)
     {
-        $this->router = $router;
         $this->filterClass = '';
     }
 
-    protected function createFilter($name): Filter
+    protected function createFilter(string $name): Filter
     {
-        if ($this->filterClass) {
+        if ($this->filterClass !== '') {
             return (new \ReflectionClass($this->filterClass))->newInstanceArgs(['name' => $name]);
         }
 

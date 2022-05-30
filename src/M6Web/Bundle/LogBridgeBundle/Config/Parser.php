@@ -11,18 +11,10 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class Parser
 {
-    private RouterInterface $router;
-
     private ?FilterParser $filterParser;
 
-    /**
-     * __construct
-     *
-     * @param RouterInterface $router Router service
-     */
-    public function __construct(RouterInterface $router)
+    public function __construct(private RouterInterface $router)
     {
-        $this->router = $router;
         $this->filterParser = null;
     }
 
@@ -38,14 +30,9 @@ class Parser
     }
 
     /**
-     * parse
      * Load Log Request filter configuration
-     *
-     * @internal param array $config Config
-     *
-     * @return Configuration
      */
-    public function parse(array $params)
+    public function parse(array $params): Configuration
     {
         $config = new Configuration();
         $filters = new FilterCollection();

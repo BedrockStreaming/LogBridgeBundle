@@ -14,8 +14,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class Builder implements BuilderInterface
 {
-    private StatusTypeManager $statusTypeManager;
-
     private ConfigParser $configParser;
 
     private ?EventDispatcherInterface $dispatcher;
@@ -28,27 +26,17 @@ class Builder implements BuilderInterface
 
     private ?MatcherInterface $matcher;
 
-    private array $filters;
-
-    private array $activeFilters;
-
     public function __construct(
-        StatusTypeManager $statusTypeManager,
-        array $filters,
-        array $activeFilters
+        private StatusTypeManager $statusTypeManager,
+        private array $filters,
+        private array $activeFilters
     ) {
-        $this->statusTypeManager = $statusTypeManager;
-        $this->filters = $filters;
-        $this->activeFilters = $activeFilters;
         $this->dispatcher = null;
         $this->debug = false;
         $this->cacheDir = '';
         $this->matcherClassName = '';
     }
 
-    /**
-     * buildMatcherCache
-     */
     protected function buildMatcherCache(): string
     {
         $configs['filters'] = $this->filters;
