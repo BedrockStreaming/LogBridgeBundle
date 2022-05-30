@@ -19,7 +19,7 @@ class UpperType extends AbstractType
      */
     protected function transform(string $config): array
     {
-        $startStatus = substr($config, 1, 3);
+        $startStatus = (int) substr($config, 1, 3);
 
         return range(
             $startStatus,

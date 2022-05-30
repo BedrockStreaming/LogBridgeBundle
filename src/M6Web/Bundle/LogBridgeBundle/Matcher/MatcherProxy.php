@@ -73,7 +73,7 @@ class MatcherProxy implements MatcherInterface
     /**
      * get a filter key matched with arguments
      */
-    public function getMatchFilterKey(string $route, string $method, int $status): string
+    public function getMatchFilterKey(string $route, string $method, int $status): ?string
     {
         return $this->matcher->getMatchFilterKey($route, $method, $status);
     }

@@ -66,7 +66,7 @@ class {$options['class']} implements {$options['interface']}
 
     public function match(string \$route, string \$method, int \$status): bool
     {
-        return \$this->getMatchFilterKey(\$route, \$method, \$status) !== '';
+        return \$this->getMatchFilterKey(\$route, \$method, \$status) !== null;
     }
 
     public function generateFilterKey(string \$route, string \$method, string \$status): string
@@ -135,7 +135,7 @@ class {$options['class']} implements {$options['interface']}
         return array_key_exists(\$filter, \$this->filters);
     }
 
-    public function getMatchFilterKey(string \$route, string \$method, int \$status): string
+    public function getMatchFilterKey(string \$route, string \$method, int \$status): ?string
     {
         if (!empty(\$this->filters)) {
             foreach (\$this->getPositiveMatcher(\$route, \$method, \$status) as \$rms) {
@@ -146,7 +146,7 @@ class {$options['class']} implements {$options['interface']}
             }
         }
 
-        return '';
+        return null;
     }
 }
 
