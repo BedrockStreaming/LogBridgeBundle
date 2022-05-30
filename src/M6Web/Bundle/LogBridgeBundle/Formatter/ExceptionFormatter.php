@@ -24,6 +24,7 @@ class ExceptionFormatter extends DefaultFormatter implements ExceptionFormatterI
         $logContent = parent::getLogContent($request, $response, $options);
 
         if ($request->attributes->has($this->requestExceptionAttribute)) {
+            /** @var \Throwable $exception */
             $exception = $request->attributes->get($this->requestExceptionAttribute);
 
             $logContent .= $this->getExceptionTrace($exception);

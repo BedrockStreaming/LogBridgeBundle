@@ -24,8 +24,14 @@ class LogRequestListener
 
     public function onKernelTerminate(ResponseEvent $event): void
     {
+        if ($this->matcher === null) {
+            return;
+        }
+
         $request = $event->getRequest();
         $response = $event->getResponse();
+
+        /** @var string $route */
         $route = $request->get('_route', '');
         $method = $request->getMethod();
         $status = $response->getStatusCode();

@@ -26,6 +26,9 @@ class PhpMatcherDumper
     {
     }
 
+    /**
+     * @param array<string, string> $options
+     */
     public function dump(Configuration $configuration, array $options = []): string
     {
         $options = array_replace([
@@ -180,6 +183,7 @@ EOF;
 
                     $code .= "],\n";
                 } else {
+                    /* @var bool|float|int|string|null $config */
                     $code .= sprintf("            '%s' => '%s',\n", $key, $config);
                 }
             }
@@ -199,23 +203,36 @@ EOF;
 EOF;
     }
 
+    /**
+     * @return array<int|string, array<string, mixed>>
+     */
     private function compile(Configuration $configuration): array
     {
-        $compiledFilters = $this->compileNeededFilters(
-            $configuration->getActiveFilters(),
-            $configuration->getFilters()
-        );
+        $filters = $configuration->getFilters();
+        if ($filters === null) {
+            return [];
+        }
 
-        return $compiledFilters;
+        return $this->compileNeededFilters(
+            $configuration->getActiveFilters(),
+            $filters
+        );
     }
 
+    /**
+     * @param string[]|null $activeFilters
+     *
+     * @return array<int|string, array<string, mixed>>
+     */
     private function compileNeededFilters(?array $activeFilters, FilterCollection $filters): array
     {
         $compiled = [];
 
         if ($activeFilters === null) {
             foreach ($filters as $filter) {
-                $compiled = array_merge($compiled, $this->compileFilter($filter));
+                if ($filter) {
+                    $compiled = array_merge($compiled, $this->compileFilter($filter));
+                }
             }
         } else {
             foreach ($activeFilters as $activeFilter) {
@@ -228,17 +245,22 @@ EOF;
         return $compiled;
     }
 
+    /**
+     * @return array<int|string, array<string, mixed>>
+     */
     private function compileFilter(Filter $filter): array
     {
         $compiledKeys = [];
         $compiled = [];
+        /** @var string $prefix */
         $prefix = is_null($filter->getRoute()) ? 'all' : $filter->getRoute();
+        $methods = $filter->getMethod();
 
-        if (empty($filter->getMethod())) {
-            $prefix = sprintf('%s.all', $prefix, $filter->getMethod());
+        if (empty($methods)) {
+            $prefix = sprintf('%s.all', $prefix);
             $compiledKeys = $this->compileFilterStatus($prefix, $filter);
-        } else {
-            foreach ($filter->getMethod() as $method) {
+        } elseif (is_iterable($methods)) {
+            foreach ($methods as $method) {
                 $methodPrefix = sprintf('%s.%s', $prefix, $method);
                 $compiledKeys = array_merge($compiledKeys, $this->compileFilterStatus($methodPrefix, $filter));
             }
@@ -252,9 +274,13 @@ EOF;
         return $compiled;
     }
 
+    /**
+     * @return string[]
+     */
     private function compileFilterStatus(string $prefix, Filter $filter): array
     {
         $compiled = [];
+        /** @var string[]|null $filterStatusList */
         $filterStatusList = $filter->getStatus();
 
         if (is_null($filterStatusList)) {
@@ -268,6 +294,11 @@ EOF;
         return $compiled;
     }
 
+    /**
+     * @param string[] $filterStatusList
+     *
+     * @return string[]|int[]
+     */
     private function parseStatus(array $filterStatusList): array
     {
         $statusList = [];

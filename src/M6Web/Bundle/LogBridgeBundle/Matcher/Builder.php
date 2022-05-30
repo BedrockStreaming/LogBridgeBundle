@@ -7,7 +7,6 @@ namespace M6Web\Bundle\LogBridgeBundle\Matcher;
 use M6Web\Bundle\LogBridgeBundle\Config\Parser as ConfigParser;
 use M6Web\Bundle\LogBridgeBundle\Matcher\Status\TypeManager as StatusTypeManager;
 use Symfony\Component\Config\ConfigCache;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Builder
@@ -16,13 +15,12 @@ class Builder implements BuilderInterface
 {
     private ConfigParser $configParser;
 
-    private ?EventDispatcherInterface $dispatcher = null;
-
     private bool $debug = false;
 
     private string $cacheDir = '';
 
-    private string $matcherClassName = '';
+    /** @var class-string<MatcherInterface> */
+    private string $matcherClassName;
 
     private ?MatcherInterface $matcher = null;
 
@@ -43,7 +41,7 @@ class Builder implements BuilderInterface
         $dumper = new Dumper\PhpMatcherDumper($this->statusTypeManager);
         $options = [];
 
-        if ($this->matcherClassName) {
+        if (isset($this->matcherClassName)) {
             $options['class'] = $this->getMatcherClassName();
         }
 
@@ -97,13 +95,6 @@ class Builder implements BuilderInterface
         return $this->cacheDir;
     }
 
-    public function setDispatcher(EventDispatcherInterface $dispatcher): self
-    {
-        $this->dispatcher = $dispatcher;
-
-        return $this;
-    }
-
     public function setConfigParser(ConfigParser $configParser): self
     {
         $this->configParser = $configParser;
@@ -111,6 +102,9 @@ class Builder implements BuilderInterface
         return $this;
     }
 
+    /**
+     * @param class-string<MatcherInterface> $matcherClassName
+     */
     public function setMatcherClassName(string $matcherClassName): self
     {
         $this->matcherClassName = $matcherClassName;
@@ -118,6 +112,9 @@ class Builder implements BuilderInterface
         return $this;
     }
 
+    /**
+     * @return class-string<MatcherInterface>
+     */
     public function getMatcherClassName(): string
     {
         return $this->matcherClassName;

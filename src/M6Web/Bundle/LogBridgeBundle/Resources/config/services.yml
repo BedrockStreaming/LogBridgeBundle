@@ -40,7 +40,6 @@ services:
             - "%m6web_log_bridge.active_filters%"
             - "%kernel.environment%"
         calls:
-            - [ setDispatcher, [ "@event_dispatcher" ] ]
             - [ setConfigParser, [ "@m6web_log_bridge.config_parser" ] ]
             - [ setCacheDir, [ "%kernel.cache_dir%" ] ]
             - [ isDebug, [ "%kernel.debug%" ] ]

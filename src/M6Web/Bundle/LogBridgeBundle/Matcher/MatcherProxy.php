@@ -52,7 +52,7 @@ class MatcherProxy implements MatcherInterface
         return $this->matcher->getFilters();
     }
 
-    public function hasFilter($filter): bool
+    public function hasFilter(string $filter): bool
     {
         return $this->matcher->hasFilter($filter);
     }

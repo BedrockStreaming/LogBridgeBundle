@@ -3,4 +3,7 @@ parameters:
     paths:
         - src
     excludePaths:
+        - src/M6Web/Bundle/LogBridgeBundle/Config/*
+        - src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/*
+        - src/M6Web/Bundle/LogBridgeBundle/EventDispatcher/BuilderEvent.php
         - src/M6Web/Bundle/LogBridgeBundle/Tests/*

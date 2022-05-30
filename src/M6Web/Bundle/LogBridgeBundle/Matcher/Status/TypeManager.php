@@ -11,8 +11,12 @@ use M6Web\Bundle\LogBridgeBundle\Matcher\Status\Type\TypeInterface;
  */
 class TypeManager
 {
+    /** @var array<class-string<TypeInterface>, TypeInterface> */
     protected array $types = [];
 
+    /**
+     * @return array<class-string<TypeInterface>, TypeInterface>
+     */
     public function getTypes(): array
     {
         return $this->types;

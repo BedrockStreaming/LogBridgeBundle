@@ -45,6 +45,8 @@ abstract class AbstractType implements TypeInterface
 
     /**
      * Transform config to status list
+     *
+     * @return array<int, string|int>
      */
     abstract protected function transform(string $config): array;
 }
