@@ -13,10 +13,6 @@ class Configuration
 
     private ?array $activeFilters = null;
 
-    public function __construct()
-    {
-    }
-
     public function setActiveFilters(array $activeFilters): self
     {
         $this->activeFilters = $activeFilters;
