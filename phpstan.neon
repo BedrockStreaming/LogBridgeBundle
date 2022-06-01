@@ -3,7 +3,173 @@ parameters:
     paths:
         - src
     excludePaths:
-        - src/M6Web/Bundle/LogBridgeBundle/Config/*
-        - src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/*
+        # This class is deprecated, we don't care about warnings
         - src/M6Web/Bundle/LogBridgeBundle/EventDispatcher/BuilderEvent.php
         - src/M6Web/Bundle/LogBridgeBundle/Tests/*
+
+    # Errors from Config & DependencyInjection : hard to fix, not that useful
+    ignoreErrors:
+        -
+            message: "#^Method M6Web\\\\Bundle\\\\LogBridgeBundle\\\\Config\\\\Configuration\\:\\:getActiveFilters\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/Config/Configuration.php
+
+        -
+            message: "#^Method M6Web\\\\Bundle\\\\LogBridgeBundle\\\\Config\\\\Configuration\\:\\:setActiveFilters\\(\\) has parameter \\$activeFilters with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/Config/Configuration.php
+
+        -
+            message: "#^Property M6Web\\\\Bundle\\\\LogBridgeBundle\\\\Config\\\\Configuration\\:\\:\\$activeFilters type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/Config/Configuration.php
+
+        -
+            message: "#^Method M6Web\\\\Bundle\\\\LogBridgeBundle\\\\Config\\\\Filter\\:\\:getOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/Config/Filter.php
+
+        -
+            message: "#^Method M6Web\\\\Bundle\\\\LogBridgeBundle\\\\Config\\\\Filter\\:\\:setOptions\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/Config/Filter.php
+
+        -
+            message: "#^Property M6Web\\\\Bundle\\\\LogBridgeBundle\\\\Config\\\\Filter\\:\\:\\$options type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/Config/Filter.php
+
+        -
+            message: "#^Class M6Web\\\\Bundle\\\\LogBridgeBundle\\\\Config\\\\FilterCollection implements generic interface Iterator but does not specify its types\\: TKey, TValue$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/Config/FilterCollection.php
+
+        -
+            message: "#^Method M6Web\\\\Bundle\\\\LogBridgeBundle\\\\Config\\\\FilterCollection\\:\\:__construct\\(\\) has parameter \\$items with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/Config/FilterCollection.php
+
+        -
+            message: "#^Method M6Web\\\\Bundle\\\\LogBridgeBundle\\\\Config\\\\FilterCollection\\:\\:getKeys\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/Config/FilterCollection.php
+
+        -
+            message: "#^Property M6Web\\\\Bundle\\\\LogBridgeBundle\\\\Config\\\\FilterCollection\\:\\:\\$keys type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/Config/FilterCollection.php
+
+        -
+            message: "#^Property M6Web\\\\Bundle\\\\LogBridgeBundle\\\\Config\\\\FilterCollection\\:\\:\\$values type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/Config/FilterCollection.php
+
+        -
+            message: "#^Cannot call method getRouteCollection\\(\\) on Symfony\\\\Component\\\\Routing\\\\RouterInterface\\|null\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/Config/FilterParser.php
+
+        -
+            message: "#^Method M6Web\\\\Bundle\\\\LogBridgeBundle\\\\Config\\\\FilterParser\\:\\:createFilter\\(\\) should return M6Web\\\\Bundle\\\\LogBridgeBundle\\\\Config\\\\Filter but returns object\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/Config/FilterParser.php
+
+        -
+            message: "#^Method M6Web\\\\Bundle\\\\LogBridgeBundle\\\\Config\\\\FilterParser\\:\\:parse\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/Config/FilterParser.php
+
+        -
+            message: "#^Parameter \\#1 \\$args of method ReflectionClass\\<object\\>\\:\\:newInstanceArgs\\(\\) expects array\\<int, mixed\\>, array\\<string, string\\> given\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/Config/FilterParser.php
+
+        -
+            message: "#^Parameter \\#1 \\$name of method M6Web\\\\Bundle\\\\LogBridgeBundle\\\\Config\\\\FilterParser\\:\\:isRoute\\(\\) expects string, mixed given\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/Config/FilterParser.php
+
+        -
+            message: "#^Parameter \\#1 \\$objectOrClass of class ReflectionClass constructor expects class\\-string\\<T of object\\>\\|T of object, string given\\.$#"
+            count: 2
+            path: src/M6Web/Bundle/LogBridgeBundle/Config/FilterParser.php
+
+        -
+            message: "#^Parameter \\#2 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#"
+            count: 4
+            path: src/M6Web/Bundle/LogBridgeBundle/Config/FilterParser.php
+
+        -
+            message: "#^Property M6Web\\\\Bundle\\\\LogBridgeBundle\\\\Config\\\\FilterParser\\:\\:\\$allowedLevels type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/Config/FilterParser.php
+
+        -
+            message: "#^Method M6Web\\\\Bundle\\\\LogBridgeBundle\\\\Config\\\\Parser\\:\\:createFilterCollection\\(\\) has parameter \\$filters with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/Config/Parser.php
+
+        -
+            message: "#^Method M6Web\\\\Bundle\\\\LogBridgeBundle\\\\Config\\\\Parser\\:\\:parse\\(\\) has parameter \\$params with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/Config/Parser.php
+
+        -
+            message: "#^Parameter \\#1 \\$id of method Symfony\\\\Component\\\\DependencyInjection\\\\ContainerBuilder\\:\\:findDefinition\\(\\) expects string, array\\|bool\\|float\\|int\\|string\\|UnitEnum\\|null given\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/CompilerPass/LoggerValidationPass.php
+
+        -
+            message: "#^Parameter \\#1 \\$object_or_class of function class_implements expects object\\|string, array\\|bool\\|float\\|int\\|string\\|UnitEnum\\|null given\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/CompilerPass/LoggerValidationPass.php
+
+        -
+            message: "#^Parameter \\#1 \\$string of function substr expects string, string\\|null given\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/CompilerPass/LoggerValidationPass.php
+
+        -
+            message: "#^Parameter \\#2 \\$haystack of function in_array expects array, array\\<string, string\\>\\|false given\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/CompilerPass/LoggerValidationPass.php
+
+        -
+            message: "#^Parameter \\#2 \\$subject of function preg_match expects string, string\\|null given\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/CompilerPass/LoggerValidationPass.php
+
+        -
+            message: "#^Parameter \\#2 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, array\\|bool\\|float\\|int\\|string\\|UnitEnum\\|null given\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/CompilerPass/LoggerValidationPass.php
+
+        -
+            message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition\\:\\:children\\(\\)\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/Configuration.php
+
+        -
+            message: "#^Method M6Web\\\\Bundle\\\\LogBridgeBundle\\\\DependencyInjection\\\\M6WebLogBridgeExtension\\:\\:load\\(\\) has parameter \\$configs with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/M6WebLogBridgeExtension.php
+
+        -
+            message: "#^Parameter \\#1 \\$class of class Symfony\\\\Component\\\\DependencyInjection\\\\Definition constructor expects string\\|null, array\\|bool\\|float\\|int\\|string\\|UnitEnum\\|null given\\.$#"
+            count: 2
+            path: src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/M6WebLogBridgeExtension.php
+
+        -
+            message: "#^Parameter \\#1 \\$id of class Symfony\\\\Component\\\\DependencyInjection\\\\Reference constructor expects string, array\\|bool\\|float\\|int\\|string\\|UnitEnum\\|null given\\.$#"
+            count: 3
+            path: src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/M6WebLogBridgeExtension.php
+
+        -
+            message: "#^Parameter \\#1 \\$id of method Symfony\\\\Component\\\\DependencyInjection\\\\ContainerBuilder\\:\\:setDefinition\\(\\) expects string, array\\|bool\\|float\\|int\\|string\\|UnitEnum\\|null given\\.$#"
+            count: 2
+            path: src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/M6WebLogBridgeExtension.php
+
+        -
+            message: "#^Parameter \\#1 \\.\\.\\.\\$arrays of function array_merge expects array, array\\|bool\\|float\\|int\\|string\\|UnitEnum\\|null given\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/M6WebLogBridgeExtension.php
