@@ -183,7 +183,6 @@ EOF;
 
                     $code .= "],\n";
                 } else {
-                    /* @var bool|float|int|string|null $config */
                     $code .= sprintf("            '%s' => '%s',\n", $key, $config);
                 }
             }
@@ -204,7 +203,10 @@ EOF;
     }
 
     /**
-     * @return array<int|string, array<string, mixed>>
+     * @return array<string, array{
+     *     level: ?string,
+     *     options: array<string, bool|string>
+     * }>
      */
     private function compile(Configuration $configuration): array
     {
@@ -222,7 +224,10 @@ EOF;
     /**
      * @param string[]|null $activeFilters
      *
-     * @return array<int|string, array<string, mixed>>
+     * @return array<string, array{
+     *     level: ?string,
+     *     options: array<string, bool|string>
+     * }>
      */
     private function compileNeededFilters(?array $activeFilters, FilterCollection $filters): array
     {
@@ -230,9 +235,7 @@ EOF;
 
         if ($activeFilters === null) {
             foreach ($filters as $filter) {
-                if ($filter) {
-                    $compiled = array_merge($compiled, $this->compileFilter($filter));
-                }
+                $compiled = array_merge($compiled, $this->compileFilter($filter));
             }
         } else {
             foreach ($activeFilters as $activeFilter) {
@@ -246,7 +249,10 @@ EOF;
     }
 
     /**
-     * @return array<int|string, array<string, mixed>>
+     * @return array<string, array{
+     *     level: ?string,
+     *     options: array<string, bool|string>
+     * }>
      */
     private function compileFilter(Filter $filter): array
     {

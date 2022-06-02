@@ -14,6 +14,7 @@ class FilterParser
 {
     public const DEFAULT_LEVEL = LogLevel::INFO;
 
+    /** @var string[] */
     protected array $allowedLevels = [
         LogLevel::EMERGENCY,
         LogLevel::ALERT,
@@ -25,7 +26,8 @@ class FilterParser
         LogLevel::DEBUG,
     ];
 
-    protected string $filterClass = '';
+    /** @var class-string<Filter>|null */
+    protected ?string $filterClass = null;
 
     public function __construct(protected ?RouterInterface $router = null)
     {
@@ -33,8 +35,8 @@ class FilterParser
 
     protected function createFilter(string $name): Filter
     {
-        if ($this->filterClass !== '') {
-            return (new \ReflectionClass($this->filterClass))->newInstanceArgs(['name' => $name]);
+        if ($this->filterClass !== null) {
+            return (new \ReflectionClass($this->filterClass))->newInstanceArgs([$name]);
         }
 
         return new Filter($name);
@@ -42,9 +44,18 @@ class FilterParser
 
     protected function isRoute(string $name): bool
     {
-        return $this->router->getRouteCollection()->get($name) !== null;
+        return $this->router?->getRouteCollection()->get($name) !== null;
     }
 
+    /**
+     * @param array{
+     *     route?: string,
+     *     method?: string[],
+     *     status?: int[],
+     *     level?: string,
+     *     options?: array{post_parameters?: bool, response_body?: bool}
+     * } $config
+     */
     public function parse(string $name, array $config): Filter
     {
         if (
@@ -94,6 +105,9 @@ class FilterParser
         return $this;
     }
 
+    /**
+     * @param class-string $filterClass
+     */
     public function setFilterClass(string $filterClass): self
     {
         $reflection = new \ReflectionClass($filterClass);
@@ -105,12 +119,13 @@ class FilterParser
             throw new \RuntimeException(sprintf('"%s" is not instantiable or is not a subclass of "%s"', $filterClass, Filter::class));
         }
 
+        /** @var class-string<Filter> $filterClass */
         $this->filterClass = $filterClass;
 
         return $this;
     }
 
-    public function getFilterClass(): string
+    public function getFilterClass(): ?string
     {
         return $this->filterClass;
     }

@@ -17,6 +17,15 @@ class Parser
     {
     }
 
+    /**
+     * @param array<string, array{
+     *     route?: string,
+     *     method?: string[],
+     *     status?: int[],
+     *     level?: string,
+     *     options?: array{post_parameters?: bool, response_body?: bool}
+     * }> $filters
+     */
     protected function createFilterCollection(array $filters): FilterCollection
     {
         $collection = new FilterCollection();
@@ -30,6 +39,16 @@ class Parser
 
     /**
      * Load Log Request filter configuration
+     * @param array{
+     *     filters?: array<string, array{
+     *         route?: string,
+     *         method?: string[],
+     *         status?: int[],
+     *         level?: string,
+     *         options?: array{post_parameters?: bool, response_body?: bool}
+     *     }> ,
+     *     active_filters?: string[]
+     * } $params
      */
     public function parse(array $params): Configuration
     {

@@ -11,8 +11,12 @@ class Configuration
 {
     private ?FilterCollection $filters = null;
 
+    /** @var string[] */
     private ?array $activeFilters = null;
 
+    /**
+     * @param string[] $activeFilters
+     */
     public function setActiveFilters(array $activeFilters): self
     {
         $this->activeFilters = $activeFilters;
@@ -20,6 +24,9 @@ class Configuration
         return $this;
     }
 
+    /**
+     * @return string[]|null
+     */
     public function getActiveFilters(): ?array
     {
         return $this->activeFilters;

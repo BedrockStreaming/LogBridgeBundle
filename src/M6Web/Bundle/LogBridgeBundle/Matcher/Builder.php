@@ -26,7 +26,21 @@ class Builder implements BuilderInterface
 
     public function __construct(
         private StatusTypeManager $statusTypeManager,
+
+        /**
+         * @var array<string, array{
+         *     route?: string,
+         *     method?: string[],
+         *     status?: int[],
+         *     level?: string,
+         *     options?: array{post_parameters?: bool, response_body?: bool}
+         * }>
+         */
         private array $filters,
+
+        /**
+         * @var string[]
+         */
         private array $activeFilters
     ) {
     }
