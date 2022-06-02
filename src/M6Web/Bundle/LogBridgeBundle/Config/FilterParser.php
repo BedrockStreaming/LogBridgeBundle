@@ -60,17 +60,17 @@ class FilterParser
             $config['level'] = self::DEFAULT_LEVEL;
         }
 
-        $filter = $this->createFilter($name);
+        $filter = $this->createFilter($name)
+            ->setMethod($config['method'])
+            ->setStatus($config['status']);
 
         $this->parseRoute($filter, $config['route']);
-        $this->parseMethod($filter, $config['method']);
-        $this->parseStatus($filter, $config['status']);
         $this->parseLevel($filter, $config['level']);
 
         return $filter->setOptions($config['options'] ?? []);
     }
 
-    protected function parseRoute(Filter $filter, mixed $route): void
+    protected function parseRoute(Filter $filter, ?string $route): void
     {
         if ($route !== null && !$this->isRoute($route)) {
             throw new ParseException(sprintf('Undefined route "%s" from router service', $route));
@@ -79,30 +79,8 @@ class FilterParser
         $filter->setRoute($route);
     }
 
-    protected function parseMethod(Filter $filter, mixed $method): void
+    protected function parseLevel(Filter $filter, ?string $level): void
     {
-        if (!is_array($method) && $method !== null) {
-            throw new ParseException(sprintf('Unrecognized value "%s" from method parameter', $method));
-        }
-
-        $filter->setMethod($method);
-    }
-
-    protected function parseStatus(Filter $filter, mixed $status): void
-    {
-        if (!is_array($status) && $status !== null) {
-            throw new ParseException(sprintf('Unrecognized value "%s" from status parameter', $status));
-        }
-
-        $filter->setStatus($status);
-    }
-
-    protected function parseLevel(Filter $filter, mixed $level): void
-    {
-        if (!is_string($level) && $level !== null) {
-            throw new ParseException(sprintf('Unrecognized value "%s" from level parameter', $level));
-        }
-
         if (!in_array($level, $this->allowedLevels, true)) {
             throw new ParseException(sprintf('Invalid value "%s" from level parameter, allowed %s', $level, implode(', ', $this->allowedLevels)));
         }

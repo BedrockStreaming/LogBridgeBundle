@@ -15,19 +15,17 @@ class Configuration extends atoum
         $filter
             ->setRoute('route_name')
             ->setMethod(['GET', 'POST'])
-            ->setStatus('all');
+            ->setStatus(['all']);
 
         $collection->add($filter);
-
 
         $filter = new Config\Filter('active_filters_two');
         $filter
             ->setRoute('route_name_two')
             ->setMethod(['PUT', 'POST'])
-            ->setStatus('200');
+            ->setStatus([200]);
 
         $collection->add($filter);
-
 
         $filter = new Config\Filter('active_filters_three');
         $filter

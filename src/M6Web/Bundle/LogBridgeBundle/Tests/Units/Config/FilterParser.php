@@ -136,9 +136,9 @@ class FilterParser extends BaseTest
                 ->exception(function() use ($parser, $config) {
                     $parser->parse('filter_method_invalid', $config);
                 })
-                ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\ParseException')
+                ->isInstanceOf(\TypeError::class)
                 ->message
-                    ->contains('Unrecognized value')
+                    ->contains('must be of type ?array, string given')
         ;
     }
 
@@ -152,9 +152,9 @@ class FilterParser extends BaseTest
                 ->exception(function() use ($parser, $config) {
                     $parser->parse('filter_status_invalid', $config);
                 })
-                ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\ParseException')
+                ->isInstanceOf(\TypeError::class)
                 ->message
-                    ->contains('Unrecognized value')
+                    ->contains('must be of type ?array, int given')
         ;
     }
 }
