@@ -319,7 +319,7 @@ EOF;
                     if ($statusType->isExclude($value)) {
                         $statusList = array_diff($statusList, $statusType->getStatus($value));
                     } else {
-                        $statusList = array_merge($statusList, $statusType->getStatus($value));
+                        $statusList = [...$statusList, ...$statusType->getStatus($value)];
                     }
 
                     break;

@@ -39,6 +39,7 @@ class Parser
 
     /**
      * Load Log Request filter configuration
+     *
      * @param array{
      *     filters?: array<string, array{
      *         route?: string,

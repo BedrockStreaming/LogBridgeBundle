@@ -11,7 +11,7 @@ class FilterCollection implements \Iterator
 {
     protected int $iterator = 0;
 
-    /** @var string[]  */
+    /** @var string[] */
     protected array $keys = [];
 
     /** @var array<string, Filter> */
