@@ -260,13 +260,12 @@ EOF;
         $compiled = [];
         /** @var string $prefix */
         $prefix = is_null($filter->getRoute()) ? 'all' : $filter->getRoute();
-        $methods = $filter->getMethod();
 
-        if (empty($methods)) {
+        if (empty($filter->getMethod())) {
             $prefix = sprintf('%s.all', $prefix);
             $compiledKeys = $this->compileFilterStatus($prefix, $filter);
-        } elseif (is_iterable($methods)) {
-            foreach ($methods as $method) {
+        } else {
+            foreach ($filter->getMethod() as $method) {
                 $methodPrefix = sprintf('%s.%s', $prefix, $method);
                 $compiledKeys = array_merge($compiledKeys, $this->compileFilterStatus($methodPrefix, $filter));
             }
