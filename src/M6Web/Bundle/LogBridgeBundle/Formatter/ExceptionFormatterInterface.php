@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\LogBridgeBundle\Formatter;
 
 /**
@@ -7,8 +9,5 @@ namespace M6Web\Bundle\LogBridgeBundle\Formatter;
  */
 interface ExceptionFormatterInterface extends FormatterInterface
 {
-    /**
-     * @param string $requestExceptionAttribute
-     */
-    public function setRequestExceptionAttribute($requestExceptionAttribute);
+    public function setRequestExceptionAttribute(string $requestExceptionAttribute): void;
 }

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Class - not so cool - to build a default logger
  */
@@ -12,14 +14,8 @@ use Psr\Log\LoggerInterface;
  */
 class Logger implements LoggerInterface
 {
-    protected $logger;
-
-    /**
-     * @param object $logger logger
-     */
-    public function __construct($logger)
+    public function __construct(protected LoggerInterface $logger)
     {
-        $this->logger = $logger;
     }
 
     /**

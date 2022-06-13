@@ -2,7 +2,7 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Config;
 
-use M6Web\Bundle\LogBridgeBundle\Tests\Units\BaseTest;  
+use M6Web\Bundle\LogBridgeBundle\Tests\Units\BaseTest;
 use M6Web\Bundle\LogBridgeBundle\Config;
 
 /**
@@ -15,17 +15,17 @@ class Parser extends BaseTest
         return new MockRouter();
     }
 
-    private function getParser()
+    private function getParser(): Config\Parser
     {
         return new Config\Parser($this->getMockedRouter());
     }
 
-    private function getConfig()
+    private function getConfig(): array
     {
         return [
             'active_filters' => [
-                    'filter_un',
-                    'filter_trois'
+                'filter_un',
+                'filter_trois'
             ],
             'filters' => [
                 'filter_un' => [
@@ -53,7 +53,7 @@ class Parser extends BaseTest
     }
 
 
-    public function testValidConfig()
+    public function testValidConfig(): void
     {
         $config = $this->getConfig();
 
@@ -61,19 +61,19 @@ class Parser extends BaseTest
             ->if($parser = $this->getParser())
             ->then
                 ->object($configuration = $parser->parse($config))
-                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\Configuration')
+                    ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\Configuration::class)
                 ->array($configuration->getActiveFilters())
-                    ->hasSize(count($config['active_filters']))
+                    ->hasSize(is_countable($config['active_filters']) ? count($config['active_filters']) : 0)
                     ->hasKeys(array_keys($config['active_filters']))
                 ->object($collection = $configuration->getFilters())
-                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\FilterCollection')
+                    ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\FilterCollection::class)
                 ->integer($collection->count())
-                    ->isEqualTo(count($config['filters']))
+                    ->isEqualTo(is_countable($config['filters']) ? count($config['filters']) : 0)
         ;
     }
 
 
-    public function testInvalidConfig()
+    public function testInvalidConfig(): void
     {
         $config = [
             'filters' => [
@@ -101,7 +101,7 @@ class Parser extends BaseTest
                 ->exception(function() use($parser, $config) {
                     $parser->parse($config);
                 })
-                ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\ParseException')
+                ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\ParseException::class)
         ;
 
     }

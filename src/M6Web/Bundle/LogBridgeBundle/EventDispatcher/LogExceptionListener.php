@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\LogBridgeBundle\EventDispatcher;
 
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -9,26 +11,17 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
  */
 class LogExceptionListener
 {
-    /** @var string */
-    protected $requestExceptionAttribute;
-
-    /**
-     * @param string $requestExceptionAttribute
-     */
-    public function __construct($requestExceptionAttribute)
+    public function __construct(protected string $requestExceptionAttribute)
     {
-        $this->requestExceptionAttribute = $requestExceptionAttribute;
     }
 
     /**
      * React to an exception to give error message to log bridge
      */
-    public function onKernelException(ExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event): void
     {
-        $exception = $event->getThrowable();
-
         $request = $event->getRequest();
         $request->setRequestFormat('json');
-        $request->attributes->add([$this->requestExceptionAttribute => $exception]);
+        $request->attributes->add([$this->requestExceptionAttribute => $event->getThrowable()]);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\LogBridgeBundle\Config;
 
 /**
@@ -7,81 +9,44 @@ namespace M6Web\Bundle\LogBridgeBundle\Config;
  */
 class Filter
 {
-    /** @var string */
-    private $name;
+    private ?string $route = null;
 
-    /** @var string */
-    private $route;
+    /** @var string[]|null */
+    private ?array $method = null;
 
-    /** @var mixed */
-    private $method;
+    /** @var int[]|null */
+    private ?array $status = null;
 
-    /** @var mixed */
-    private $status;
+    private ?string $level = null;
 
-    /** @var mixed */
-    private $level;
+    /** @var array{post_parameters?: bool, response_body?: bool} */
+    private array $options = [];
 
-    /** @var array */
-    private $options;
-
-    /**
-     * __construct
-     *
-     * @param string $name name Filter name
-     */
-    public function __construct($name)
+    public function __construct(private string $name)
     {
-        $this->name = $name;
-        $this->route = null;
-        $this->method = null;
-        $this->status = null;
-        $this->level = null;
-        $this->options = [];
     }
 
-    /**
-     * getName
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * setRoute
-     *
-     * @param string $route Route
-     *
-     * @return Filter
-     */
-    public function setRoute($route)
+    public function setRoute(?string $route): self
     {
         $this->route = $route;
 
         return $this;
     }
 
-    /**
-     * getRoute
-     *
-     * @return string
-     */
-    public function getRoute()
+    public function getRoute(): ?string
     {
         return $this->route;
     }
 
     /**
-     * setMethod
-     *
-     * @param mixed $method Method
-     *
-     * @return Filter
+     * @param string[]|null $method
      */
-    public function setMethod($method)
+    public function setMethod(?array $method): self
     {
         $this->method = $method;
 
@@ -89,23 +54,17 @@ class Filter
     }
 
     /**
-     * getMethod
-     *
-     * @return mixed
+     * @return string[]|null
      */
-    public function getMethod()
+    public function getMethod(): ?array
     {
         return $this->method;
     }
 
     /**
-     * setStatus
-     *
-     * @param mixed $status Http code status
-     *
-     * @return Filter
+     * @param int[]|null $status
      */
-    public function setStatus($status)
+    public function setStatus(?array $status): self
     {
         $this->status = $status;
 
@@ -113,45 +72,29 @@ class Filter
     }
 
     /**
-     * getStatus
-     *
-     * @return mixed
+     * @return int[]|null
      */
-    public function getStatus()
+    public function getStatus(): ?array
     {
         return $this->status;
     }
 
-    /**
-     * setLevel
-     *
-     * @param mixed $level Log level
-     *
-     * @return Filter
-     */
-    public function setLevel($level)
+    public function setLevel(?string $level): self
     {
         $this->level = $level;
 
         return $this;
     }
 
-    /**
-     * getLevel
-     *
-     * @return mixed
-     */
-    public function getLevel()
+    public function getLevel(): ?string
     {
         return $this->level;
     }
 
     /**
-     * set filter options
-     *
-     * @return Filter
+     * @param array{post_parameters?: bool, response_body?: bool} $options
      */
-    public function setOptions(array $options)
+    public function setOptions(array $options): self
     {
         $this->options = $options;
 
@@ -159,11 +102,9 @@ class Filter
     }
 
     /**
-     * get filter options
-     *
-     * @return array
+     * @return array{post_parameters?: bool, response_body?: bool}
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }

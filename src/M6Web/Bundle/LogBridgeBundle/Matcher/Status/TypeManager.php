@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\LogBridgeBundle\Matcher\Status;
 
 use M6Web\Bundle\LogBridgeBundle\Matcher\Status\Type\TypeInterface;
@@ -9,28 +11,24 @@ use M6Web\Bundle\LogBridgeBundle\Matcher\Status\Type\TypeInterface;
  */
 class TypeManager
 {
-    /** @var array */
-    protected $types = [];
+    /** @var array<class-string<TypeInterface>, TypeInterface> */
+    protected array $types = [];
 
     /**
-     * Get types
-     *
-     * @return array
+     * @return array<class-string<TypeInterface>, TypeInterface>
      */
-    public function getTypes()
+    public function getTypes(): array
     {
         return $this->types;
     }
 
     /**
      * Add a type
-     *
-     * @return $this
      */
-    public function addType(TypeInterface $type)
+    public function addType(TypeInterface $type): self
     {
         if (!$this->isType($type)) {
-            $typeClass = get_class($type);
+            $typeClass = $type::class;
 
             $this->types[$typeClass] = $type;
         }
@@ -40,14 +38,12 @@ class TypeManager
 
     /**
      * Remove a type
-     *
-     * @return $this
      */
-    public function removeType(TypeInterface $typeToRemove)
+    public function removeType(TypeInterface $typeToRemove): self
     {
-        $namespaceTypeToRemove = get_class($typeToRemove);
+        $namespaceTypeToRemove = $typeToRemove::class;
         foreach ($this->types as $key => $type) {
-            if ($namespaceTypeToRemove === get_class($type)) {
+            if ($namespaceTypeToRemove === $type::class) {
                 unset($this->types[$key]);
             }
         }
@@ -57,14 +53,12 @@ class TypeManager
 
     /**
      * Check if type pass is already record as type
-     *
-     * @return bool
      */
-    protected function isType(TypeInterface $typeToCheck)
+    protected function isType(TypeInterface $typeToCheck): bool
     {
-        $namespaceTypeToCheck = get_class($typeToCheck);
-        foreach ($this->types as $key => $type) {
-            if ($namespaceTypeToCheck === get_class($type)) {
+        $namespaceTypeToCheck = $typeToCheck::class;
+        foreach ($this->types as $type) {
+            if ($namespaceTypeToCheck === $type::class) {
                 return true;
             }
         }

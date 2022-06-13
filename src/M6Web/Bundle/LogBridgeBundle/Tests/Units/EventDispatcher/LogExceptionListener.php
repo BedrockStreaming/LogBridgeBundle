@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class LogExceptionListener
 {
-    public function testOnKernelExceptionCall()
+    public function testOnKernelExceptionCall(): void
     {
         $this
             ->given(

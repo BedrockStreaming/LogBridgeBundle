@@ -11,28 +11,24 @@ use Symfony\Component\Routing\Route;
  */
 class BaseTest extends atoum
 {
-    protected function getMockedRouterCollection()
+    protected function getMockedRouterCollection(): object
     {
         $collection = new \mock\Symfony\Component\Routing\RouteCollection();
-        $collection->getMockController()->get = function($name) {
-            return $name != 'invalid_route' ? new Route('/path') : null;
-        };
+        $collection->getMockController()->get = fn($name) => $name != 'invalid_route' ? new Route('/path') : null;
 
         return $collection;
     }
 
-    protected function getMockedRouter()
+    protected function getMockedRouter(): object
     {
         $this->mockGenerator->orphanize('__construct');
         $router = new \mock\Symfony\Component\Routing\Router();
         $routerCollection = $this->getMockedRouterCollection();
 
         $router->getMockController()->getRouteCollection = $routerCollection;
-        $router->getMockController()->generate = function($name, $parameters = [], $referenceType = false) {
-            return $name;
-        };
+        $router->getMockController()->generate = fn($name, $parameters = [], $referenceType = false) => $name;
 
-        $router->getMockController()->match = function($pathinfo) { return []; };
+        $router->getMockController()->match = fn($pathinfo) => [];
         $router->getMockController()->setContext = function(RequestContext $context) { return; };
         $router->getMockController()->getContext = null;
 

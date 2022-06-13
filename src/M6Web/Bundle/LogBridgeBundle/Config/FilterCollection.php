@@ -1,47 +1,35 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\LogBridgeBundle\Config;
 
 /**
- * FilterCollection
+ * @implements \Iterator<int, Filter>
  */
 class FilterCollection implements \Iterator
 {
-    /** @var int */
-    protected $iterator;
+    protected int $iterator = 0;
 
-    /** @var array */
-    protected $keys;
+    /** @var string[] */
+    protected array $keys = [];
 
-    /** @var array */
-    protected $values;
+    /** @var array<string, Filter> */
+    protected array $values = [];
 
     /**
-     * __construct
-     *
-     * @internal param array $filters Filters
+     * @param Filter[] $items
      */
     public function __construct(array $items = [])
     {
-        $this->iterator = 0;
-        $this->keys = [];
-        $this->values = [];
-
         foreach ($items as $item) {
             $this->add($item);
         }
     }
 
-    /**
-     * add
-     *
-     * @internal param \M6Web\Bundle\LogBridgeBundle\Config\Filter $filter Filter
-     *
-     * @return FilterCollection
-     */
-    public function add(Filter $item)
+    public function add(Filter $item): FilterCollection
     {
-        if (!in_array($item->getName(), $this->keys)) {
+        if (!in_array($item->getName(), $this->keys, true)) {
             $this->keys[] = $item->getName();
         }
 
@@ -50,34 +38,15 @@ class FilterCollection implements \Iterator
         return $this;
     }
 
-    /**
-     * getByName
-     *
-     * @param string $name
-     *
-     * @return Filter
-     */
-    public function getByName($name)
+    public function getByName(string $name): ?Filter
     {
-        if (!isset($this->values[$name])) {
-            return null;
-        }
-
-        return $this->values[$name];
+        return $this->values[$name] ?? null;
     }
 
-    /**
-     * remove
-     *
-     * @param Filter $filter Filter
-     *
-     * @return bool
-     */
-    public function remove(Filter $filter)
+    public function remove(Filter $filter): bool
     {
-        if ($key = array_search($filter->getName(), $this->keys)) {
-            unset($this->keys[$key]);
-            unset($this->values[$filter->getName()]);
+        if ($key = array_search($filter->getName(), $this->keys, true)) {
+            unset($this->keys[$key], $this->values[$filter->getName()]);
 
             return true;
         }
@@ -85,15 +54,7 @@ class FilterCollection implements \Iterator
         return false;
     }
 
-    /**
-     * get
-     * Get item
-     *
-     * @param int $iterator
-     *
-     * @return mixed
-     */
-    public function get($iterator)
+    public function get(int $iterator): ?Filter
     {
         if ($key = $this->getKey($iterator)) {
             return $this->values[$key];
@@ -103,44 +64,27 @@ class FilterCollection implements \Iterator
     }
 
     /**
-     * getName
      * Define filter name with iterator position
-     *
-     * @param string $iterator
-     *
-     * @return string
      */
-    public function getKey($iterator)
+    public function getKey(int $iterator): string
     {
-        return isset($this->keys[$iterator]) ? $this->keys[$iterator] : '';
+        return $this->keys[$iterator] ?? '';
     }
 
     /**
-     * getkeys
-     *
-     * @return array
+     * @return string[]
      */
-    public function getKeys()
+    public function getKeys(): array
     {
         return $this->keys;
     }
 
-    /**
-     * current
-     *
-     * @return Filter
-     */
-    public function current()
+    public function current(): ?Filter
     {
         return $this->get($this->iterator);
     }
 
-    /**
-     * key
-     *
-     * @return int
-     */
-    public function key()
+    public function key(): int
     {
         return $this->iterator;
     }
@@ -155,22 +99,12 @@ class FilterCollection implements \Iterator
         $this->iterator = 0;
     }
 
-    /**
-     * valid
-     *
-     * @return bool
-     */
-    public function valid()
+    public function valid(): bool
     {
         return isset($this->keys[$this->iterator]);
     }
 
-    /**
-     * count
-     *
-     * @return int
-     */
-    public function count()
+    public function count(): int
     {
         return count($this->values);
     }

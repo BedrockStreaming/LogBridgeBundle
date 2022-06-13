@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\LogBridgeBundle\Matcher;
 
 use Psr\Log\LogLevel;
@@ -9,84 +11,40 @@ use Psr\Log\LogLevel;
  */
 interface MatcherInterface
 {
-    /**
-     * match
-     *
-     * @param string $route  Route name
-     * @param string $method Method name
-     * @param int    $status Http code status
-     *
-     * @return bool
-     */
-    public function match($route, $method, $status);
+    public function match(string $route, string $method, int $status): bool;
 
     /**
-     * addFilter
-     *
-     * @param string $filter  Filter name
-     * @param string $level   Filter log level
-     * @param array  $options Filter options
-     *
-     * @return MatcherInterface
+     * @param array<string, bool|string> $options
      */
-    public function addFilter($filter, $level = LogLevel::INFO, array $options = []);
+    public function addFilter(string $filter, string $level = LogLevel::INFO, array $options = []): self;
 
     /**
-     * setFilters
-     *
-     * @param array $filters   Filter list
-     * @param bool  $overwrite Overwrite current filter
-     *
-     * @return MatcherInterface
+     * @param array<string, array{
+     *     level: ?string,
+     *     options: array<string, bool|string>
+     * }> $filters
      */
-    public function setFilters(array $filters, $overwrite = false);
+    public function setFilters(array $filters, bool $overwrite = false): self;
 
     /**
-     * getFilters
-     *
-     * @return array
+     * @return array<string, array{
+     *     level: ?string,
+     *     options: array<string, bool|string>
+     * }>
      */
-    public function getFilters();
+    public function getFilters(): array;
+
+    public function hasFilter(string $filter): bool;
+
+    public function getLevel(string $route, string $method, int $status): string;
 
     /**
-     * hasFilter
-     *
-     * @param string $filter Filter
-     *
-     * @return bool
+     * @return array<string, bool|string>
      */
-    public function hasFilter($filter);
+    public function getOptions(string $route, string $method, int $status): array;
 
     /**
-     * Get filter level log
-     *
-     * @param string $route  Route name
-     * @param string $method Method name
-     * @param int    $status Http code status
-     *
-     * @return string
+     * get a filter key matched with arguments
      */
-    public function getLevel($route, $method, $status);
-
-    /**
-     * get options
-     *
-     * @param string $route  Route name
-     * @param string $method Method name
-     * @param int    $status Http code status
-     *
-     * @return array
-     */
-    public function getOptions($route, $method, $status);
-
-    /**
-     * get an filter key matched with arguments
-     *
-     * @param string $route  Route name
-     * @param string $method Method name
-     * @param int    $status Http code status
-     *
-     * @return bool|string
-     */
-    public function getMatchFilterKey($route, $method, $status);
+    public function getMatchFilterKey(string $route, string $method, int $status): ?string;
 }

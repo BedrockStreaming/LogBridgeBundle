@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\LogBridgeBundle\Config;
 
 use Symfony\Component\Routing\RouterInterface;
@@ -9,31 +11,22 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class Parser
 {
-    /** @var RouterInterface */
-    private $router;
+    private ?FilterParser $filterParser = null;
 
-    /** @var FilterParser */
-    private $filterParser;
-
-    /**
-     * __construct
-     *
-     * @param RouterInterface $router Router service
-     */
-    public function __construct(RouterInterface $router)
+    public function __construct(private RouterInterface $router)
     {
-        $this->router = $router;
-        $this->filterParser = null;
     }
 
     /**
-     * createFilterCollection
-     *
-     * @param array $filters Filters configuration
-     *
-     * @return FilterCollection
+     * @param array<string, array{
+     *     route?: string,
+     *     method?: string[],
+     *     status?: int[],
+     *     level?: string,
+     *     options?: array{post_parameters?: bool, response_body?: bool}
+     * }> $filters
      */
-    protected function createFilterCollection(array $filters)
+    protected function createFilterCollection(array $filters): FilterCollection
     {
         $collection = new FilterCollection();
 
@@ -45,14 +38,20 @@ class Parser
     }
 
     /**
-     * parse
      * Load Log Request filter configuration
      *
-     * @internal param array $config Config
-     *
-     * @return Configuration
+     * @param array{
+     *     filters?: array<string, array{
+     *         route?: string,
+     *         method?: string[],
+     *         status?: int[],
+     *         level?: string,
+     *         options?: array{post_parameters?: bool, response_body?: bool}
+     *     }> ,
+     *     active_filters?: string[]
+     * } $params
      */
-    public function parse(array $params)
+    public function parse(array $params): Configuration
     {
         $config = new Configuration();
         $filters = new FilterCollection();
@@ -70,14 +69,9 @@ class Parser
         return $config;
     }
 
-    /**
-     * getFilterParser
-     *
-     * @return FilterParser
-     */
-    public function getFilterParser()
+    public function getFilterParser(): FilterParser
     {
-        if (!$this->filterParser) {
+        if ($this->filterParser === null) {
             $this->filterParser = new FilterParser($this->router);
         }
 

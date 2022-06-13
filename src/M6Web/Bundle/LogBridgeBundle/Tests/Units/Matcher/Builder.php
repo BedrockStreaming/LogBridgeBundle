@@ -4,11 +4,10 @@ namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Matcher;
 
 use atoum;
 use M6Web\Bundle\LogBridgeBundle\Matcher;
-use M6Web\Bundle\LogBridgeBundle\Config\Parser;
 
 class Builder extends BaseMatcher
 {
-    private function getTypeManager()
+    private function getTypeManager(): Matcher\Status\TypeManager
     {
         $typeManager = new Matcher\Status\TypeManager();
 
@@ -20,17 +19,7 @@ class Builder extends BaseMatcher
         return $typeManager;
     }
 
-    public function getParserMock()
-    {
-        $this->mockGenerator->orphanize('__construct');
-        $this->mockGenerator->shuntParentClassCalls();
-
-        $parserMock = new \mock\M6Web\Bundle\LogBridgeBundle\Config\Parser();
-
-        return $parserMock;
-    }
-
-    public function testBuilder()
+    public function testBuilder(): void
     {
         $this
             ->given(
@@ -39,10 +28,10 @@ class Builder extends BaseMatcher
                 $matcherClass = $this->getMatcherClassName(),
                 $typeManager = $this->getTypeManager()
             )
-            ->if($builder = new Matcher\Builder($typeManager, $this->getFilters(), $this->getActiveFilters(), 'test'))
+            ->if($builder = new Matcher\Builder($typeManager, $this->getFilters(), $this->getActiveFilters()))
             ->then
                 ->object($builder->setCacheDir($cacheDir))
-                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Matcher\Builder')
+                    ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Matcher\Builder::class)
                 ->string($builder->getCacheDir())
                     ->isEqualTo($cacheDir)
                 ->boolean($builder->isDebug(false))
@@ -52,9 +41,9 @@ class Builder extends BaseMatcher
                 ->boolean($builder->isDebug())
                     ->isTrue()
                 ->object($builder->setConfigParser($this->getParser()))
-                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Matcher\Builder')
+                    ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Matcher\Builder::class)
                 ->object($builder->setMatcherClassName($matcherClass))
-                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Matcher\Builder')
+                    ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Matcher\Builder::class)
                 ->string($builder->getMatcherClassName())
                     ->isEqualTo($matcherClass)
                 ->string($builder->getAbsoluteCachePath())

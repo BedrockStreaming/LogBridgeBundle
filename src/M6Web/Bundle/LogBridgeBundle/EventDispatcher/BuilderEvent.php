@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\LogBridgeBundle\EventDispatcher;
 
 use M6Web\Bundle\LogBridgeBundle\Matcher\BuilderInterface;
@@ -7,71 +9,35 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * BuilderEvent
+ *
+ * @deprecated Not used anymore, may be removed in a future version
  */
 class BuilderEvent extends Event
 {
-    /** @var BuilderInterface */
-    private $builder;
-
-    /** @var array */
-    private $config;
-
-    /**
-     * __construct
-     *
-     * @param BuilderInterface $builder Builder
-     * @param array            $config  Config
-     */
-    public function __construct(BuilderInterface $builder, array $config = [])
+    public function __construct(private BuilderInterface $builder, private array $config = [])
     {
-        $this->builder = $builder;
-        $this->config = $config;
     }
 
-    /**
-     * setBuilder
-     *
-     * @param BuilderInterface $builder Builder
-     *
-     * @return BuilderEvent
-     */
-    public function setBuilder(BuilderInterface $builder)
+    public function setBuilder(BuilderInterface $builder): self
     {
         $this->builder = $builder;
 
         return $this;
     }
 
-    /**
-     * getBuilder
-     *
-     * @return BuilderInterface
-     */
-    public function getBuilder()
+    public function getBuilder(): BuilderInterface
     {
         return $this->builder;
     }
 
-    /**
-     * setConfig
-     *
-     * @param array $config Config
-     *
-     * @return BuilderEvent
-     */
-    public function setConfig(array $config)
+    public function setConfig(array $config): self
     {
         $this->config = $config;
 
         return $this;
     }
 
-    /**
-     * getConfig
-     *
-     * @return array
-     */
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }

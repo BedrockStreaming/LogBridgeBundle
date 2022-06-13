@@ -1,47 +1,38 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\LogBridgeBundle\EventDispatcher;
 
 use M6Web\Bundle\LogBridgeBundle\Formatter\FormatterInterface;
 use M6Web\Bundle\LogBridgeBundle\Matcher\MatcherInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 /**
  * LogRequestListener
  */
 class LogRequestListener
 {
-    /** @var LoggerInterface */
-    protected $logger;
+    protected ?LoggerInterface $logger = null;
 
-    /** @var MatcherInterface */
-    protected $matcher;
+    protected ?MatcherInterface $matcher = null;
 
-    /** @var FormatterInterface */
-    protected $contentFormatter;
-
-    /**
-     * Construct
-     *
-     * @internal param \Psr\Log\LoggerInterface $logger Logger
-     */
-    public function __construct(FormatterInterface $contentFormatter)
+    public function __construct(protected FormatterInterface $contentFormatter)
     {
-        $this->contentFormatter = $contentFormatter;
-        $this->logger = null;
-        $this->matcher = null;
     }
 
-    /**
-     * onKernelTerminate
-     *
-     * @param FilterResponseEvent $event Event
-     */
-    public function onKernelTerminate($event)
+    public function onKernelTerminate(ResponseEvent $event): void
     {
+        if ($this->matcher === null) {
+            return;
+        }
+
         $request = $event->getRequest();
         $response = $event->getResponse();
-        $route = $request->get('_route');
+
+        /** @var string $route */
+        $route = $request->get('_route', '');
         $method = $request->getMethod();
         $status = $response->getStatusCode();
         $level = $this->matcher->getLevel($route, $method, $status);
@@ -55,28 +46,14 @@ class LogRequestListener
         }
     }
 
-    /**
-     * setLogger
-     *
-     * @param LoggerInterface $logger Logger
-     *
-     * @return LogRequestListener
-     */
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger): self
     {
         $this->logger = $logger;
 
         return $this;
     }
 
-    /**
-     * setMatcher
-     *
-     * @param MatcherInterface $matcher Matcher
-     *
-     * @return LogRequestListener
-     */
-    public function setMatcher(MatcherInterface $matcher)
+    public function setMatcher(MatcherInterface $matcher): self
     {
         $this->matcher = $matcher;
 

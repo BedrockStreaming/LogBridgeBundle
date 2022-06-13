@@ -22,7 +22,7 @@ class PhpMatcherDumper extends BaseMatcher
 
     private function getBuilder()
     {
-        $builder = new Matcher\Builder($this->getTypeManager(), $this->getFilters(), $this->getActiveFilters(), 'test');
+        $builder = new Matcher\Builder($this->getTypeManager(), $this->getFilters(), $this->getActiveFilters());
 
         $builder
                 ->setMatcherClassName($this->getMatcherClassName())

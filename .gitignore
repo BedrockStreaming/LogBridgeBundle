@@ -1,5 +1,6 @@
 bin/
 vendor/
-src/M6Web/Bundle/LogBridgeBundle/Tests/Resources/cache/*
-composer.lock
+src/M6Web/Bundle/LogBridgeBundle/Tests/Fixtures/Resources/cache/*
 .php_cs.cache
+.php-cs-fixer.cache
+composer.lock

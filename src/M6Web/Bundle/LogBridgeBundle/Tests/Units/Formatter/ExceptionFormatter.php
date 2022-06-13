@@ -8,30 +8,25 @@ use Symfony\Component\Security\Core\User\User;
 use M6Web\Bundle\LogBridgeBundle\Formatter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * ExceptionFormatter
  */
 class ExceptionFormatter extends atoum
 {
-    const ENVIRONMENT = 'test';
-    const USERNAME = 'test-username';
-    const PASSWORD = 'test-password';
+    private const ENVIRONMENT = 'test';
+    private const USERNAME = 'test-username';
+    private const PASSWORD = 'test-password';
 
-    /**
-     * @var string
-     */
-    private $requestExceptionAttribute;
+    private ?string $requestExceptionAttribute = null;
 
-    /**
-     * @param string $method
-     */
-    public function beforeTestMethod($method)
+    public function beforeTestMethod(string $method): void
     {
         $this->requestExceptionAttribute = 'LogBridgeBundle_'.time();
     }
 
-    private function getUser()
+    private function getUser(): UserInterface
     {
         if (class_exists(User::class)) {
             return new User(self::USERNAME, self::PASSWORD);
@@ -43,7 +38,7 @@ class ExceptionFormatter extends atoum
     private function getMockedToken()
     {
         $usernameMethod = 'getUserIdentifier';
-        if (method_exists('Symfony\Component\Security\Core\Authentication\Token\TokenInterface', 'getUsername')) {
+        if (method_exists(\Symfony\Component\Security\Core\Authentication\Token\TokenInterface::class, 'getUsername')) {
             // compatibility Symfony < 6
             $usernameMethod = 'getUsername';
         }
@@ -66,7 +61,7 @@ class ExceptionFormatter extends atoum
         return $context;
     }
 
-    private function createProvider($environment = self::ENVIRONMENT, array $ignores = ['php-auth-pw'], $prefix = '')
+    private function createProvider(string $environment = self::ENVIRONMENT, array $ignores = ['php-auth-pw'], string $prefix = ''): Formatter\ExceptionFormatter
     {
         $provider = new Formatter\ExceptionFormatter($environment, $ignores, $prefix);
         $provider->setRequestExceptionAttribute($this->requestExceptionAttribute);
@@ -74,7 +69,7 @@ class ExceptionFormatter extends atoum
         return $provider;
     }
 
-    public function testProvider()
+    public function testProvider(): void
     {
         $request       = new Request();
         $response      = new Response('Body content response');
@@ -91,7 +86,7 @@ class ExceptionFormatter extends atoum
             ->if($provider = $this->createProvider())
             ->then
             ->object($provider->setTokenStorage($tokenstorage))
-                ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Formatter\ExceptionFormatter')
+                ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Formatter\ExceptionFormatter::class)
             ->string($provider->getLogContent($request, $response, []))
                 ->contains('HTTP 1.0 200')
                 ->contains('Cache-Control')
@@ -127,14 +122,14 @@ class ExceptionFormatter extends atoum
         ;
     }
 
-    public function testProviderExceptionsDepth()
+    public function testProviderExceptionsDepth(): void
     {
         $request       = new Request();
         $response      = new Response('Body content response');
         $tokenstorage  = $this->getMockedTokenStorage();
         $exception3    = new \Exception('Test: first exception thrown.');
-        $exception2    = new \Exception('Test: second exception thrown.', null, $exception3);
-        $exception1    = new \Exception('Test: third exception thrown.', null, $exception2);
+        $exception2    = new \Exception('Test: second exception thrown.', 0, $exception3);
+        $exception1    = new \Exception('Test: third exception thrown.', 0, $exception2);
 
         $this
             ->given(
@@ -143,7 +138,7 @@ class ExceptionFormatter extends atoum
             ->if($provider = $this->createProvider())
             ->then
             ->object($provider->setTokenStorage($tokenstorage))
-                ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Formatter\ExceptionFormatter')
+                ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Formatter\ExceptionFormatter::class)
             ->string($provider->getLogContent($request, $response, []))
                 ->contains('Exception message (1) :')
                 ->contains($exception1->getMessage())
@@ -160,7 +155,7 @@ class ExceptionFormatter extends atoum
         ;
     }
 
-    public function testTypeErrorException()
+    public function testTypeErrorException(): void
     {
         $request = new Request();
         $exception = new \TypeError('Test: TypeError exception thrown.');
@@ -172,7 +167,7 @@ class ExceptionFormatter extends atoum
             ->if($provider = $this->createProvider())
             ->then
             ->object($provider->setTokenStorage($this->getMockedTokenStorage()))
-            ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Formatter\ExceptionFormatter')
+            ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Formatter\ExceptionFormatter::class)
             ->string($provider->getLogContent($request, new Response('Body content response'), []))
             ->contains('Exception message (1) :')
             ->contains($exception->getMessage())

@@ -7,7 +7,7 @@ use M6Web\Bundle\LogBridgeBundle\Config;
 
 class FilterCollection extends atoum
 {
-    private function createFilter($name, $route, $method, $status)
+    private function createFilter(string $name, string $route, ?array $method, ?array $status): Config\Filter
     {
         $filter = new Config\Filter($name);
         $filter
@@ -18,11 +18,11 @@ class FilterCollection extends atoum
         return $filter;  
     }
 
-    public function testCollection()
+    public function testCollection(): void
     {
         $filters = [];
-        $filters[] = $this->createFilter('filter_un', 'get_clip', 'all', 'all');
-        $filters[] = $this->createFilter('filter_deux', 'put_clip', ['PUT'], 'all');
+        $filters[] = $this->createFilter('filter_un', 'get_clip', ['all'], ['all']);
+        $filters[] = $this->createFilter('filter_deux', 'put_clip', ['PUT'], ['all']);
         $filters[] = $this->createFilter('filter_trois', 'put_clip', ['PUT'], [400, 404, 422, 500]);
 
         $filterQuatre =$this->createFilter('filter_quatre', 'post_clip', ['POST'], [400, 404, 422, 500]);
@@ -33,19 +33,19 @@ class FilterCollection extends atoum
                 ->integer($collection->count())
                     ->isEqualTo(3)
                 ->object($filterUn = $collection->getByName('filter_un'))
-                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\Filter')
+                    ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\Filter::class)
                 ->variable($collection->getByName('filter_invalid'))
                     ->isNull()
                 ->object($filterIt = $collection->get(0))
-                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\Filter')
+                    ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\Filter::class)
                 ->string($filterUn->getName())
                     ->isEqualTo($filterIt->getName())
                 ->array($collection->getKeys())
                     ->hasSize($collection->count())
                 ->object($collection->add($filterQuatre))
-                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\FilterCollection')
+                    ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\FilterCollection::class)
                 ->object($collection->getByName($filterQuatre->getName()))
-                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\Filter')
+                    ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\Filter::class)
                 ->string($collection->getKey(3))
                     ->isEqualTo($filterQuatre->getName())
         ;

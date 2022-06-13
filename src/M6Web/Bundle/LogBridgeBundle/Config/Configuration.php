@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\LogBridgeBundle\Config;
 
 /**
@@ -7,27 +9,15 @@ namespace M6Web\Bundle\LogBridgeBundle\Config;
  */
 class Configuration
 {
-    /** @var FilterCollection */
-    private $filters;
+    private ?FilterCollection $filters = null;
 
-    /** @var array */
-    private $activeFilters;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->filters = null;
-        $this->activeFilters = null;
-    }
+    /** @var string[] */
+    private ?array $activeFilters = null;
 
     /**
-     * setActiveFilters
-     *
-     * @return Configuration
+     * @param string[] $activeFilters
      */
-    public function setActiveFilters(array $activeFilters)
+    public function setActiveFilters(array $activeFilters): self
     {
         $this->activeFilters = $activeFilters;
 
@@ -35,35 +25,21 @@ class Configuration
     }
 
     /**
-     * getActiveFilters
-     *
-     * @return array
+     * @return string[]|null
      */
-    public function getActiveFilters()
+    public function getActiveFilters(): ?array
     {
         return $this->activeFilters;
     }
 
-    /**
-     * setFilters
-     *
-     * @param FilterCollection $filters Filters
-     *
-     * @return Configuration
-     */
-    public function setFilters(FilterCollection $filters)
+    public function setFilters(FilterCollection $filters): self
     {
         $this->filters = $filters;
 
         return $this;
     }
 
-    /**
-     * getFilters
-     *
-     * @return FilterCollection
-     */
-    public function getFilters()
+    public function getFilters(): ?FilterCollection
     {
         return $this->filters;
     }

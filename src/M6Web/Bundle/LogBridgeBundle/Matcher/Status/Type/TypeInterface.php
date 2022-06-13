@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\LogBridgeBundle\Matcher\Status\Type;
 
 /**
@@ -9,19 +11,18 @@ interface TypeInterface
 {
     /**
      * Match with config status
-     *
-     * @param string $config
-     *
-     * @return bool
      */
-    public function match($config);
+    public function match(string $config): bool;
 
     /**
      * Get status list
      *
-     * @param string $config
-     *
-     * @return array
+     * @return array<int, string|int>
      */
-    public function getStatus($config);
+    public function getStatus(string $config): array;
+
+    /**
+     * Match with config status
+     */
+    public function isExclude(string $config): bool;
 }

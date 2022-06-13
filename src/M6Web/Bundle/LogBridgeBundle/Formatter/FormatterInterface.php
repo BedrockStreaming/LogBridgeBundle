@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\LogBridgeBundle\Formatter;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -11,20 +13,14 @@ use Symfony\Component\HttpFoundation\Response;
 interface FormatterInterface
 {
     /**
-     * @param Request  $request  Request service
-     * @param Response $response Response service
-     * @param array    $options  Request options
-     *
-     * @return string
+     * @param array<string, bool|string> $options
      */
-    public function getLogContent(Request $request, Response $response, array $options);
+    public function getLogContent(Request $request, Response $response, array $options): string;
 
     /**
-     * @param Request  $request  Request service
-     * @param Response $response Response service
-     * @param array    $options  Request options
+     * @param array<string, bool|string> $options
      *
-     * @return array
+     * @return array<string, string|int>
      */
-    public function getLogContext(Request $request, Response $response, array $options);
+    public function getLogContext(Request $request, Response $response, array $options): array;
 }

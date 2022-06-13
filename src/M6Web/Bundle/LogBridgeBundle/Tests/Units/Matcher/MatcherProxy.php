@@ -6,7 +6,7 @@ use M6Web\Bundle\LogBridgeBundle\Matcher;
 
 class MatcherProxy extends BaseMatcher
 {
-    private function getTypeManager()
+    private function getTypeManager(): Matcher\Status\TypeManager
     {
         $typeManager = new Matcher\Status\TypeManager();
 
@@ -18,9 +18,9 @@ class MatcherProxy extends BaseMatcher
         return $typeManager;
     }
 
-    private function getBuilder()
+    private function getBuilder(): Matcher\Builder
     {
-        $builder = new Matcher\Builder($this->getTypeManager(), $this->getFilters(), $this->getActiveFilters(), 'test');
+        $builder = new Matcher\Builder($this->getTypeManager(), $this->getFilters(), $this->getActiveFilters());
 
         $builder
                 ->setMatcherClassName($this->getMatcherClassName())
@@ -30,7 +30,7 @@ class MatcherProxy extends BaseMatcher
         return $builder;
     }
 
-    private function createFilters($matcher)
+    private function createFilters($matcher): array
     {
         $keyNoConfig = $matcher->generateFilterKey('dynamically_no_config', 'GET', 200);
         $key500      = $matcher->generateFilterKey('dynamically_un', 'POST', 500);
@@ -49,13 +49,13 @@ class MatcherProxy extends BaseMatcher
         ];
     }
 
-    public function testProxy()
+    public function testProxy(): void
     {
         $this
             ->if($proxy = new Matcher\MatcherProxy($this->getBuilder()))
             ->then
                 ->object($proxy->getBuilder())
-                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Matcher\Builder')
+                    ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Matcher\Builder::class)
                 ->object($proxy->getMatcher())
                     ->isInstanceOf($this->getMatcherClassName())
                 ->boolean($proxy->match('get_clip', 'GET', 200))
@@ -67,23 +67,23 @@ class MatcherProxy extends BaseMatcher
         ;
     }
 
-    public function testDynamicallyFilter()
+    public function testDynamicallyFilter(): void
     {
         $this
             ->if($proxy = new Matcher\MatcherProxy($this->getBuilder()))
             ->then
                 ->object($proxy->getBuilder())
-                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Matcher\Builder')
+                    ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Matcher\Builder::class)
                 ->object($matcher = $proxy->getMatcher())
                     ->isInstanceOf($this->getMatcherClassName())
                 ->boolean($proxy->match('get_program_dynamically', 'GET', 200))
                     ->isFalse()
                 ->object($proxy->addFilter($matcher->generateFilterKey('get_program_dynamically', 'GET', 200)))
-                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Matcher\MatcherProxy')
+                    ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Matcher\MatcherProxy::class)
                 ->boolean($proxy->match('get_program_dynamically', 'GET', 200))
                     ->isTrue()
                 ->object($proxy->setFilters($this->createFilters($matcher)))
-                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Matcher\MatcherProxy')
+                    ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Matcher\MatcherProxy::class)
                 ->boolean($proxy->match('dynamically_un', 'POST', 500))
                     ->isTrue()
                 ->boolean($proxy->match('dynamically_deux', 'PUT', 422))

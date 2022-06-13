@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\LogBridgeBundle;
 
 use M6Web\Bundle\LogBridgeBundle\DependencyInjection\CompilerPass\LoggerValidationPass;
@@ -13,10 +15,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class M6WebLogBridgeBundle extends Bundle
 {
-    /**
-     * Build bundle
-     */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 

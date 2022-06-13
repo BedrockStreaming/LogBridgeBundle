@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\LogBridgeBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
@@ -19,7 +21,7 @@ class M6WebLogBridgeExtension extends Extension
     /**
      * {@inheritdoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
@@ -54,12 +56,7 @@ class M6WebLogBridgeExtension extends Extension
         $this->loadRequestListener($container);
     }
 
-    /**
-     * loadRequestListener
-     *
-     * @param ContainerBuilder $container Container
-     */
-    protected function loadRequestListener(ContainerBuilder $container)
+    protected function loadRequestListener(ContainerBuilder $container): void
     {
         $className = $container->getParameter('m6web_log_bridge.log_request_listener.class');
         $serviceName = $container->getParameter('m6web_log_bridge.log_request_listener.name');
@@ -84,12 +81,7 @@ class M6WebLogBridgeExtension extends Extension
         $container->setDefinition($serviceName, $definition);
     }
 
-    /**
-     * loadExceptionListener
-     *
-     * @param ContainerBuilder $container Container
-     */
-    protected function loadExceptionListener(ContainerBuilder $container)
+    protected function loadExceptionListener(ContainerBuilder $container): void
     {
         $className = $container->getParameter('m6web_log_bridge.log_exception_listener.class');
         $serviceName = $container->getParameter('m6web_log_bridge.log_exception_listener.name');

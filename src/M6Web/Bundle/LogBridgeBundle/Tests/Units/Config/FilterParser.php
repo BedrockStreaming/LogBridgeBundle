@@ -10,12 +10,12 @@ use M6Web\Bundle\LogBridgeBundle\Config;
  */
 class FilterParser extends BaseTest
 {
-    private function getParser()
+    private function getParser(): Config\FilterParser
     {
         return new Config\FilterParser($this->getMockedRouter());
     }
 
-    private function getConfig()
+    private function getConfig(): array
     {
         return [
             'filter_un' => [
@@ -56,7 +56,7 @@ class FilterParser extends BaseTest
         ];
     }
 
-    public function testValidParse()
+    public function testValidParse(): void
     {
         $config = $this->getConfig();
 
@@ -110,7 +110,7 @@ class FilterParser extends BaseTest
 
     }
 
-    public function testInvalidRoute()
+    public function testInvalidRoute(): void
     {
         $config = $this->getConfig()['filter_route_invalid'];
 
@@ -120,13 +120,13 @@ class FilterParser extends BaseTest
                 ->exception(function() use ($parser, $config) {
                     $parser->parse('filter_route_invalid', $config);
                 })
-                ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\ParseException')
+                ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\ParseException::class)
                 ->message
                     ->contains('Undefined route')
         ;
     }
 
-    public function testInvalidMethod()
+    public function testInvalidMethod(): void
     {
         $config = $this->getConfig()['filter_method_invalid'];
 
@@ -136,13 +136,13 @@ class FilterParser extends BaseTest
                 ->exception(function() use ($parser, $config) {
                     $parser->parse('filter_method_invalid', $config);
                 })
-                ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\ParseException')
+                ->isInstanceOf(\TypeError::class)
                 ->message
-                    ->contains('Unrecognized value')
+                    ->contains('must be of type ?array, string given')
         ;
     }
 
-    public function testInvalidStatus()
+    public function testInvalidStatus(): void
     {
         $config = $this->getConfig()['filter_status_invalid'];
 
@@ -152,9 +152,9 @@ class FilterParser extends BaseTest
                 ->exception(function() use ($parser, $config) {
                     $parser->parse('filter_status_invalid', $config);
                 })
-                ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\ParseException')
+                ->isInstanceOf(\TypeError::class)
                 ->message
-                    ->contains('Unrecognized value')
+                    ->contains('must be of type ?array, int given')
         ;
     }
 }

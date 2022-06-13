@@ -2,12 +2,12 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Config;
 
-use atoum;  
+use atoum;
 use M6Web\Bundle\LogBridgeBundle\Config;
 
 class Configuration extends atoum
 {
-    private function getFilters()
+    private function getFilters(): Config\FilterCollection
     {
         $collection = new Config\FilterCollection();
 
@@ -15,19 +15,17 @@ class Configuration extends atoum
         $filter
             ->setRoute('route_name')
             ->setMethod(['GET', 'POST'])
-            ->setStatus('all');
+            ->setStatus(['all']);
 
         $collection->add($filter);
-
 
         $filter = new Config\Filter('active_filters_two');
         $filter
             ->setRoute('route_name_two')
             ->setMethod(['PUT', 'POST'])
-            ->setStatus('200');
+            ->setStatus([200]);
 
         $collection->add($filter);
-
 
         $filter = new Config\Filter('active_filters_three');
         $filter
@@ -40,16 +38,16 @@ class Configuration extends atoum
         return $collection;
     }
 
-    private function getActiveFilters()
+    private function getActiveFilters(): array
     {
         return [
             'active_filters_one',
             'active_filters_two',
             'active_filters_three'
-            ];
+        ];
     }
 
-    public function testConfiguration()
+    public function testConfiguration(): void
     {
         $activeFilters = $this->getActiveFilters();
 
@@ -59,15 +57,15 @@ class Configuration extends atoum
                 ->variable($configuration->getActiveFilters())
                     ->isNull()
                 ->object($configuration->setActiveFilters($activeFilters))
-                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\Configuration')
+                    ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\Configuration::class)
                 ->array($configuration->getActiveFilters())
                     ->hasSize(3)
                     ->hasKeys(array_keys($activeFilters))
                 ->variable($configuration->getFilters())
                     ->isNull()
                 ->object($configuration->setFilters($this->getFilters()))
-                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\Configuration')
+                    ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\Configuration::class)
                 ->object($collection = $configuration->getFilters())
-                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\FilterCollection');
+                    ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\FilterCollection::class);
     }
 }
