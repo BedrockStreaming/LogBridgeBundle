@@ -30,7 +30,7 @@ class LoggerValidationPass implements CompilerPassInterface
             $loggerClass = $container->getParameter($loggerClassParameter);
         }
 
-        if (!in_array('Psr\Log\LoggerInterface', class_implements($loggerClass), true)) {
+        if (!in_array(\Psr\Log\LoggerInterface::class, class_implements($loggerClass), true)) {
             throw new \InvalidArgumentException(sprintf('Class "%s" must be implement "Psr\Log\LoggerInterface"', $loggerClass));
         }
     }

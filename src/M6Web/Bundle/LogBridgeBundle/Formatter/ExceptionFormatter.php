@@ -24,6 +24,7 @@ class ExceptionFormatter extends DefaultFormatter implements ExceptionFormatterI
         $logContent = parent::getLogContent($request, $response, $options);
 
         if ($request->attributes->has($this->requestExceptionAttribute)) {
+            /** @var \Throwable $exception */
             $exception = $request->attributes->get($this->requestExceptionAttribute);
 
             $logContent .= $this->getExceptionTrace($exception);
@@ -46,7 +47,7 @@ class ExceptionFormatter extends DefaultFormatter implements ExceptionFormatterI
     protected function formatException(\Throwable $exception, int $level = 1): string
     {
         return
-            "\nException class : \n------------------------\n".get_class($exception)."\n".
+            "\nException class : \n------------------------\n".$exception::class."\n".
             "\nException message ($level) :\n------------------------\n".$exception->getMessage()."\n".
             "\nException trace ($level) :\n------------------------\n".$exception->getTraceAsString()."\n";
     }

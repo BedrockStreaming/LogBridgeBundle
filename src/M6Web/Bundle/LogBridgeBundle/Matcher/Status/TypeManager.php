@@ -11,8 +11,12 @@ use M6Web\Bundle\LogBridgeBundle\Matcher\Status\Type\TypeInterface;
  */
 class TypeManager
 {
+    /** @var array<class-string<TypeInterface>, TypeInterface> */
     protected array $types = [];
 
+    /**
+     * @return array<class-string<TypeInterface>, TypeInterface>
+     */
     public function getTypes(): array
     {
         return $this->types;
@@ -24,7 +28,7 @@ class TypeManager
     public function addType(TypeInterface $type): self
     {
         if (!$this->isType($type)) {
-            $typeClass = get_class($type);
+            $typeClass = $type::class;
 
             $this->types[$typeClass] = $type;
         }
@@ -37,9 +41,9 @@ class TypeManager
      */
     public function removeType(TypeInterface $typeToRemove): self
     {
-        $namespaceTypeToRemove = get_class($typeToRemove);
+        $namespaceTypeToRemove = $typeToRemove::class;
         foreach ($this->types as $key => $type) {
-            if ($namespaceTypeToRemove === get_class($type)) {
+            if ($namespaceTypeToRemove === $type::class) {
                 unset($this->types[$key]);
             }
         }
@@ -52,9 +56,9 @@ class TypeManager
      */
     protected function isType(TypeInterface $typeToCheck): bool
     {
-        $namespaceTypeToCheck = get_class($typeToCheck);
+        $namespaceTypeToCheck = $typeToCheck::class;
         foreach ($this->types as $type) {
-            if ($namespaceTypeToCheck === get_class($type)) {
+            if ($namespaceTypeToCheck === $type::class) {
                 return true;
             }
         }

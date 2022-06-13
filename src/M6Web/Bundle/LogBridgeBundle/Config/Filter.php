@@ -11,12 +11,15 @@ class Filter
 {
     private ?string $route = null;
 
+    /** @var string[]|null */
     private ?array $method = null;
 
+    /** @var int[]|null */
     private ?array $status = null;
 
     private ?string $level = null;
 
+    /** @var array{post_parameters?: bool, response_body?: bool} */
     private array $options = [];
 
     public function __construct(private string $name)
@@ -40,6 +43,9 @@ class Filter
         return $this->route;
     }
 
+    /**
+     * @param string[]|null $method
+     */
     public function setMethod(?array $method): self
     {
         $this->method = $method;
@@ -47,11 +53,17 @@ class Filter
         return $this;
     }
 
+    /**
+     * @return string[]|null
+     */
     public function getMethod(): ?array
     {
         return $this->method;
     }
 
+    /**
+     * @param int[]|null $status
+     */
     public function setStatus(?array $status): self
     {
         $this->status = $status;
@@ -59,6 +71,9 @@ class Filter
         return $this;
     }
 
+    /**
+     * @return int[]|null
+     */
     public function getStatus(): ?array
     {
         return $this->status;
@@ -76,6 +91,9 @@ class Filter
         return $this->level;
     }
 
+    /**
+     * @param array{post_parameters?: bool, response_body?: bool} $options
+     */
     public function setOptions(array $options): self
     {
         $this->options = $options;
@@ -83,6 +101,9 @@ class Filter
         return $this;
     }
 
+    /**
+     * @return array{post_parameters?: bool, response_body?: bool}
+     */
     public function getOptions(): array
     {
         return $this->options;

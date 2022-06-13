@@ -4,20 +4,24 @@ declare(strict_types=1);
 
 namespace M6Web\Bundle\LogBridgeBundle\Config;
 
+/**
+ * @implements \Iterator<int, Filter>
+ */
 class FilterCollection implements \Iterator
 {
-    protected int $iterator;
+    protected int $iterator = 0;
 
-    protected array $keys;
+    /** @var string[] */
+    protected array $keys = [];
 
-    protected array $values;
+    /** @var array<string, Filter> */
+    protected array $values = [];
 
+    /**
+     * @param Filter[] $items
+     */
     public function __construct(array $items = [])
     {
-        $this->iterator = 0;
-        $this->keys = [];
-        $this->values = [];
-
         foreach ($items as $item) {
             $this->add($item);
         }
@@ -67,6 +71,9 @@ class FilterCollection implements \Iterator
         return $this->keys[$iterator] ?? '';
     }
 
+    /**
+     * @return string[]
+     */
     public function getKeys(): array
     {
         return $this->keys;

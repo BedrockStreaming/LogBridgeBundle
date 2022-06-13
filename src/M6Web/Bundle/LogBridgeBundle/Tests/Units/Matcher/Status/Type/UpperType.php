@@ -11,9 +11,6 @@ class UpperType extends atoum
      * Test get status
      *
      * @dataProvider dataTestGetStatus
-     *
-     * @param string $config
-     * @param array  $statusResult
      */
     public function testGetStatus(string $config, array $statusResult)
     {

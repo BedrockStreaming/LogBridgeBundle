@@ -16,6 +16,13 @@ interface TypeInterface
 
     /**
      * Get status list
+     *
+     * @return array<int, string|int>
      */
     public function getStatus(string $config): array;
+
+    /**
+     * Match with config status
+     */
+    public function isExclude(string $config): bool;
 }

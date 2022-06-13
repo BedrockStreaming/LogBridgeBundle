@@ -13,25 +13,26 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class DefaultFormatter implements FormatterInterface
 {
-    protected ?TokenStorageInterface $tokenStorage;
+    protected ?TokenStorageInterface $tokenStorage = null;
 
     /**
      * __construct
      *
-     * @param string $environment   env
-     * @param array  $ignoreHeaders Array list from ignore header info
-     * @param string $prefixKey     Log context prefix key
+     * @param string   $environment   env
+     * @param string[] $ignoreHeaders Array list from ignore header info
+     * @param string   $prefixKey     Log context prefix key
      */
     public function __construct(
         protected string $environment,
         protected array $ignoreHeaders = [],
         protected string $prefixKey = ''
     ) {
-        $this->tokenStorage = null;
     }
 
     /**
      * Format parameters as tree
+     *
+     * @param array<string, mixed> $parameters
      */
     protected function formatParameters(array $parameters): string
     {
@@ -58,8 +59,9 @@ class DefaultFormatter implements FormatterInterface
         $requestHeaders = $this->getFilteredHeaders($request);
         $requestContent = "Request\n------------------------\n";
 
-        foreach ($requestHeaders as $name => $values) {
-            $requestContent .= str_pad($name, 20, ' ', STR_PAD_RIGHT).': '.$values[0]."\n";
+        foreach ($requestHeaders as $name => $headerValue) {
+            $value = is_array($headerValue) ? $headerValue[0] : $headerValue;
+            $requestContent .= str_pad((string) $name, 20, ' ', STR_PAD_RIGHT).': '.$value."\n";
         }
 
         $responseContent = sprintf(
@@ -96,6 +98,7 @@ class DefaultFormatter implements FormatterInterface
 
     public function getLogContext(Request $request, Response $response, array $options): array
     {
+        /** @var string $route */
         $route = $request->get('_route');
         $method = $request->getMethod();
         $status = $response->getStatusCode();
@@ -124,13 +127,16 @@ class DefaultFormatter implements FormatterInterface
         }
 
         // compatibility Symfony < 6
-        if (method_exists('Symfony\Component\Security\Core\Authentication\Token\TokenInterface', 'getUsername')) {
+        if (method_exists($token, 'getUsername')) {
             return $token->getUsername();
         }
 
         return $token->getUserIdentifier();
     }
 
+    /**
+     * @return array<int|string, array<int, string|null>|string|null>
+     */
     protected function getFilteredHeaders(Request $request): array
     {
         return array_diff_key($request->headers->all(), array_flip($this->ignoreHeaders));
@@ -143,6 +149,9 @@ class DefaultFormatter implements FormatterInterface
         return $this;
     }
 
+    /**
+     * @param string[] $ignoreHeaders
+     */
     public function setIgnoreHeaders(array $ignoreHeaders): self
     {
         $this->ignoreHeaders = $ignoreHeaders;
@@ -150,6 +159,9 @@ class DefaultFormatter implements FormatterInterface
         return $this;
     }
 
+    /**
+     * @return string[]
+     */
     public function getIgnoreHeaders(): array
     {
         return $this->ignoreHeaders;

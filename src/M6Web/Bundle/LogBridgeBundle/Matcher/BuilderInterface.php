@@ -11,6 +11,16 @@ use M6Web\Bundle\LogBridgeBundle\Matcher\Status\TypeManager as StatusTypeManager
  */
 interface BuilderInterface
 {
+    /**
+     * @param array<string, array{
+     *     route?: string,
+     *     method?: string[],
+     *     status?: int[],
+     *     level?: string,
+     *     options?: array{post_parameters?: bool, response_body?: bool}
+     * }> $filters
+     * @param string[] $activeFilters
+     */
     public function __construct(StatusTypeManager $statusTypeManager, array $filters, array $activeFilters);
 
     public function getMatcher(): MatcherInterface;

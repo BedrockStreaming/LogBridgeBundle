@@ -57,15 +57,15 @@ class Configuration extends atoum
                 ->variable($configuration->getActiveFilters())
                     ->isNull()
                 ->object($configuration->setActiveFilters($activeFilters))
-                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\Configuration')
+                    ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\Configuration::class)
                 ->array($configuration->getActiveFilters())
                     ->hasSize(3)
                     ->hasKeys(array_keys($activeFilters))
                 ->variable($configuration->getFilters())
                     ->isNull()
                 ->object($configuration->setFilters($this->getFilters()))
-                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\Configuration')
+                    ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\Configuration::class)
                 ->object($collection = $configuration->getFilters())
-                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\FilterCollection');
+                    ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\FilterCollection::class);
     }
 }

@@ -7,7 +7,6 @@ namespace M6Web\Bundle\LogBridgeBundle\Matcher;
 use M6Web\Bundle\LogBridgeBundle\Config\Parser as ConfigParser;
 use M6Web\Bundle\LogBridgeBundle\Matcher\Status\TypeManager as StatusTypeManager;
 use Symfony\Component\Config\ConfigCache;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Builder
@@ -16,29 +15,25 @@ class Builder implements BuilderInterface
 {
     private ConfigParser $configParser;
 
-    private ?EventDispatcherInterface $dispatcher;
+    private bool $debug = false;
 
-    private bool $debug;
+    private string $cacheDir = '';
 
-    private string $cacheDir;
-
+    /** @var class-string<MatcherInterface> */
     private string $matcherClassName;
 
-    private ?MatcherInterface $matcher;
+    private ?MatcherInterface $matcher = null;
 
     public function __construct(
         private StatusTypeManager $statusTypeManager,
         private array $filters,
         private array $activeFilters
     ) {
-        $this->dispatcher = null;
-        $this->debug = false;
-        $this->cacheDir = '';
-        $this->matcherClassName = '';
     }
 
     protected function buildMatcherCache(): string
     {
+        $configs = [];
         $configs['filters'] = $this->filters;
         $configs['active_filters'] = $this->activeFilters;
 
@@ -46,7 +41,7 @@ class Builder implements BuilderInterface
         $dumper = new Dumper\PhpMatcherDumper($this->statusTypeManager);
         $options = [];
 
-        if ($this->matcherClassName) {
+        if (isset($this->matcherClassName)) {
             $options['class'] = $this->getMatcherClassName();
         }
 
@@ -100,13 +95,6 @@ class Builder implements BuilderInterface
         return $this->cacheDir;
     }
 
-    public function setDispatcher(EventDispatcherInterface $dispatcher): self
-    {
-        $this->dispatcher = $dispatcher;
-
-        return $this;
-    }
-
     public function setConfigParser(ConfigParser $configParser): self
     {
         $this->configParser = $configParser;
@@ -114,6 +102,9 @@ class Builder implements BuilderInterface
         return $this;
     }
 
+    /**
+     * @param class-string<MatcherInterface> $matcherClassName
+     */
     public function setMatcherClassName(string $matcherClassName): self
     {
         $this->matcherClassName = $matcherClassName;
@@ -121,6 +112,9 @@ class Builder implements BuilderInterface
         return $this;
     }
 
+    /**
+     * @return class-string<MatcherInterface>
+     */
     public function getMatcherClassName(): string
     {
         return $this->matcherClassName;

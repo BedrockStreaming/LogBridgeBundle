@@ -26,11 +26,14 @@ class PhpMatcherDumper
     {
     }
 
+    /**
+     * @param array<string, string> $options
+     */
     public function dump(Configuration $configuration, array $options = []): string
     {
         $options = array_replace([
             'class' => 'LogBridgeMatcher',
-            'interface' => 'M6Web\\Bundle\\LogBridgeBundle\\Matcher\\MatcherInterface',
+            'interface' => \M6Web\Bundle\LogBridgeBundle\Matcher\MatcherInterface::class,
             'default_level' => LogLevel::INFO,
         ], $options);
 
@@ -199,16 +202,33 @@ EOF;
 EOF;
     }
 
+    /**
+     * @return array<string, array{
+     *     level: ?string,
+     *     options: array<string, bool|string>
+     * }>
+     */
     private function compile(Configuration $configuration): array
     {
-        $compiledFilters = $this->compileNeededFilters(
-            $configuration->getActiveFilters(),
-            $configuration->getFilters()
-        );
+        $filters = $configuration->getFilters();
+        if ($filters === null) {
+            return [];
+        }
 
-        return $compiledFilters;
+        return $this->compileNeededFilters(
+            $configuration->getActiveFilters(),
+            $filters
+        );
     }
 
+    /**
+     * @param string[]|null $activeFilters
+     *
+     * @return array<string, array{
+     *     level: ?string,
+     *     options: array<string, bool|string>
+     * }>
+     */
     private function compileNeededFilters(?array $activeFilters, FilterCollection $filters): array
     {
         $compiled = [];
@@ -228,14 +248,21 @@ EOF;
         return $compiled;
     }
 
+    /**
+     * @return array<string, array{
+     *     level: ?string,
+     *     options: array<string, bool|string>
+     * }>
+     */
     private function compileFilter(Filter $filter): array
     {
         $compiledKeys = [];
         $compiled = [];
+        /** @var string $prefix */
         $prefix = is_null($filter->getRoute()) ? 'all' : $filter->getRoute();
 
         if (empty($filter->getMethod())) {
-            $prefix = sprintf('%s.all', $prefix, $filter->getMethod());
+            $prefix = sprintf('%s.all', $prefix);
             $compiledKeys = $this->compileFilterStatus($prefix, $filter);
         } else {
             foreach ($filter->getMethod() as $method) {
@@ -252,9 +279,13 @@ EOF;
         return $compiled;
     }
 
+    /**
+     * @return string[]
+     */
     private function compileFilterStatus(string $prefix, Filter $filter): array
     {
         $compiled = [];
+        /** @var string[]|null $filterStatusList */
         $filterStatusList = $filter->getStatus();
 
         if (is_null($filterStatusList)) {
@@ -268,6 +299,11 @@ EOF;
         return $compiled;
     }
 
+    /**
+     * @param string[] $filterStatusList
+     *
+     * @return string[]|int[]
+     */
     private function parseStatus(array $filterStatusList): array
     {
         $statusList = [];
@@ -282,7 +318,7 @@ EOF;
                     if ($statusType->isExclude($value)) {
                         $statusList = array_diff($statusList, $statusType->getStatus($value));
                     } else {
-                        $statusList = array_merge($statusList, $statusType->getStatus($value));
+                        $statusList = [...$statusList, ...$statusType->getStatus($value)];
                     }
 
                     break;

@@ -19,14 +19,8 @@ class ExceptionFormatter extends atoum
     private const USERNAME = 'test-username';
     private const PASSWORD = 'test-password';
 
-    /**
-     * @var string
-     */
-    private $requestExceptionAttribute;
+    private ?string $requestExceptionAttribute = null;
 
-    /**
-     * @param string $method
-     */
     public function beforeTestMethod(string $method): void
     {
         $this->requestExceptionAttribute = 'LogBridgeBundle_'.time();
@@ -44,7 +38,7 @@ class ExceptionFormatter extends atoum
     private function getMockedToken()
     {
         $usernameMethod = 'getUserIdentifier';
-        if (method_exists('Symfony\Component\Security\Core\Authentication\Token\TokenInterface', 'getUsername')) {
+        if (method_exists(\Symfony\Component\Security\Core\Authentication\Token\TokenInterface::class, 'getUsername')) {
             // compatibility Symfony < 6
             $usernameMethod = 'getUsername';
         }
@@ -92,7 +86,7 @@ class ExceptionFormatter extends atoum
             ->if($provider = $this->createProvider())
             ->then
             ->object($provider->setTokenStorage($tokenstorage))
-                ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Formatter\ExceptionFormatter')
+                ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Formatter\ExceptionFormatter::class)
             ->string($provider->getLogContent($request, $response, []))
                 ->contains('HTTP 1.0 200')
                 ->contains('Cache-Control')
@@ -144,7 +138,7 @@ class ExceptionFormatter extends atoum
             ->if($provider = $this->createProvider())
             ->then
             ->object($provider->setTokenStorage($tokenstorage))
-                ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Formatter\ExceptionFormatter')
+                ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Formatter\ExceptionFormatter::class)
             ->string($provider->getLogContent($request, $response, []))
                 ->contains('Exception message (1) :')
                 ->contains($exception1->getMessage())
@@ -173,7 +167,7 @@ class ExceptionFormatter extends atoum
             ->if($provider = $this->createProvider())
             ->then
             ->object($provider->setTokenStorage($this->getMockedTokenStorage()))
-            ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Formatter\ExceptionFormatter')
+            ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Formatter\ExceptionFormatter::class)
             ->string($provider->getLogContent($request, new Response('Body content response'), []))
             ->contains('Exception message (1) :')
             ->contains($exception->getMessage())

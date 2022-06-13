@@ -9,6 +9,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * BuilderEvent
+ *
+ * @deprecated Not used anymore, may be removed in a future version
  */
 class BuilderEvent extends Event
 {

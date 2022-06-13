@@ -12,7 +12,15 @@ use Symfony\Component\HttpFoundation\Response;
  */
 interface FormatterInterface
 {
+    /**
+     * @param array<string, bool|string> $options
+     */
     public function getLogContent(Request $request, Response $response, array $options): string;
 
+    /**
+     * @param array<string, bool|string> $options
+     *
+     * @return array<string, string|int>
+     */
     public function getLogContext(Request $request, Response $response, array $options): array;
 }

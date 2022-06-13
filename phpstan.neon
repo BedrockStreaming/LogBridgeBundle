@@ -1,0 +1,70 @@
+parameters:
+    level: max
+    paths:
+        - src
+    excludePaths:
+        # This class is deprecated, we don't care about warnings
+        - src/M6Web/Bundle/LogBridgeBundle/EventDispatcher/BuilderEvent.php
+        - src/M6Web/Bundle/LogBridgeBundle/Tests/*
+
+    # Errors from DependencyInjection : hard to fix, not that useful
+    ignoreErrors:
+        -
+            message: "#^Parameter \\#1 \\$id of method Symfony\\\\Component\\\\DependencyInjection\\\\ContainerBuilder\\:\\:findDefinition\\(\\) expects string, array\\|bool\\|float\\|int\\|string\\|UnitEnum\\|null given\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/CompilerPass/LoggerValidationPass.php
+
+        -
+            message: "#^Parameter \\#1 \\$object_or_class of function class_implements expects object\\|string, array\\|bool\\|float\\|int\\|string\\|UnitEnum\\|null given\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/CompilerPass/LoggerValidationPass.php
+
+        -
+            message: "#^Parameter \\#1 \\$string of function substr expects string, string\\|null given\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/CompilerPass/LoggerValidationPass.php
+
+        -
+            message: "#^Parameter \\#2 \\$haystack of function in_array expects array, array\\<string, string\\>\\|false given\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/CompilerPass/LoggerValidationPass.php
+
+        -
+            message: "#^Parameter \\#2 \\$subject of function preg_match expects string, string\\|null given\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/CompilerPass/LoggerValidationPass.php
+
+        -
+            message: "#^Parameter \\#2 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, array\\|bool\\|float\\|int\\|string\\|UnitEnum\\|null given\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/CompilerPass/LoggerValidationPass.php
+
+        -
+            message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition\\:\\:children\\(\\)\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/Configuration.php
+
+        -
+            message: "#^Method M6Web\\\\Bundle\\\\LogBridgeBundle\\\\DependencyInjection\\\\M6WebLogBridgeExtension\\:\\:load\\(\\) has parameter \\$configs with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/M6WebLogBridgeExtension.php
+
+        -
+            message: "#^Parameter \\#1 \\$class of class Symfony\\\\Component\\\\DependencyInjection\\\\Definition constructor expects string\\|null, array\\|bool\\|float\\|int\\|string\\|UnitEnum\\|null given\\.$#"
+            count: 2
+            path: src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/M6WebLogBridgeExtension.php
+
+        -
+            message: "#^Parameter \\#1 \\$id of class Symfony\\\\Component\\\\DependencyInjection\\\\Reference constructor expects string, array\\|bool\\|float\\|int\\|string\\|UnitEnum\\|null given\\.$#"
+            count: 3
+            path: src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/M6WebLogBridgeExtension.php
+
+        -
+            message: "#^Parameter \\#1 \\$id of method Symfony\\\\Component\\\\DependencyInjection\\\\ContainerBuilder\\:\\:setDefinition\\(\\) expects string, array\\|bool\\|float\\|int\\|string\\|UnitEnum\\|null given\\.$#"
+            count: 2
+            path: src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/M6WebLogBridgeExtension.php
+
+        -
+            message: "#^Parameter \\#1 \\.\\.\\.\\$arrays of function array_merge expects array, array\\|bool\\|float\\|int\\|string\\|UnitEnum\\|null given\\.$#"
+            count: 1
+            path: src/M6Web/Bundle/LogBridgeBundle/DependencyInjection/M6WebLogBridgeExtension.php

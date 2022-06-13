@@ -38,8 +38,6 @@ class TypeManager extends atoum
 
     /**
      * Data to testAddType
-     *
-     * @return array
      */
     public function dataTestAddType(): array
     {
@@ -55,9 +53,9 @@ class TypeManager extends atoum
                     $type2,
                 ],
                 [
-                    get_class($type1) => $type1,
-                    get_class($type3) => $type3,
-                    get_class($type2) => $type2,
+                    $type1::class => $type1,
+                    $type3::class => $type3,
+                    $type2::class => $type2,
                 ]
             ]
         ];
@@ -103,8 +101,8 @@ class TypeManager extends atoum
                 ],
                 $type2,
                 [
-                    get_class($type3) => $type3,
-                    get_class($type1) => $type1,
+                    $type3::class => $type3,
+                    $type1::class => $type1,
                 ]
             ]
         ];
