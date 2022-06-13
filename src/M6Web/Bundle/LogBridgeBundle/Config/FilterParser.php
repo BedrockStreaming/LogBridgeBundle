@@ -106,7 +106,7 @@ class FilterParser
     }
 
     /**
-     * @param class-string $filterClass
+     * @param class-string<Filter> $filterClass
      */
     public function setFilterClass(string $filterClass): self
     {
@@ -119,7 +119,6 @@ class FilterParser
             throw new \RuntimeException(sprintf('"%s" is not instantiable or is not a subclass of "%s"', $filterClass, Filter::class));
         }
 
-        /** @var class-string<Filter> $filterClass */
         $this->filterClass = $filterClass;
 
         return $this;
