@@ -29,22 +29,22 @@ class Parser extends BaseTest
             ],
             'filters' => [
                 'filter_un' => [
-                    'route' =>  'route_name',
+                    'routes' => ['route_name'],
                     'method' => null,
                     'status' => null
                 ],
                 'filter_deux' => [
-                    'route' =>  'route_name',
+                    'routes' => ['route_name'],
                     'method' => null,
                     'status' => [404, 422, 500]
                 ],
                 'filter_trois' => [
-                    'route' =>  'route_name',
+                    'routes' => ['route_name'],
                     'method' => ['PUT', 'POST'],
                     'status' => null
                 ],
                 'filter_quatre' => [
-                    'route' =>  'route_name',
+                    'routes' => ['route_name'],
                     'method' => ['PUT'],
                     'status' => [200]
                 ]
@@ -78,17 +78,17 @@ class Parser extends BaseTest
         $config = [
             'filters' => [
                 'filter_route_invalid' => [
-                    'route' => 'invalid_route',
+                    'routes' => ['invalid_route'],
                     'method' => ['PUT'],
                     'status' => [200]
                 ],
                 'filter_method_invalid' => [
-                    'route' => 'route_name',
+                    'routes' => ['route_name'],
                     'method' => 'PUT',
                     'status' => [200]
                 ],
                 'filter_status_invalid' => [
-                    'route' => 'route_name',
+                    'routes' => ['route_name'],
                     'method' => ['PUT'],
                     'status' => 200
                 ]

@@ -258,16 +258,20 @@ EOF;
     {
         $compiledKeys = [];
         $compiled = [];
-        /** @var string $prefix */
-        $prefix = is_null($filter->getRoute()) ? 'all' : $filter->getRoute();
+        /** @var array $routesPrefix */
+        $routesPrefix = $filter->getRoutes();
 
         if (empty($filter->getMethod())) {
-            $prefix = sprintf('%s.all', $prefix);
-            $compiledKeys = $this->compileFilterStatus($prefix, $filter);
+            foreach ($routesPrefix as $routePrefix) {
+                $prefix = sprintf('%s.all', $routePrefix);
+                $compiledKeys = array_merge($compiledKeys, $this->compileFilterStatus($prefix, $filter));
+            }
         } else {
             foreach ($filter->getMethod() as $method) {
-                $methodPrefix = sprintf('%s.%s', $prefix, $method);
-                $compiledKeys = array_merge($compiledKeys, $this->compileFilterStatus($methodPrefix, $filter));
+                foreach ($routesPrefix as $routePrefix) {
+                    $methodPrefix = sprintf('%s.%s', $routePrefix, $method);
+                    $compiledKeys = array_merge($compiledKeys, $this->compileFilterStatus($methodPrefix, $filter));
+                }
             }
         }
 
@@ -282,7 +286,7 @@ EOF;
     /**
      * @return string[]
      */
-    private function compileFilterStatus(string $prefix, Filter $filter): array
+    private function compileFilterStatus(?string $prefix, Filter $filter): array
     {
         $compiled = [];
         /** @var string[]|null $filterStatusList */

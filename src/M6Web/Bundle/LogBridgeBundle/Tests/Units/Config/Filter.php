@@ -14,10 +14,10 @@ class Filter extends atoum
             ->then
                 ->string($filter->getName())
                     ->isEqualTo('filter_name')
-                ->object($filter->setRoute('filter_route'))
+                ->object($filter->setRoutes(['filter_route']))
                     ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\Filter::class)
-                ->string($filter->getRoute())
-                    ->isEqualTo('filter_route')
+                ->array($filter->getRoutes())
+                    ->isEqualTo(['filter_route'])
                 ->object($filter->setMethod(null))
                     ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\Filter::class)
                 ->variable($filter->getMethod())

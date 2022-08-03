@@ -2,30 +2,30 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Config;
 
-use atoum;  
+use atoum;
 use M6Web\Bundle\LogBridgeBundle\Config;
 
 class FilterCollection extends atoum
 {
-    private function createFilter(string $name, string $route, ?array $method, ?array $status): Config\Filter
+    private function createFilter(string $name, array $routes, ?array $method, ?array $status): Config\Filter
     {
         $filter = new Config\Filter($name);
         $filter
-            ->setRoute($route)
+            ->setRoutes($routes)
             ->setMethod($method)
             ->setStatus($status);
 
-        return $filter;  
+        return $filter;
     }
 
     public function testCollection(): void
     {
         $filters = [];
-        $filters[] = $this->createFilter('filter_un', 'get_clip', ['all'], ['all']);
-        $filters[] = $this->createFilter('filter_deux', 'put_clip', ['PUT'], ['all']);
-        $filters[] = $this->createFilter('filter_trois', 'put_clip', ['PUT'], [400, 404, 422, 500]);
+        $filters[] = $this->createFilter('filter_un', ['get_clip'], ['all'], ['all']);
+        $filters[] = $this->createFilter('filter_deux', ['put_clip'], ['PUT'], ['all']);
+        $filters[] = $this->createFilter('filter_trois', ['put_clip'], ['PUT'], [400, 404, 422, 500]);
 
-        $filterQuatre =$this->createFilter('filter_quatre', 'post_clip', ['POST'], [400, 404, 422, 500]);
+        $filterQuatre =$this->createFilter('filter_quatre', ['post_clip'], ['POST'], [400, 404, 422, 500]);
 
         $this
             ->if($collection = new Config\FilterCollection($filters))

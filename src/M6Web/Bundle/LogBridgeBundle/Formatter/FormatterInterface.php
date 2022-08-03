@@ -20,7 +20,7 @@ interface FormatterInterface
     /**
      * @param array<string, bool|string> $options
      *
-     * @return array<string, string|int>
+     * @return array<string, array|int|string>
      */
     public function getLogContext(Request $request, Response $response, array $options): array;
 }

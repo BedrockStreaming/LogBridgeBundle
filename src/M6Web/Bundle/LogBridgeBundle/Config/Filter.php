@@ -9,7 +9,7 @@ namespace M6Web\Bundle\LogBridgeBundle\Config;
  */
 class Filter
 {
-    private ?string $route = null;
+    private ?array $routes = [];
 
     /** @var string[]|null */
     private ?array $method = null;
@@ -31,16 +31,16 @@ class Filter
         return $this->name;
     }
 
-    public function setRoute(?string $route): self
+    public function setRoutes(?array $routes): self
     {
-        $this->route = $route;
+        $this->routes = $routes;
 
         return $this;
     }
 
-    public function getRoute(): ?string
+    public function getRoutes(): ?array
     {
-        return $this->route;
+        return $this->routes;
     }
 
     /**

@@ -15,6 +15,11 @@ class BaseTest extends atoum
     {
         $collection = new \mock\Symfony\Component\Routing\RouteCollection();
         $collection->getMockController()->get = fn($name) => $name != 'invalid_route' ? new Route('/path') : null;
+        $collection->getMockController()->all = [
+            'fake_url' => new Route('/fake_url'),
+            'fake_second_url' => new Route('/fake_second_url'),
+            'excluded_route' => new Route('/excluded_route')
+        ];
 
         return $collection;
     }
