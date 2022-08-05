@@ -31,7 +31,8 @@ class DefaultFormatter extends atoum
     private function getMockedToken()
     {
         $usernameMethod = 'getUserIdentifier';
-        if (method_exists(\Symfony\Component\Security\Core\Authentication\Token\TokenInterface::class, 'getUsername')) {
+        if (!method_exists(\Symfony\Component\Security\Core\Authentication\Token\TokenInterface::class, $usernameMethod) &&
+            method_exists(\Symfony\Component\Security\Core\Authentication\Token\TokenInterface::class, 'getUsername')) {
             // compatibility Symfony < 6
             $usernameMethod = 'getUsername';
         }
