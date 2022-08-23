@@ -35,6 +35,14 @@ class Configuration extends atoum
 
         $collection->add($filter);
 
+        $filter = new Config\Filter('active_filters_four');
+        $filter
+            ->setRoute('route_name_four')
+            ->setMethod(['all'])
+            ->setStatus([422, 404, 500]);
+
+        $collection->add($filter);
+
         return $collection;
     }
 
@@ -43,7 +51,8 @@ class Configuration extends atoum
         return [
             'active_filters_one',
             'active_filters_two',
-            'active_filters_three'
+            'active_filters_three',
+            'active_filters_four'
         ];
     }
 
@@ -59,7 +68,7 @@ class Configuration extends atoum
                 ->object($configuration->setActiveFilters($activeFilters))
                     ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\Configuration::class)
                 ->array($configuration->getActiveFilters())
-                    ->hasSize(3)
+                    ->hasSize(4)
                     ->hasKeys(array_keys($activeFilters))
                 ->variable($configuration->getFilters())
                     ->isNull()

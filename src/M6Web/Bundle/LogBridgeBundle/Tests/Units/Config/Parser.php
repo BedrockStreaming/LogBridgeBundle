@@ -47,6 +47,11 @@ class Parser extends BaseTest
                     'routes' => ['route_name'],
                     'method' => ['PUT'],
                     'status' => [200]
+                ],
+                'filter_cinq' => [
+                    'route' => 'route_name',
+                    'method' => ['GET'],
+                    'status' => [200]
                 ]
             ]
         ];
@@ -77,7 +82,7 @@ class Parser extends BaseTest
     {
         $config = [
             'filters' => [
-                'filter_route_invalid' => [
+                'filter_routes_invalid' => [
                     'routes' => ['invalid_route'],
                     'method' => ['PUT'],
                     'status' => [200]
@@ -89,6 +94,11 @@ class Parser extends BaseTest
                 ],
                 'filter_status_invalid' => [
                     'routes' => ['route_name'],
+                    'method' => ['PUT'],
+                    'status' => 200
+                ],
+                'filter_route_invalid' => [
+                    'route' => 'invalid_route',
                     'method' => ['PUT'],
                     'status' => 200
                 ]

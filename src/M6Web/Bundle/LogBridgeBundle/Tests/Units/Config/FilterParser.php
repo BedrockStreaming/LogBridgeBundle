@@ -62,7 +62,16 @@ class FilterParser extends BaseTest
                 'routes' => ['!excluded_route'],
                 'method' => ['PUT'],
                 'status' => [200]
-            ]
+            ],
+            'filter_route_simple' => [
+                'route' => 'route_name',
+                'method' => ['GET'],
+                'status' => [200]
+            ],
+            'filter_undefined_route_or_routes' => [
+                'method' => ['PUT'],
+                'status' => 200
+            ],
         ];
     }
 
@@ -116,8 +125,35 @@ class FilterParser extends BaseTest
                     ->isIdenticalTo($config['filter_quatre']['method'])
                 ->variable($filter->getStatus())
                     ->isIdenticalTo($config['filter_quatre']['status'])
+
+                ->object($filter = $parser->parse('filter_route_simple', $config['filter_route_simple']))
+                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\Filter')
+                ->string($filter->getName())
+                    ->isIdenticalTo('filter_route_simple')
+                ->string($filter->getRoute())
+                    ->isIdenticalTo($config['filter_route_simple']['route'])
+                ->variable($filter->getMethod())
+                    ->isIdenticalTo($config['filter_route_simple']['method'])
+                ->variable($filter->getStatus())
+                    ->isIdenticalTo($config['filter_route_simple']['status'])
         ;
 
+    }
+
+    public function testUndefinedRouteOrRoutes(): void
+    {
+        $config = $this->getConfig()['filter_undefined_route_or_routes'];
+
+        $this
+            ->if($parser = $this->getParser())
+            ->then
+            ->exception(function() use ($parser, $config) {
+                $parser->parse('filter_undefined_route_or_routes', $config);
+            })
+            ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\ParseException::class)
+            ->message
+            ->contains('Undefined "route(s)", "method" or "status" parameter from filter "filter_undefined_route_or_routes"')
+        ;
     }
 
     public function testInvalidRoute(): void

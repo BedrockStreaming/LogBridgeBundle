@@ -47,3 +47,8 @@ filters:
         routes: [ 'get_program', '!no_filter' ]
         method: [ 'GET' ]
         status: [ 2*, !^290 ]
+
+    get_program_200_hundred_with_simple_route:
+        route: 'get_program'
+        method: [ 'GET' ]
+        status: [ 2*, !^290 ]

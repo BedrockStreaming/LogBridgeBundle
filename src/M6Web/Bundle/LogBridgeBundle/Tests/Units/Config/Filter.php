@@ -26,6 +26,22 @@ class Filter extends atoum
                     ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\Filter::class)
                 ->array($filter->getStatus())
                     ->isIdenticalTo([200, 301])
+            ->if($filter = new Config\Filter('filter_name_two'))
+            ->then
+                ->string($filter->getName())
+                    ->isEqualTo('filter_name_two')
+                ->object($filter->setRoute('filter_route_two'))
+                    ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\Filter::class)
+                ->string($filter->getRoute())
+                    ->isEqualTo('filter_route_two')
+                ->object($filter->setMethod(null))
+                    ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\Filter::class)
+                ->variable($filter->getMethod())
+                    ->isEqualTo(null)
+                ->object($filter->setStatus([200, 301]))
+                    ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\Filter::class)
+                ->array($filter->getStatus())
+                    ->isIdenticalTo([200, 301])
         ;
     }
 }

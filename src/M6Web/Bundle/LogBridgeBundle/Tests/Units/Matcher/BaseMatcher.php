@@ -85,6 +85,45 @@ class BaseMatcher extends BaseTest
                 'method' => ['GET'],
                 'status' => ['2*', '!^290'],
             ],
+            'get_clip_all_status_route' => [
+                'route' => 'get_clip',
+                'method' => ['GET', 'PUT'],
+                'status' => ['200'],
+                'options' => [
+                    'response_body' => true,
+                    'post_parameters' => true
+                ]
+            ],
+            'put_clip_form_all_200_route' => [
+                'route' => null,
+                'method' => ['PUT'],
+                'status' => ['!^240', '2*'],
+            ],
+            'delete_clip_500_all_hundred_without_580_to_590_route' => [
+                'route' => null,
+                'method' => ['DELETE'],
+                'status' => ['5*', '!58*'],
+            ],
+            'edit_clip_5*_30*_without_550_549_route' => [
+                'route' => 'edit_clip',
+                'method' => ['PATH'],
+                'status' => ['5*', '!550', '!549', '30*'],
+            ],
+            'edit_clip_404_to_410_route' => [
+                'route' => 'edit_clip',
+                'method' => ['POST'],
+                'status' => ['404-410'],
+            ],
+            'delete_clip_450_more_without_452_to_458_route' => [
+                'route' => 'delete_clip',
+                'method' => ['DELETE'],
+                'status' => ['^450', '!452-458'],
+            ],
+            'get_program_200_hundred_without_290_more_route' => [
+                'route' => 'get_program',
+                'method' => ['GET'],
+                'status' => ['2*', '!^290'],
+            ],
         ];
     }
 }

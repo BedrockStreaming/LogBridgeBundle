@@ -260,7 +260,38 @@ EOF;
         $compiled = [];
         /** @var array $routesPrefix */
         $routesPrefix = $filter->getRoutes();
+        /** @var string $prefix */
+        $prefix = is_null($filter->getRoute()) ? 'all' : $filter->getRoute();
 
+        $compiledKeys = isset($routesPrefix) ?
+            $this->compileFilterRoutes($filter, $routesPrefix, $compiledKeys) :
+            $this->compileFilterRoute($filter, $prefix, $compiledKeys);
+
+        foreach ($compiledKeys as $key) {
+            $compiled[$key]['options'] = $filter->getOptions();
+            $compiled[$key]['level'] = $filter->getLevel();
+        }
+
+        return $compiled;
+    }
+
+    private function compileFilterRoute(Filter $filter, string $prefix, array $compiledKeys): array
+    {
+        if (empty($filter->getMethod())) {
+            $prefix = sprintf('%s.all', $prefix);
+            $compiledKeys = $this->compileFilterStatus($prefix, $filter);
+        } else {
+            foreach ($filter->getMethod() as $method) {
+                $methodPrefix = sprintf('%s.%s', $prefix, $method);
+                $compiledKeys = array_merge($compiledKeys, $this->compileFilterStatus($methodPrefix, $filter));
+            }
+        }
+
+        return $compiledKeys;
+    }
+
+    private function compileFilterRoutes(Filter $filter, ?array $routesPrefix, array $compiledKeys): array
+    {
         if (empty($filter->getMethod())) {
             foreach ($routesPrefix as $routePrefix) {
                 $prefix = sprintf('%s.all', $routePrefix);
@@ -275,12 +306,7 @@ EOF;
             }
         }
 
-        foreach ($compiledKeys as $key) {
-            $compiled[$key]['options'] = $filter->getOptions();
-            $compiled[$key]['level'] = $filter->getLevel();
-        }
-
-        return $compiled;
+        return $compiledKeys;
     }
 
     /**
