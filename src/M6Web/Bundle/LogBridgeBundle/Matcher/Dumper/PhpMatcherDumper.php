@@ -297,12 +297,14 @@ EOF;
                 $prefix = sprintf('%s.all', $routePrefix);
                 $compiledKeys = array_merge($compiledKeys, $this->compileFilterStatus($prefix, $filter));
             }
-        } else {
-            foreach ($filter->getMethod() as $method) {
-                foreach ($routesPrefix as $routePrefix) {
-                    $methodPrefix = sprintf('%s.%s', $routePrefix, $method);
-                    $compiledKeys = array_merge($compiledKeys, $this->compileFilterStatus($methodPrefix, $filter));
-                }
+
+            return $compiledKeys;
+        }
+
+        foreach ($filter->getMethod() as $method) {
+            foreach ($routesPrefix as $routePrefix) {
+                $methodPrefix = sprintf('%s.%s', $routePrefix, $method);
+                $compiledKeys = array_merge($compiledKeys, $this->compileFilterStatus($methodPrefix, $filter));
             }
         }
 

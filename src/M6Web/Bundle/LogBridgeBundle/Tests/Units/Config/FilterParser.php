@@ -72,6 +72,12 @@ class FilterParser extends BaseTest
                 'method' => ['PUT'],
                 'status' => 200
             ],
+            'filter_defined_route_and_routes' => [
+                'route' => 'route_name',
+                'routes' => ['all'],
+                'method' => ['PUT'],
+                'status' => 200
+            ],
         ];
     }
 
@@ -153,6 +159,22 @@ class FilterParser extends BaseTest
             ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\ParseException::class)
             ->message
             ->contains('Undefined "route(s)", "method" or "status" parameter from filter "filter_undefined_route_or_routes"')
+        ;
+    }
+
+    public function testDefinedRouteAndRoutes(): void
+    {
+        $config = $this->getConfig()['filter_defined_route_and_routes'];
+
+        $this
+            ->if($parser = $this->getParser())
+            ->then
+            ->exception(function() use ($parser, $config) {
+                $parser->parse('filter_defined_route_and_routes', $config);
+            })
+            ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\ParseException::class)
+            ->message
+            ->contains('You can\'t use both "route" and "routes" parameter from filter "filter_defined_route_and_routes"')
         ;
     }
 

@@ -74,6 +74,10 @@ class FilterParser
             throw new ParseException(sprintf('Undefined "route(s)", "method" or "status" parameter from filter "%s"', $name));
         }
 
+        if (array_key_exists('route', $config) && array_key_exists('routes', $config)) {
+            throw new ParseException(sprintf('You can\'t use both "route" and "routes" parameter from filter "%s"', $name));
+        }
+
         if (!array_key_exists('level', $config)) {
             $config['level'] = self::DEFAULT_LEVEL;
         }
@@ -82,7 +86,14 @@ class FilterParser
             ->setMethod($config['method'])
             ->setStatus($config['status']);
 
-        array_key_exists('route', $config) ? $this->parseRoute($filter, $config['route']) : $this->parseRoutes($filter, $config['routes'] ?? []);
+        if (array_key_exists('route', $config)) {
+            $this->parseRoute($filter, $config['route']);
+        }
+
+        if (array_key_exists('routes', $config)) {
+            $this->parseRoutes($filter, $config['routes'] ?? []);
+        }
+
         $this->parseLevel($filter, $config['level']);
 
         return $filter->setOptions($config['options'] ?? []);
