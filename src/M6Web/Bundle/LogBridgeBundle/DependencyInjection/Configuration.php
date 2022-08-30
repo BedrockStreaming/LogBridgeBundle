@@ -53,7 +53,17 @@ class Configuration implements ConfigurationInterface
                     ->useAttributeAsKey('name')
                     ->prototype('array')
                         ->children()
-                            ->scalarNode('route')->defaultNull()->end()
+                            ->scalarNode('route')
+                                ->defaultNull()
+                                ->setDeprecated(
+                                    'm6web/log-bridge-bundle',
+                                    '10.1',
+                                    'The "route" option is deprecated. Use "routes" instead.'
+                                )
+                            ->end()
+                            ->arrayNode('routes')
+                                ->prototype('scalar')->end()
+                            ->end()
                             ->arrayNode('method')
                                 ->prototype('scalar')->end()
                             ->end()

@@ -45,6 +45,7 @@ m6_web_log_bridge:
     filters:
             get_article_error:
                 route: get_article
+                routes: ['get_article']
                 method: ['GET']
                 status: [422, 500]
                 level: 'error'
@@ -52,15 +53,18 @@ m6_web_log_bridge:
                     response_body: true # from add Response body content (with DefaultFormatter)
             post_article_all:
                 route: post_article
+                routes: ['post_article']
                 method: ~ # from all methods
                 status: ~ # from all status
             get_article_not_found:
                 route: get_article
+                routes: ['get_article']
                 method: ['GET']
                 status: [404]
                 level: 'warning'
             edit_category:
                 route: get_category
+                routes: ['get_category']
                 method: ['POST', 'PUT']
                 status: [400-422, ^510, !530-550]
                 level: 'error'
@@ -68,6 +72,7 @@ m6_web_log_bridge:
                     post_parameters: true # From add post parameters in response content (with DefaultFormatter)
             all_error: # All route, all method in error
                 route: ~
+                routes: ~
                 method: ~
                 status: [31*, 4*, 5*]
                 level: 'critical'
@@ -77,6 +82,13 @@ m6_web_log_bridge:
     prefix_key: ~ # define prefix key on log context
     logger: 
         channel: my_channel_to_log # monolog channel, optional, default 'log_bridge'
+```
+
+Routes support multiples formats :
+```yaml
+routes: ['my_route'] # Add only this route
+routes: ['my_route', 'another_route'] # Add multiples routes
+routes: ['!excluded_one', '!excluded_two'] # Add all routes except the excluded
 ```
 
 *By default, `level` is `info`*

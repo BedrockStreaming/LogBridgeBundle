@@ -20,6 +20,7 @@ class Parser
     /**
      * @param array<string, array{
      *     route?: string,
+     *     routes?: string[],
      *     method?: string[],
      *     status?: int[],
      *     level?: string,
@@ -43,6 +44,7 @@ class Parser
      * @param array{
      *     filters?: array<string, array{
      *         route?: string,
+     *         routes?: string[],
      *         method?: string[],
      *         status?: int[],
      *         level?: string,

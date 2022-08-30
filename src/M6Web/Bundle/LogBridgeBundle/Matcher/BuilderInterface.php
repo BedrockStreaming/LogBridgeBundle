@@ -14,6 +14,7 @@ interface BuilderInterface
     /**
      * @param array<string, array{
      *     route?: string,
+     *     routes?: string[],
      *     method?: string[],
      *     status?: int[],
      *     level?: string,

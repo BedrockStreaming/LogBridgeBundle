@@ -258,9 +258,25 @@ EOF;
     {
         $compiledKeys = [];
         $compiled = [];
+        /** @var array $routesPrefix */
+        $routesPrefix = $filter->getRoutes();
         /** @var string $prefix */
         $prefix = is_null($filter->getRoute()) ? 'all' : $filter->getRoute();
 
+        $compiledKeys = isset($routesPrefix) ?
+            $this->compileFilterRoutes($filter, $routesPrefix, $compiledKeys) :
+            $this->compileFilterRoute($filter, $prefix, $compiledKeys);
+
+        foreach ($compiledKeys as $key) {
+            $compiled[$key]['options'] = $filter->getOptions();
+            $compiled[$key]['level'] = $filter->getLevel();
+        }
+
+        return $compiled;
+    }
+
+    private function compileFilterRoute(Filter $filter, string $prefix, array $compiledKeys): array
+    {
         if (empty($filter->getMethod())) {
             $prefix = sprintf('%s.all', $prefix);
             $compiledKeys = $this->compileFilterStatus($prefix, $filter);
@@ -271,18 +287,34 @@ EOF;
             }
         }
 
-        foreach ($compiledKeys as $key) {
-            $compiled[$key]['options'] = $filter->getOptions();
-            $compiled[$key]['level'] = $filter->getLevel();
+        return $compiledKeys;
+    }
+
+    private function compileFilterRoutes(Filter $filter, ?array $routesPrefix, array $compiledKeys): array
+    {
+        if (empty($filter->getMethod())) {
+            foreach ($routesPrefix as $routePrefix) {
+                $prefix = sprintf('%s.all', $routePrefix);
+                $compiledKeys = array_merge($compiledKeys, $this->compileFilterStatus($prefix, $filter));
+            }
+
+            return $compiledKeys;
         }
 
-        return $compiled;
+        foreach ($filter->getMethod() as $method) {
+            foreach ($routesPrefix as $routePrefix) {
+                $methodPrefix = sprintf('%s.%s', $routePrefix, $method);
+                $compiledKeys = array_merge($compiledKeys, $this->compileFilterStatus($methodPrefix, $filter));
+            }
+        }
+
+        return $compiledKeys;
     }
 
     /**
      * @return string[]
      */
-    private function compileFilterStatus(string $prefix, Filter $filter): array
+    private function compileFilterStatus(?string $prefix, Filter $filter): array
     {
         $compiled = [];
         /** @var string[]|null $filterStatusList */

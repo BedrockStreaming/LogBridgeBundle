@@ -11,6 +11,8 @@ class Filter
 {
     private ?string $route = null;
 
+    private ?array $routes = [];
+
     /** @var string[]|null */
     private ?array $method = null;
 
@@ -41,6 +43,18 @@ class Filter
     public function getRoute(): ?string
     {
         return $this->route;
+    }
+
+    public function setRoutes(?array $routes): self
+    {
+        $this->routes = $routes;
+
+        return $this;
+    }
+
+    public function getRoutes(): ?array
+    {
+        return $this->routes;
     }
 
     /**

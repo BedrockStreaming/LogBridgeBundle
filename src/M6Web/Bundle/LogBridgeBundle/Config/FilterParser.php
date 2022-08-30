@@ -47,9 +47,17 @@ class FilterParser
         return $this->router?->getRouteCollection()->get($name) !== null;
     }
 
+    protected function getAllRoutes(): array
+    {
+        $routesCollection = $this->router?->getRouteCollection()->all();
+
+        return array_keys($routesCollection);
+    }
+
     /**
      * @param array{
      *     route?: string,
+     *     routes?: string[],
      *     method?: string[],
      *     status?: int[],
      *     level?: string,
@@ -59,11 +67,15 @@ class FilterParser
     public function parse(string $name, array $config): Filter
     {
         if (
-            !array_key_exists('route', $config) ||
+            (!array_key_exists('route', $config) && !array_key_exists('routes', $config)) ||
             !array_key_exists('method', $config) ||
             !array_key_exists('status', $config)
         ) {
-            throw new ParseException(sprintf('Undefined "route", "method" or "status" parameter from filter "%s"', $name));
+            throw new ParseException(sprintf('Undefined "route(s)", "method" or "status" parameter from filter "%s"', $name));
+        }
+
+        if (array_key_exists('route', $config) && array_key_exists('routes', $config)) {
+            throw new ParseException(sprintf('You can\'t use both "route" and "routes" parameter from filter "%s"', $name));
         }
 
         if (!array_key_exists('level', $config)) {
@@ -74,7 +86,14 @@ class FilterParser
             ->setMethod($config['method'])
             ->setStatus($config['status']);
 
-        $this->parseRoute($filter, $config['route']);
+        if (array_key_exists('route', $config)) {
+            $this->parseRoute($filter, $config['route']);
+        }
+
+        if (array_key_exists('routes', $config)) {
+            $this->parseRoutes($filter, $config['routes'] ?? []);
+        }
+
         $this->parseLevel($filter, $config['level']);
 
         return $filter->setOptions($config['options'] ?? []);
@@ -87,6 +106,42 @@ class FilterParser
         }
 
         $filter->setRoute($route);
+    }
+
+    protected function parseRoutes(Filter $filter, ?array $routes): void
+    {
+        if (empty($routes)) {
+            $filter->setRoutes(['all']);
+
+            return;
+        }
+
+        // Find and keep excluded routes
+        $excludedRoutes = array_filter($routes, function (string $route) {
+            return str_starts_with($route, '!');
+        });
+
+        // Create an array with routes not excluded
+        $routes = array_diff_key($routes, $excludedRoutes);
+
+        // Check that the route's name exist
+        foreach ($routes as $route) {
+            if (!$this->isRoute($route)) {
+                throw new ParseException(sprintf('Undefined route "%s" from router service', $route));
+            }
+        }
+
+        // If empty routes, return all routes except the excluded ones
+        if (empty($routes)) {
+            $existingRoutes = $this->getAllRoutes();
+            $excludedRoutes = array_map(function (string $route) {
+                return ltrim($route, '!');
+            }, $excludedRoutes);
+
+            $routes = array_values(array_diff($existingRoutes, $excludedRoutes));
+        }
+
+        $filter->setRoutes($routes);
     }
 
     protected function parseLevel(Filter $filter, ?string $level): void

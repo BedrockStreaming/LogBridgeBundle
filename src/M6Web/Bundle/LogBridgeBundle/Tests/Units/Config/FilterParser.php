@@ -2,7 +2,7 @@
 
 namespace M6Web\Bundle\LogBridgeBundle\Tests\Units\Config;
 
-use M6Web\Bundle\LogBridgeBundle\Tests\Units\BaseTest;  
+use M6Web\Bundle\LogBridgeBundle\Tests\Units\BaseTest;
 use M6Web\Bundle\LogBridgeBundle\Config;
 
 /**
@@ -19,40 +19,65 @@ class FilterParser extends BaseTest
     {
         return [
             'filter_un' => [
-                'route' =>  'route_name',
+                'routes' =>  ['route_name'],
                 'method' => null,
                 'status' => null
             ],
             'filter_deux' => [
-                'route' =>  'route_name',
+                'routes' =>  ['route_name'],
                 'method' => null,
                 'status' => [404, 422, 500]
             ],
             'filter_trois' => [
-                'route' =>  'route_name',
+                'routes' =>  ['route_name'],
                 'method' => ['PUT', 'POST'],
                 'status' => null
             ],
             'filter_quatre' => [
-                'route' =>  'route_name',
+                'routes' =>  ['route_name'],
                 'method' => ['PUT'],
                 'status' => [200]
             ],
             'filter_route_invalid' => [
-                'route' => 'invalid_route',
+                'routes' => ['invalid_route'],
                 'method' => ['PUT'],
                 'status' => [200]
             ],
             'filter_method_invalid' => [
-                'route' => 'route_name',
+                'routes' => ['route_name'],
                 'method' => 'PUT',
                 'status' => [200]
             ],
             'filter_status_invalid' => [
-                'route' => 'route_name',
+                'routes' => ['route_name'],
                 'method' => ['PUT'],
                 'status' => 200
-            ]
+            ],
+            'filter_route_excluded' => [
+                'routes' => ['route_name', '!excluded_route'],
+                'method' => ['PUT'],
+                'status' => [200]
+            ],
+            'filter_route_excluded_all' => [
+                'routes' => ['!excluded_route'],
+                'method' => ['PUT'],
+                'status' => [200]
+            ],
+            'filter_route_simple' => [
+                'route' => 'route_name',
+                'method' => ['GET'],
+                'status' => [200]
+            ],
+            'filter_undefined_route_or_routes' => [
+                'method' => ['PUT'],
+                'status' => 200
+            ],
+            'filter_defined_route_and_routes' => [
+                'route' => 'route_name',
+                'routes' => ['all'],
+                'method' => ['PUT'],
+                'status' => 200
+            ],
         ];
     }
 
@@ -67,8 +92,8 @@ class FilterParser extends BaseTest
                     ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\Filter')
                 ->string($filter->getName())
                     ->isIdenticalTo('filter_un')
-                ->string($filter->getRoute())
-                    ->isIdenticalTo($config['filter_un']['route'])
+                ->array($filter->getRoutes())
+                    ->isIdenticalTo($config['filter_un']['routes'])
                 ->variable($filter->getMethod())
                     ->isIdenticalTo($config['filter_un']['method'])
                 ->variable($filter->getStatus())
@@ -78,8 +103,8 @@ class FilterParser extends BaseTest
                     ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\Filter')
                 ->string($filter->getName())
                     ->isIdenticalTo('filter_deux')
-                ->string($filter->getRoute())
-                    ->isIdenticalTo($config['filter_deux']['route'])
+                ->array($filter->getRoutes())
+                    ->isIdenticalTo($config['filter_deux']['routes'])
                 ->variable($filter->getMethod())
                     ->isIdenticalTo($config['filter_deux']['method'])
                 ->variable($filter->getStatus())
@@ -89,8 +114,8 @@ class FilterParser extends BaseTest
                     ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\Filter')
                 ->string($filter->getName())
                     ->isIdenticalTo('filter_trois')
-                ->string($filter->getRoute())
-                    ->isIdenticalTo($config['filter_trois']['route'])
+                ->array($filter->getRoutes())
+                    ->isIdenticalTo($config['filter_trois']['routes'])
                 ->variable($filter->getMethod())
                     ->isIdenticalTo($config['filter_trois']['method'])
                 ->variable($filter->getStatus())
@@ -100,14 +125,57 @@ class FilterParser extends BaseTest
                     ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\Filter')
                 ->string($filter->getName())
                     ->isIdenticalTo('filter_quatre')
-                ->string($filter->getRoute())
-                    ->isIdenticalTo($config['filter_quatre']['route'])
+                ->array($filter->getRoutes())
+                    ->isIdenticalTo($config['filter_quatre']['routes'])
                 ->variable($filter->getMethod())
                     ->isIdenticalTo($config['filter_quatre']['method'])
                 ->variable($filter->getStatus())
                     ->isIdenticalTo($config['filter_quatre']['status'])
+
+                ->object($filter = $parser->parse('filter_route_simple', $config['filter_route_simple']))
+                    ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\Filter')
+                ->string($filter->getName())
+                    ->isIdenticalTo('filter_route_simple')
+                ->string($filter->getRoute())
+                    ->isIdenticalTo($config['filter_route_simple']['route'])
+                ->variable($filter->getMethod())
+                    ->isIdenticalTo($config['filter_route_simple']['method'])
+                ->variable($filter->getStatus())
+                    ->isIdenticalTo($config['filter_route_simple']['status'])
         ;
 
+    }
+
+    public function testUndefinedRouteOrRoutes(): void
+    {
+        $config = $this->getConfig()['filter_undefined_route_or_routes'];
+
+        $this
+            ->if($parser = $this->getParser())
+            ->then
+            ->exception(function() use ($parser, $config) {
+                $parser->parse('filter_undefined_route_or_routes', $config);
+            })
+            ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\ParseException::class)
+            ->message
+            ->contains('Undefined "route(s)", "method" or "status" parameter from filter "filter_undefined_route_or_routes"')
+        ;
+    }
+
+    public function testDefinedRouteAndRoutes(): void
+    {
+        $config = $this->getConfig()['filter_defined_route_and_routes'];
+
+        $this
+            ->if($parser = $this->getParser())
+            ->then
+            ->exception(function() use ($parser, $config) {
+                $parser->parse('filter_defined_route_and_routes', $config);
+            })
+            ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Config\ParseException::class)
+            ->message
+            ->contains('You can\'t use both "route" and "routes" parameter from filter "filter_defined_route_and_routes"')
+        ;
     }
 
     public function testInvalidRoute(): void
@@ -156,5 +224,43 @@ class FilterParser extends BaseTest
                 ->message
                     ->contains('must be of type ?array, int given')
         ;
+    }
+
+    public function testRouteExcluded(): void
+    {
+        $config = $this->getConfig()['filter_route_excluded'];
+
+        $this
+            ->if($parser = $this->getParser())
+            ->then
+            ->object($filter = $parser->parse('filter_route_excluded', $config))
+            ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\Filter')
+            ->string($filter->getName())
+            ->isIdenticalTo('filter_route_excluded')
+            ->array($filter->getRoutes())
+            ->isIdenticalTo(['route_name'])
+            ->variable($filter->getMethod())
+            ->isIdenticalTo($config['method'])
+            ->variable($filter->getStatus())
+            ->isIdenticalTo($config['status']);
+    }
+
+    public function testRouteExcludedAll(): void
+    {
+        $config = $this->getConfig()['filter_route_excluded_all'];
+
+        $this
+            ->if($parser = $this->getParser())
+            ->then
+            ->object($filter = $parser->parse('filter_route_excluded_all', $config))
+            ->isInstanceOf('M6Web\Bundle\LogBridgeBundle\Config\Filter')
+            ->string($filter->getName())
+            ->isIdenticalTo('filter_route_excluded_all')
+            ->array($filter->getRoutes())
+            ->isIdenticalTo(['fake_url', 'fake_second_url'])
+            ->variable($filter->getMethod())
+            ->isIdenticalTo($config['method'])
+            ->variable($filter->getStatus())
+            ->isIdenticalTo($config['status']);
     }
 }
