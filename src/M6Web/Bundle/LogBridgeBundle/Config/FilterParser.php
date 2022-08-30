@@ -74,7 +74,7 @@ class FilterParser
             throw new ParseException(sprintf('Undefined "route(s)", "method" or "status" parameter from filter "%s"', $name));
         }
 
-        if (array_key_exists('route', $config) && array_key_exists('routes', $config)) {
+        if ((array_key_exists('route', $config) && $config['route'] !== null) && (array_key_exists('routes', $config) && !empty($config['routes']))) {
             throw new ParseException(sprintf('You can\'t use both "route" and "routes" parameter from filter "%s"', $name));
         }
 
