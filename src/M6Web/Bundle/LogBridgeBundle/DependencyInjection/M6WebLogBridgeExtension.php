@@ -73,7 +73,7 @@ class M6WebLogBridgeExtension extends Extension
             ->addTag(
                 'kernel.event_listener',
                 [
-                    'event' => 'kernel.response',
+                    'event' => 'kernel.terminate',
                     'method' => 'onKernelTerminate',
                 ]
             );
