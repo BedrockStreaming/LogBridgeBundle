@@ -231,5 +231,5 @@ If you prefer to use your own formatter, you will be able to read exceptions dir
 You can run the unit tests with the following command:
 
 ```
-    php bin/atoum -d src/M6Web/Bundle/LogBridgeBundle/Tests/Units
+    XDEBUG_MODE=coverage php bin/atoum -d src/M6Web/Bundle/LogBridgeBundle/Tests/Units
 ```
