@@ -77,14 +77,15 @@ class DefaultFormatter implements FormatterInterface
 
         // Render post parameters
         if (array_key_exists('post_parameters', $options)
-            && $options['post_parameters'] == true
+            && $options['post_parameters'] === true
             && in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'])) {
             $responseContent .= "Post parameters\n";
             $responseContent .= $this->formatParameters($request->request->all());
         }
 
         // Render response body content
-        if (isset($options['response_body'])) {
+        if (array_key_exists('response_body', $options)
+            && $options['response_body'] === true) {
             $responseContent .= "Response body\n------------------------\n";
             $responseContent .= $response->getContent()."\n";
         }
