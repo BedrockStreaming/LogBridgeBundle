@@ -127,8 +127,8 @@ class DefaultFormatter implements FormatterInterface
         }
 
         // compatibility Symfony < 6
-        if (!method_exists($token, 'getUserIdentifier') &&
-            method_exists($token, 'getUsername')) {
+        if (!method_exists($token, 'getUserIdentifier')
+            && method_exists($token, 'getUsername')) {
             return $token->getUsername();
         }
 
