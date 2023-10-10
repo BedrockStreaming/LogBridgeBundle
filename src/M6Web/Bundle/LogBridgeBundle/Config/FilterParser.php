@@ -67,9 +67,9 @@ class FilterParser
     public function parse(string $name, array $config): Filter
     {
         if (
-            (!array_key_exists('route', $config) && !array_key_exists('routes', $config)) ||
-            !array_key_exists('method', $config) ||
-            !array_key_exists('status', $config)
+            (!array_key_exists('route', $config) && !array_key_exists('routes', $config))
+            || !array_key_exists('method', $config)
+            || !array_key_exists('status', $config)
         ) {
             throw new ParseException(sprintf('Undefined "route(s)", "method" or "status" parameter from filter "%s"', $name));
         }
@@ -168,8 +168,8 @@ class FilterParser
         $reflection = new \ReflectionClass($filterClass);
 
         if (
-            !$reflection->isInstantiable() ||
-            !$reflection->isSubclassOf(Filter::class)
+            !$reflection->isInstantiable()
+            || !$reflection->isSubclassOf(Filter::class)
         ) {
             throw new \RuntimeException(sprintf('"%s" is not instantiable or is not a subclass of "%s"', $filterClass, Filter::class));
         }
