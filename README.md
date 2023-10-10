@@ -70,6 +70,7 @@ m6_web_log_bridge:
                 level: 'error'
                 options:
                     post_parameters: true # From add post parameters in response content (with DefaultFormatter)
+                    request_body: true # From add request body in request content (with DefaultFormatter)
             all_error: # All route, all method in error
                 route: ~
                 routes: ~
@@ -94,7 +95,7 @@ routes: ['!excluded_one', '!excluded_two'] # Add all routes except the excluded
 *By default, `level` is `info`*
 
 You can declare all the options you want. 
-By default, only `response_body` and `post_parameters` is supported by the DefaultFormatter
+By default, only `response_body`, `post_parameters` and `request_body` is supported by the DefaultFormatter
 
 Status support multiples formats :
 ```yaml

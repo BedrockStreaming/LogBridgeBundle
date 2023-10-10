@@ -136,4 +136,48 @@ class DefaultFormatter extends atoum
                 ->contains('└ title : Non mais Allo quoi')
         ;
     }
+
+    public function testRequestBodyProvider(): void
+    {
+        $data = [
+            'var1' => 'value un',
+            'var2' => 'value 2',
+            'programs' => [
+                'id'    => 42,
+                'title' => 'Non mais Allo quoi'
+            ]
+        ];
+
+
+        $request = new Request([], [], [], [], [], ['REQUEST_METHOD' => 'POST'], json_encode($data, JSON_THROW_ON_ERROR));
+
+        $response      = new Response('Body content response');
+        $tokenstorage  = $this->getMockedTokenStorage();
+
+        $this
+            ->if($provider = $this->createProvider())
+            ->then
+            ->object($provider->setTokenStorage($tokenstorage))
+            ->isInstanceOf(\M6Web\Bundle\LogBridgeBundle\Formatter\DefaultFormatter::class)
+            ->string($provider->getLogContent($request, $response, ['request_body' => true]))
+            ->contains('HTTP 1.0 200')
+            ->contains(<<<TXT
+Request
+------------------------
+###> Body
+{"var1":"value un","var2":"value 2","programs":{"id":42,"title":"Non mais Allo quoi"}}
+TXT
+)
+            ->string($provider->getLogContent($request, $response, ['request_body' => false]))
+            ->contains('HTTP 1.0 200')
+            ->contains(<<<TXT
+Request
+------------------------
+------------------------
+Response
+------------------------
+TXT
+            )
+        ;
+    }
 }

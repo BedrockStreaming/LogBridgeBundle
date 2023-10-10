@@ -64,6 +64,16 @@ class DefaultFormatter implements FormatterInterface
             $requestContent .= str_pad((string) $name, 20, ' ', STR_PAD_RIGHT).': '.$value."\n";
         }
 
+        if (array_key_exists('request_body', $options)
+            && $options['request_body'] === true
+            && in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
+            $content = $request->getContent();
+            if ($content) {
+                $requestContent .= "###> Body\n";
+                $requestContent .= $content."\n";
+            }
+        }
+
         $responseContent = sprintf(
             "Response\n------------------------\nHTTP %s %d\n",
             $response->getProtocolVersion(),
@@ -77,8 +87,8 @@ class DefaultFormatter implements FormatterInterface
 
         // Render post parameters
         if (array_key_exists('post_parameters', $options)
-            && $options['post_parameters'] == true
-            && in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'])) {
+            && $options['post_parameters'] === true
+            && in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
             $responseContent .= "Post parameters\n";
             $responseContent .= $this->formatParameters($request->request->all());
         }
