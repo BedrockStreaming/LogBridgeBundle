@@ -60,7 +60,7 @@ class DefaultFormatter implements FormatterInterface
         $requestContent = "Request\n------------------------\n";
 
         foreach ($requestHeaders as $name => $headerValue) {
-            $value = is_array($headerValue) ? $headerValue[0] : $headerValue;
+            $value = \is_array($headerValue) ? $headerValue[0] : $headerValue;
             $requestContent .= str_pad((string) $name, 20, ' ', STR_PAD_RIGHT).': '.$value."\n";
         }
 
@@ -76,9 +76,9 @@ class DefaultFormatter implements FormatterInterface
         $responseContent .= $response->headers->__toString();
 
         // Render post parameters
-        if (array_key_exists('post_parameters', $options)
+        if (\array_key_exists('post_parameters', $options)
             && $options['post_parameters'] == true
-            && in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'])) {
+            && \in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'])) {
             $responseContent .= "Post parameters\n";
             $responseContent .= $this->formatParameters($request->request->all());
         }

@@ -67,18 +67,18 @@ class FilterParser
     public function parse(string $name, array $config): Filter
     {
         if (
-            (!array_key_exists('route', $config) && !array_key_exists('routes', $config))
-            || !array_key_exists('method', $config)
-            || !array_key_exists('status', $config)
+            (!\array_key_exists('route', $config) && !\array_key_exists('routes', $config))
+            || !\array_key_exists('method', $config)
+            || !\array_key_exists('status', $config)
         ) {
             throw new ParseException(sprintf('Undefined "route(s)", "method" or "status" parameter from filter "%s"', $name));
         }
 
-        if ((array_key_exists('route', $config) && $config['route'] !== null) && (array_key_exists('routes', $config) && !empty($config['routes']))) {
+        if ((\array_key_exists('route', $config) && $config['route'] !== null) && (\array_key_exists('routes', $config) && !empty($config['routes']))) {
             throw new ParseException(sprintf('You can\'t use both "route" and "routes" parameter from filter "%s"', $name));
         }
 
-        if (!array_key_exists('level', $config)) {
+        if (!\array_key_exists('level', $config)) {
             $config['level'] = self::DEFAULT_LEVEL;
         }
 
@@ -86,11 +86,11 @@ class FilterParser
             ->setMethod($config['method'])
             ->setStatus($config['status']);
 
-        if (array_key_exists('route', $config)) {
+        if (\array_key_exists('route', $config)) {
             $this->parseRoute($filter, $config['route']);
         }
 
-        if (array_key_exists('routes', $config)) {
+        if (\array_key_exists('routes', $config)) {
             $this->parseRoutes($filter, $config['routes'] ?? []);
         }
 
@@ -146,7 +146,7 @@ class FilterParser
 
     protected function parseLevel(Filter $filter, ?string $level): void
     {
-        if (!in_array($level, $this->allowedLevels, true)) {
+        if (!\in_array($level, $this->allowedLevels, true)) {
             throw new ParseException(sprintf('Invalid value "%s" from level parameter, allowed %s', $level, implode(', ', $this->allowedLevels)));
         }
 

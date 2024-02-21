@@ -74,9 +74,9 @@ class Builder implements BuilderInterface
         return sprintf('%s/%s.php', $this->getCacheDir(), $this->getMatcherClassName());
     }
 
-    public function isDebug(bool $debug = null): bool
+    public function isDebug(?bool $debug = null): bool
     {
-        if (is_bool($debug)) {
+        if (\is_bool($debug)) {
             $this->debug = $debug;
         }
 
