@@ -29,7 +29,7 @@ class FilterCollection implements \Iterator
 
     public function add(Filter $item): FilterCollection
     {
-        if (!in_array($item->getName(), $this->keys, true)) {
+        if (!\in_array($item->getName(), $this->keys, true)) {
             $this->keys[] = $item->getName();
         }
 
@@ -106,6 +106,6 @@ class FilterCollection implements \Iterator
 
     public function count(): int
     {
-        return count($this->values);
+        return \count($this->values);
     }
 }

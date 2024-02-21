@@ -19,10 +19,10 @@ class CompleteType extends AbstractType
      */
     protected function transform(string $config): array
     {
-        $refStatus = substr($config, 0, strlen((string) ((int) $config - 2)));
+        $refStatus = substr($config, 0, \strlen((string) ((int) $config - 2)));
 
         $rangeInterval = 100;
-        if (strlen($refStatus) === 2) {
+        if (\strlen($refStatus) === 2) {
             $rangeInterval = 10;
         }
 

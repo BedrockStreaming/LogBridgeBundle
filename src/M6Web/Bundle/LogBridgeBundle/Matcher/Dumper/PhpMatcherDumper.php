@@ -162,14 +162,14 @@ EOF;
             $code .= sprintf("        '%s' => [\n", $filterKey);
 
             foreach ($filter as $key => $config) {
-                if (is_array($config)) {
+                if (\is_array($config)) {
                     $code .= sprintf("            '%s' => [", $key);
 
-                    if (count($config) > 0) {
+                    if (\count($config) > 0) {
                         $code .= "\n";
 
                         foreach ($config as $name => $value) {
-                            if (is_bool($value)) {
+                            if (\is_bool($value)) {
                                 $value = $value == true ? 'true' : 'false';
                             } else {
                                 $value = "'".$value."'";
@@ -261,7 +261,7 @@ EOF;
         /** @var array $routesPrefix */
         $routesPrefix = $filter->getRoutes();
         /** @var string $prefix */
-        $prefix = is_null($filter->getRoute()) ? 'all' : $filter->getRoute();
+        $prefix = \is_null($filter->getRoute()) ? 'all' : $filter->getRoute();
 
         $compiledKeys = isset($routesPrefix) ?
             $this->compileFilterRoutes($filter, $routesPrefix, $compiledKeys) :
@@ -320,7 +320,7 @@ EOF;
         /** @var string[]|null $filterStatusList */
         $filterStatusList = $filter->getStatus();
 
-        if (is_null($filterStatusList)) {
+        if (\is_null($filterStatusList)) {
             $compiled[] = sprintf('%s.all', $prefix);
         } else {
             foreach ($this->parseStatus($filterStatusList) as $status) {
