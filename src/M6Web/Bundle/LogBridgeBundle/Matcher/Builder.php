@@ -27,7 +27,7 @@ class Builder implements BuilderInterface
     public function __construct(
         private StatusTypeManager $statusTypeManager,
         private array $filters,
-        private array $activeFilters
+        private array $activeFilters,
     ) {
     }
 
@@ -74,7 +74,7 @@ class Builder implements BuilderInterface
         return sprintf('%s/%s.php', $this->getCacheDir(), $this->getMatcherClassName());
     }
 
-    public function isDebug(bool $debug = null): bool
+    public function isDebug(?bool $debug = null): bool
     {
         if (is_bool($debug)) {
             $this->debug = $debug;
