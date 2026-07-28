@@ -25,7 +25,7 @@ class DefaultFormatter implements FormatterInterface
     public function __construct(
         protected string $environment,
         protected array $ignoreHeaders = [],
-        protected string $prefixKey = ''
+        protected string $prefixKey = '',
     ) {
     }
 
