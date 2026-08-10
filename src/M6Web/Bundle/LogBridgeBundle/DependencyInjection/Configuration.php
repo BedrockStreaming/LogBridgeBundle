@@ -74,6 +74,7 @@ class Configuration implements ConfigurationInterface
                             ->arrayNode('options')
                                 ->children()
                                     ->booleanNode('post_parameters')->defaultFalse()->end()
+                                    ->booleanNode('request_body')->defaultFalse()->end()
                                     ->booleanNode('response_body')->defaultFalse()->end()
                                 ->end()
                             ->end()
