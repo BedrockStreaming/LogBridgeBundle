@@ -53,7 +53,9 @@ class M6WebLogBridgeExtension extends Extension
                 );
         }
 
-        $this->loadRequestListener($container);
+        if ($container->has('router')) {
+            $this->loadRequestListener($container);
+        }
     }
 
     protected function loadRequestListener(ContainerBuilder $container): void
