@@ -130,6 +130,25 @@ services:
 ```
 *`Acme\DemoBundle\Logger\logger` must be implement `Psr\Log\LoggerInterface`*
 
+By default, Monolog logger writes the log records in one line, you can create a multiline formatter
+
+```yaml
+    monolog.formatter.multiline:
+      class: Monolog\Formatter\LineFormatter
+      arguments:
+        $allowInlineLineBreaks: true
+```
+
+```yaml
+      api:
+        type: stream
+        path: "%kernel.logs_dir%/%kernel.environment%_log_bridge.log"
+        formatter: monolog.formatter.multiline
+        channels: [ log_bridge ]
+
+```
+
+
 ## Define your Provider from format log content
 
 It is advisable to extend default provider M6Web\Bundle\LogBridgeBundle\Formatter\DefaultFormatter
